@@ -1,0 +1,1399 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Desenvolvimento e Teste das Rotinas Numéricas}
+\label{ma_num} 
+
+Foi visto na Sub-Seção \ref{refe} os recursos teóricos necessários para se obter $FP$ e a $THD$. Não é objetivo deste trabalho o cálculo da THD. No entanto, valor desta taxa foi obtido através da Transformada Rápida de Fourier (FFT) do sinal amostrado da corrente, considerando as dez primeiras harmônicas. O desenvolvimento e os resultados obtidos das simulações serão demonstrados\footnote{O código fonte da simulação está disponível no CD em anexo e para \textit{download} no link: \url{https://goo.gl/WuGp2k}.}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Rotinas Numéricas Desenvolvidas}
+\label{ma_num_des}
+As rotinas numéricas desenvolvidas foram as seguintes:
+
+\begin{itemize}
+	\item Integração pela Regra dos Trapézios (de acordo com o exposto na seção \ref{ref_rt});
+	\item Operações com vetores (\textit{arrays}): multiplicação e exponenciação termo a termo);
+	\item Fator de Potência através da \ref{eq:fp_eq};
+	\item Cálculo da transformada rápida de Fourier para se obter a $THD_{I}$ (Taxa de Distorção Harmônica da Corrente);
+	\item Cálculo do $\theta$ e $\lambda$.
+	\item Geração de sinais discretos para testes iniciais.
+\end{itemize}
+
+A integração numérica foi utilizada para cálculo da potência ativa e valores eficazes de tensão e corrente. Para o cálculo dos valores eficazes é necessário elevar ao quadrado cada elemento do vetor amostrado. No caso da potência ativa foi preciso elaborar um código para multiplicar, termo a termo, os valores armazenados nos vetores de tensão e corrente.
+
+Para sincronizar a amostragem dos sinais um dos temporizadores (\textit{timer}) do microcontrolador é utilizado, de forma a se obter uma frequência de amostragem de 3840 Hz. Essa taxa de amostragem representa um total de 64 amostras por período da rede elétrica, considerando uma frequência de 60 Hz. 
+
+O processo para o cálculo do $FP$ não é realizado em tempo real. Primeiramente são obtidos os vetores de tensão e corrente para, posteriormente se obter os valores de potência ativa, tensão eficaz, corrente eficaz e potência reativa para finalmente ser calculado o fator de potência através da equação \ref{eq:fp_eq}. Para se obter um valor mais preciso do $FP$ dois períodos de rede foram amostrados totalizado 128 amostras por medida. 
+
+O código para o cálculo da transformada rápida de Fourier foi proposto por \cite{numerialC2}. Com as componentes harmônicas do sinal de corrente no domínio da frequência, obteve-se o cálculo da taxa de distorção harmônica da corrente ($ THD_{I} $) utilizando as dez primeiras harmônicas.
+
+Para conseguir classificar o fator de potência (como indutivo, capacitivo ou não linear) foi necessário apurar o ângulo de defasagem dos sinais de tensão e corrente ($\theta$) e o ângulo $\lambda$, definidos na figura \ref{fig:pot_fasor_har}. 
+
+Para testar os códigos desenvolvidos, foram criados vetores discretos de tensão e corrente que simulem o comportamento dos circuitos utilizados (CRC, CRL e RMMO). A geração dos sinais foi realizada através da linguagem de programação C. Para todos os casos, produziu-se um sinal de tensão senoidal formado por $64$ amostras por período, com amplitude máxima de $127 \sqrt{2}$ V e frequência de $60\ Hz$. Os sinais de corrente foram obtidos com base na teoria de circuitos elétricos e eletrônica de potência.
+
+O circuito CRL simulado é o mesmo indicado na figura \ref{fig:crl}, onde $R=43.5\ \Omega$, $L=200\ mH$. Para o circuito CRC, indicado na figura \ref{fig:crc}, foi definido $R=43.5\ \Omega$ e $C=30\ \mu F$. Para o retificador monofásico (RMMO), ilustrado na figura \ref{fig:rmmo}, considerou-se o diodo ideal e $R=43.5\ \Omega$. 
+
+%Para poder testar os códigos anteriores, é necessário a criação de sinais discretos que simulem o comportamento dos circuitos testados. Produziu-se um sinal de tensão senoidal formado por $64$ amostras, com amplitude máxima de $127 \sqrt{2}$ V e frequência de $60 Hz$; e um sinal de corrente linear senoidal formado por $64$ amostras, com amplitude máxima de $(127/R)\ \sqrt{2}$, frequência de $60Hz$ e $ R=43.5\Omega $. O sinal de corrente pode ser atrasado ($FP$ indutivo) em $69\textdegree$ (ângulo $\theta$) ou adiantado ($FP$ capacitivo) em $64\textdegree$. Ainda, criou-se rotinas para gerar uma curva de corrente não linear característica de retificadores monofásicos meia-onda.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Resultado do Teste das Rotinas Numéricas}
+\label{ma_num_simu}
+
+A lista abaixo mostra os parâmetros utilizados para os testes:
+
+\begin{itemize}
+	\item Tensão de pico $V_p=127\sqrt{2}$ V;
+	\item Frequência de rede $f=60Hz$;
+	\item $64$ amostras por período (Frequência de amostragem de $3840$ $Hz$);
+	\item Para o CRI: $\theta=-69\,^{\circ}$ (valor calculado);
+	\item Para o CRC: $\theta=64\,^{\circ}$ (valor calculado);
+	\item Diodo foi considerado ideal para o RMMO;
+	\item Utilizou-se as dez primeiras harmônicas para o cálculo da $THD_{I}$;
+\end{itemize}
+
+A Tabela \ref{tab:cod_simu} mostra os resultados dos testes realizados com os códigos desenvolvidos. Para calcular o $FP$ teórico foram usadas as Equações \eqref{eq:cri_fp_teo} e \eqref{eq:crc_fp_teo}. Para se obter um valor teórico para o $THD_{I}$ foi utilizado um \textit{software} simulador de circuitos. Na tabela foram colocados somente os valores das grandezas mais relevantes para o projeto: $FP$e $THD_{I}$. Também foi incluído na tabela \ref{tab:cod_simu} os erros percentuais (relativos) entre os valores teóricos e obtidos, através das rotinas desenvolvidas, do $FP$.
+ 
+\begin{table}[!htbp]
+\captionsetup{justification=centering,font={footnotesize,bf}}
+\caption{Resultados das Simulações.}
+	\label{tab:cod_simu}
+	\begin{center}
+	%\resizebox{\columnwidth}{!}{%
+	\begin{adjustbox}{max width=\textwidth}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tabular}{llllllll}
+	\hline
+	\textbf{Amostra} & \textbf{Tipo de carga} & \textbf{$FP$ Teórico} & \textbf{$FP$ Código} & \textbf{$THD_{I}$ Teórico (\%)} & \textbf{$THD_{I}$ Código (\%)} & \textbf{Erro do $FP$ (\%)} & \textbf{Erro do $THD_{I}$ (\%)} \\ 
+	\hline
+	1 & CRL & 0,358 (Indutivo) & 0,360 (Indutivo) & 0,000 & 0,000 & -0,559 & 0,000  \\ 
+	2 & CRC & 0,438 (Capacitivo) & 0,441 (Capacitivo) & 0,000 & 0,000 & -0,685 & 0,000 \\ 
+	3 & RMMO & 0,707 (Não Linear) & 0,707 - Não Linear & 9,714 & 8,567 & 0,000 & 11,808 \\ 
+	\hline
+\end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{adjustbox}
+	%}
+	\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusão Parcial}
+\label{ma_num_conc}
+Os resultados indicaram que os métodos numéricos funcionam com erro percentual $\pm 0,2 \%$ para o FP e erros menores que $\pm 12 \%$ para a $THD_{I}$. Quando comparados com medidores de instrumentação existentes no mercado, como o \textit{Fluke\texttrademark 41B}\footnote{Informações disponíveis em: http://www.fluke.com}, com erros de $\pm 0.02 \%$ para o fator de potência e $\pm 3 \%$ para a $THD_{I}$, os valores encontrados encontrados ficam muito grandes. Portando, os métodos utilizados para esse projeto são inadequados para instrumentação profissional, restringindo seu uso, então, à medições experimentais em laboratório. Além disso, o $THD_I$ simulado está incoerente com a teoria, pois a discretização de sinais insere harmônicos e, portando, a taxa de distorção deveria ser maior que a simulada e não menor. Dessa forma, trabalhos futuros podem ser elaborados para encontrar formas melhores de se obter essa grandeza.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Rotina de Integração pela Regra dos Trapézios}
+%\label{ma_num_trap}
+%A teoria da Sub-Seção \ref{ref_rt} pode ser implementada pelo Código \ref{cod:trap}.
+%
+%\begin{lstlisting}[caption=Implementação da Regra dos Trapézios,label=cod:trap]
+%
+%float myTrapz(float *X, float *Y, unsigned int size){
+%/****************************************************
+%Aguarda como entrada os vetores de tempo, amplitude e
+%suas dimensões máximas.
+%****************************************************/
+%	int i=0;
+%	float Int=0, H, B, b;
+%	for(i=0; i< size-1; i++){
+%		H = X[i+1]-X[i];
+%		B = Y[i];
+%		b = Y[i+1];
+%		Int = Int + (B+b)*H/2;
+%	}
+%	return Int;
+%}
+%\end{lstlisting}
+%
+%O código recebe dois ponteiros para vetores e suas dimensões máximas como entrada e retorna o valor da integral do sinal.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Operações com Vetores}
+%\label{ma_num_vet}
+%Para elevar implementar a Equação \eqref{eq:pot_ativ}, é necessária uma multiplicação entre vetores, o Código \ref{cod:vet_mult} faz essa operação e retorna um ponteiro para o resultado:
+%
+%\begin{lstlisting}[caption=Multiplicação de Vetores, label=cod:vet_mult]
+%float* vectorMult(float *X, float *Y, unsigned int size){
+%	int i=0;
+%	for(i=0;i<size;i++){
+%		Ans[i] = X[i]*Y[i];
+%	}
+%	return Ans;
+%}
+%\end{lstlisting}
+%
+%As Equações \eqref{eq:v_rms} e \eqref{eq:i_rms} necessitam elevar ao quadrado os valores dos vetores amostrados. Já o Código \ref{cod:vet_quad} eleva ao quadrado todos os elementos dos vetores de entrada e retorna um ponteiro.
+%
+%\begin{lstlisting}[caption=Quadrado de Vetores, label=cod:vet_quad]
+%float* vectorPow(float *X, unsigned int size){
+%	int i=0;
+%	for(i=0;i<size;i++){
+%		Ans[i] = X[i]*X[i];
+%	}
+%	return Ans;
+%}
+%\end{lstlisting}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Fator de Potência}
+%\label{ma_num_fp}
+%
+%O Código \ref{cod:fp} retorna o fator de potência, a potência ativa e a potência aparente, e espera como entrada os vetores de tempo, tensão e corrente. Todos os valores de entrada devem ser vetores vindos da amostragem. Esses valores devem conter um ou mais períodos das ondas amostradas.
+%
+%\begin{lstlisting}[caption=Cálculo do Fator de Potência, label=cod:fp]
+%void powerFactor(float *t, float *V, float *I, unsigned int size, 
+%	float *fp, float *S, float *P, float *Vrms, float *Irms){
+%	float fp_t=0, S_t=0, P_t=0, Vrms_t=0, Irms_t=0;
+%	/* Cálculo do período. */
+%	float T = t[size-1]-t[0];
+%	/* Cálculo da potência ativa. */
+%	P_t = myTrapz(t, vectorMult(V, I, size), size)/T;
+%	/* Cálculo da tensão eficaz. */
+%	Vrms_t = sqrt(myTrapz(t, vectorPow(V, size), size)/T);
+%	/* Cálculo da corrente eficaz. */
+%	Irms_t = sqrt(myTrapz(t, vectorPow(I, size), size)/T);
+%	/* Cálculo da potência aparente. */
+%	S_t = Vrms_t*Irms_t;
+%	/* Cálculo do fator de potência. */
+%	fp_t = P_t/S_t;
+%
+%	*fp=fp_t;
+%	*S=S_t;
+%	*P=P_t;
+%	*Vrms=Vrms_t;
+%	*Irms=Irms_t;
+%}
+%\end{lstlisting}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Cálculo da FFT}
+%\label{ma_num_fft}
+%A implementação do método visto na Sub-Seção \ref{ref_fft} pode ser encontrada no Anexo \ref{anex:fft} e foi retirada de: \cite{numerialC2}. Esse código possui otimizações adicionais adequadas para o projeto.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Cálculo da $THD_{I}$}
+%\label{ma_num_thd}
+%
+%O Código \ref{cod:thd} utiliza a Equação \eqref{eq:thd_eq} para apurar a taxa de distorção harmônica percentual. A variável  \textit{\texttt{N\_HARM}} determina até qual harmônica será efetuado o cálculo. Por exemplo, determinar a $THD$ até a décima harmônica: \textit{\texttt{N\_HARM}} deverá receber o valor 10. Essa código pode ser utilizado para determinar a $THD$ de qualquer sinal discreto, para aumentar sua exatidão, os sinais devem possuir dimensão múltipla de dois.
+%
+%\begin{lstlisting}[caption=Cálculo da THD, label=cod:thd]
+%/* Calcula a FFT e retorna um sequência de números
+%imaginários. */
+%four1(X, NFFT, 1);
+%
+%/* Encontra o módulo e o ângulo do vetor imaginário X */
+%for(i=0; i<NFFT; i++){
+%	X_ANG[2*i+1]=sqrt(pow(X[2*i+1],2)+pow(X[2*i+2],2));
+%	X_ABS[i]=sqrt(pow(X[2*i+1],2)+pow(X[2*i+2],2));
+%	X_ANG[2*i+2]=tan((float)X[2*i+2]/(float)X[2*i+1]);
+%}
+%/* Encontra a harmônica fundamental. */
+%maximum = 0.0;
+%location=0;
+%/* Para uma DFT, o sinal  se repete novamente 
+%a partir de sua metade*/
+%for (i = 0; i < NFFT/2; i++){
+%		if (X_ABS[i] > maximum){
+%			 maximum  = X_ABS[i];
+%			 location = i;
+%		}
+%}
+%/* Ajuste de proporção para o valor RMS. */
+%maximum = maximum*10.0;
+%/* Somatório das harmônicas sem a fundamental. 
+%Caso queira até a décima harmônica: N_HARM=10.*/
+%sum=0;
+%for(i=location+1; i<=N_HARM; i+=1){
+%			sum+=pow(X_ABS[i],2);
+%}
+%/* Cálculo da THD percentual. */
+%THD=(sqrt((float)sum)/(float)maximum)*100;
+%\end{lstlisting}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Cálculo do $\theta$, $\lambda$, $S'$, $\varphi$, $Q$ e $D$}
+%\label{ma_num_phi}
+%Com os códigos para calcular $P$, $S$ e $THD$ já implementadas nas Seções \ref{ma_num_fp} e \ref{ma_num_thd}. Basta aplicar as Equações \eqref{eq:s_proj}, \eqref{eq:pot_reat} e \eqref{eq:pot_dist} para obter os valores de $S'$, $Q$ e $D$. Vale ressaltar, que a taxa de distorção harmônica da tensão será aproximada para zero e será desprezada nas contas.
+%
+%A equação \eqref{eq:fp_eq} possui o empecilho de não indicar se o fator de potência é indutivo ou capacitivo. Uma forma de contornar esse problema é detectar os pontos onde o sinal de tensão e corrente cruzam pela primeira vez no eixo do tempo e realizar uma diferença, encontrando assim, o ângulo $\theta$ representado nas Figuras \ref{fig:crl} e \ref{fig:crc}. O código \ref{cod:det} detecta e retorna a posição do primeiro cruzamento descendente do vetor de entrada.
+%
+%\begin{lstlisting}[caption=Detector de Cruzamento por Zero, label=cod:det]
+%int zeroCross(float *X, unsigned int size){
+%/*Detecta cruzamentos e os divide em bordas de 
+%descidas e subidas do vetor X*/
+%	int i=0, j=0, k=0;
+%	for (i=(size/4)-5; i<size; i++){
+%			/* Detecta o primeiro cruzamento e retorna a posição. */
+%			if (X[i]>=0 && X[i+1]<=0){
+%					return i;
+%					j++;
+%			}
+%	}
+%}
+%\end{lstlisting}
+%
+%O cálculo do $\theta$ e do $cos(\theta)$ pode ser feita pelo Código \ref{cod:theta}.
+%
+%\begin{lstlisting}[caption=Cálculo do $\theta$, label=cod:theta]
+%#define PI	3.14159265359
+%#define TWOPI	(2.0*PI)
+%/* Posição do primeiro cruzamento ascendente da tensão. */
+%Vz=zeroCross(V,MAX_SAMPLE);
+%/* Posição do primeiro cruzamento ascendente da corrente. */
+%Iz=zeroCross(I,MAX_SAMPLE);
+%/* Cálculo do theta em segundos. */
+%theta=t[Vz]-t[Iz];
+%/* Conversão theta para radianos. */
+%theta=((float)TWOPI*theta)/((float)t_inter*MAX_SAMPLE);
+%/* Cálculo do cosseno de theta. */
+%cos_theta=cos(theta);
+%\end{lstlisting}
+%
+%O código anterior ainda não é suficiente para determinar se a carga é ou não linear, por isso, é preciso implementar as Equações \eqref{eq:lamb}, \eqref{eq:s_proj}, \eqref{eq:phi}, \eqref{eq:pot_reat} e \eqref{eq:pot_dist} para obter os valores de $\lambda$, $S'$, $\varphi$, $Q$ e $D$.
+%
+%\begin{lstlisting}[caption=Cálculo dos Ângulos e Potências,  label=cod:lamb]
+%/* Conversão da taxa de distorção harmônica da corrente de percentual para decimal. */
+%aux=(float)I_THD/(float)100;
+%/* Cálculo do cosseno de lambda. */
+%cos_lamb=(float)1/(float)sqrt(1+(aux*aux));
+%/* Cálculo do lambda. */
+%lamb=acos(cos_lamb);
+%/* Cálculo da projeção de vetor S. */
+%S_proj=S*cos_lamb;
+%/* Cálculo do cosseno de phi */
+%cos_phi=(float)P/(float)S_proj;
+%/* Cálculo do phi. */
+%phi=acos(cos_phi);
+%/* Cálculo da potência reativa. */
+%Q=sin(phi)*S_proj;
+%/* Cálculo da potência de distorção. */
+%D=S*sin(lamb);
+%\end{lstlisting}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Geração dos Sinais Discretos}
+%\label{ma_num_sin}
+%Para poder testar os códigos anteriores, é necessário a criação de sinais discretos. O Código \ref{cod:sinal1} produz um sinal de tensão senoidal formado por $64$ amostras, com amplitude máxima de $127 \sqrt{2}$ e frequência de $60Hz$; e um sinal de corrente linear senoidal formado por $64$ amostras, com amplitude máxima de $127/3 \sqrt{2}$, frequência de $60Hz$ e adiantado ($FP$ capacitivo) em $30\textdegree$ (ângulo $\theta$).
+%
+%\begin{lstlisting}[caption=Geração dos Sinais de Tesão e Corrente (CRC), label=cod:sinal1]
+%#define MAX_SIZE 64
+%float t[MAX_SIZE], V[MAX_SIZE], I[MAX_SIZE];
+%float t_inter=0.00026;//t_inter = T/MAX_SIZE = (1/freq)/MAX_SIZE
+%float  theta=30;//Valor em graus
+%for(i=0; i<MAX_SIZE; i++){
+%		//t[i] = ((float)i/(float)MAX_SIZE)*t_inter;
+%		t[i] =i*t_inter;
+%}
+%for (i=0; i<MAX_SIZE; i++){
+%	V[i] = 127*sqrt(2)*sin(2*M_PI*freq*t[i]);
+%	//Corrente linear: circuito RC ou RL, basta trocar o sinal do ângulo phi:
+%	//positivo para RC e negativo para RI.
+%	I[i] = (127/3)*sqrt(2)*sin((2*M_PI*((float)i/(float)MAX_SIZE))+(theta*((float)M_PI/(float)180)));
+%}
+%\end{lstlisting}
+%
+%Para criar um sinal de corrente atrasado ($FP$ indutivo), basta alterar o sinal da variável \textit{theta} ($\theta$):
+%
+%\begin{lstlisting}[caption=Geração dos Sinais de Tesão e Corrente (CRI)]
+%for (i=0; i<MAX_SIZE; i++){
+%	V[i] = 127*sqrt(2)*sin(2*M_PI*freq*t[i]);
+%	I[i] = (127/3)*sqrt(2)*sin((2*M_PI*((float)i/(float)MAX_SIZE))-(theta*((float)M_PI/(float)180)));
+%}
+%\end{lstlisting}
+%
+%Para gerar correntes não lineares características de RMMO, usa-se a seguinte variação do código anterior:
+%
+%\begin{lstlisting}[caption=Geração dos Sinais de Tesão e Corrente (RMMO)]
+%for (i=0; i<MAX_SIZE; i++){
+%	V[i] = 127*sqrt(2)*sin(2*M_PI*freq*t[i]);
+%	//Corrente não linear: retificador monofásico meia onda,
+%	//gera somente meia senoide.
+%	if(i<MAX_SIZE/2)
+%		I[i] = (127/3)*sqrt(2)*sin(2*M_PI*freq*t[i]);
+%	else I[i]=0;
+%}
+%\end{lstlisting}
+%
+%Com esses códigos é possível gerar todas as ondas previstas nos circuitos teóricos das Seções \ref{ref_cl} e \ref{ref_rm}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Microcontrolador}
+\label{ma_micro} 
+O microcontrolador será um dos dispositivos mais importantes do projeto, pois, os sinais de tensão e corrente serão amostrados e processados por ele. Sua escolha deve se levar em consideração a frequência de amostragem máxima dos seus conversores A/D, erros de quantização e velocidade de processamento numérico.
+
+Para medidores de consumo de energia, o número de amostras por ciclo deverá ser $16$, no mínimo, com conversores A/D de pelo menos $12$ bits de resolução\footnote{``Taxa de amostragem de $16$ amostras por ciclo; Conversor A/D (Analógico/Digital) do sinal de corrente de $12$ bits;'' (ANEEL - RESOLUÇÃO NORMATIVA NO. 505, 2001, p. 9)}, para monitorar a $THD$ é recomendado $64$ amostras por ciclo \cite{schl}. Será considerado um número de amostras mínima de $64$ por ciclo para de tensão com $60Hz$ de frequência, ou seja, uma amostra a cada $260\ \mu s$. Portanto, será necessário um conversor A/D com frequência de amostragem mínima de $3840Hz$ e $12$ bits de resolução.
+
+Como visto na Seção \ref{ma_num}, os códigos propostos para o trabalho possuem vários laços e operações com variáveis do tipo ponto flutuante, isso torna sua complexidade computacional muito grande. Sendo assim, é necessário um microcontrolador com velocidade de processamento grande e otimização para operações com variáveis do tipo ponto flutuante.
+
+A \textit{Tiva\texttrademark C Series} TM4C123G \textit{LaunchPad Evaluation Kit}, Figura \ref{fig:tivaC},  é uma plataforma de baixo custo com um microcontrolador baseado na arquitetura ARM\textregistered Cortex\texttrademark - M4F, da \textit{Texas Instruments}, de $32$ bits operando com um \textit{clock} de até $80MHz$ \cite{tivaC}. Devido ao seu grande poder computacional, mostrou-se o mais adequado para o projeto. Entre as principais características e vantagens pode-se citar:
+\\
+\begin{itemize}
+	\item Dois botões programáveis;
+	\item Um light emitting diode \sigla[\textit{Light Emitting Diode}]{LED} \sigla[\textit{Red, Green and Blue}]{RGB};
+	\item $40$ pinos, incluindo: entradas, saídas e alimentação operando com níveis de $0$ a $3.3V$;
+	\item Conversor A/D com $12$ bits de resolução e oito entradas analógicas multiplexadas e taxa de amostragem de até 1 MSPS;
+	\item $256 KB$ de memória \textit{flash} e $32 KB$ de \textit{Random Access Memories} \sigla[\textit{Random Access Memories}]{RAM};
+	\item Seis \textit{timers} de $64$ bits e seis \textit{timers} de $32$ bits;
+	\item \textit{Code Composer Studio\texttrademark}, plataforma para programação do dispositivo, com todas as funcionalidades;
+	\item Comunicação \textit{serial} via USB.
+\end{itemize}
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.4\textwidth]{materiais_metodos/figuras/tivaC.eps}
+	\caption{Placa de Desenvolvimento \textit{Tiva\texttrademark C Series}.} 
+	\centering\footnotesize\textbf{Fonte: Site da \textit{Texas Instruments}\protect\footnotemark.}
+		\label{fig:tivaC}
+\end{figure}
+
+\footnotetext{Disponível em: <\url{http://www.ti.com/lit/ug/spmu296/spmu296.pdf}>. Acesso em: 01 nov. 2015}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Sensor de Corrente Baseado no Efeito \textit{Hall} ACS712}
+\label{mat_hall}
+O ACS712 (Figura \ref{fig:hall}), produzido pela empresa \textit{Allegro\texttrademark}, é um sensor de precisão baseado no efeito \textit{Hall} com capacidade de medir correntes de até $5\ A$. Esse deve ser inserido em série com o circuito de interesse. A corrente que flui através de seus terminais gera um campo magnético detectável pelo efeito \textit{Hall}, esse é convertido em uma tensão proporcional e linear com níveis de $0$ a $5\ V$ sendo o $2,5\ V$ o nível correspondente à corrente de $0\ A$. A exatidão do dispositivo, segundo o fabricante, é otimizada, pois a sua sensibilidade à ruídos é reduzida quando comparado a outros métodos de medição de corrente \cite{acs712}. Esse será usado como sensor de corrente do dispositivo.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.15\textwidth]{materiais_metodos/figuras/acs712.eps}
+	\caption{Sensor de Corrente ACS712.} 
+	\centering\footnotesize\textbf{Fonte: Site da Allegro\protect\footnotemark.}
+		\label{fig:hall}
+\end{figure}
+
+\footnotetext{Disponível em: <\url{http://www.allegromicro.com/~/media/Files/Datasheets/ACS712-Datasheet.ashx}>. Acesso em: 01 nov. 2015}
+
+No projeto, utilizou-se o módulo ilustrado na Figura \ref{fig:modacs}, esse contém o sensor de corrente descrito anteriormente.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.25\textwidth]{materiais_metodos/figuras/moduloacs712.eps}
+	\caption{Módulo com o Sensor de Corrente ACS712.} 
+	\centering\footnotesize\textbf{Fonte: Site da Vinitronica\protect\footnotemark.}
+		\label{fig:modacs}
+\end{figure}
+
+\footnotetext{Disponível em: <\url{http://www.vinitronica.com.br/pd-18da58-sensor-de-corrente-5a.html}>. Acesso em: 01 nov. 2015}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Circuito Condicionador de Sinais}
+\label{ma_cir}
+Tanto níveis de tensão vindos da rede quando saída do sensor de efeito \textit{Hall} são inadequados para o microcontrolador, sendo necessários o uso de circuitos para condicioná-los. Para a tensão, é necessário reduzir seus níveis através do circuito visto na Sub-Seção \ref{ref_cdt} e deslocar sua referência para obter somente valores positivos utilizando o circuito visto na Sub-Seção \ref{ref_cdr}, pois a porta do microcontrolador, escolhido para o projeto, é incapaz de ler níveis de tensão negativos. Para a corrente, é indispensável reduzir os níveis de tensão vindos do sensor com o circuito visto na Sub-Seção \ref{ref_cdt} seguido por um \textit{buffer} de tensão. Como a retirada das amostras devem começar no início do ciclo do sinal de tensão, é essencial um circuito detector de cruzamento por zero para indicar quando ocorre esse ponto, por isso, foi adicionado o circuito visto na Sub-Seção \ref{ref_cdct}.
+
+O circuito da Figura \ref{fig:circuito} foi projetado usando as Equações \eqref{eq:gramp_sub1}, \eqref{eq:gramp_eq} e \eqref{eq:div_eq}; os parâmetros descritos na Sub-Seção \ref{ref_cdct}; e os seguintes critérios a seguir:
+
+\begin{itemize}
+	\item Tensão eficaz de entrada da rede ($vi1(t)$): $127\ V$ ou $220\ V$;
+	\item Frequência da tensão de entrada: $60\ Hz$;
+	\item Tensão de pico de entrada da rede ($vi1(t)$): $180\ V$ ou $311\ V$;
+	\item Corrente de pico máxima permitida pelo sensor: $5\ A$;
+	\item Tensão máxima de saída do módulo com o sensor de corrente ($vi2(t)$): $5\ V$;
+	\item Tensão de saída mínima e máxima para a medição de tensão e corrente ($vo1(t)$ e $vo3(t)$): $0\ V$ e $3.3\ V$;
+	\item Tensão de saída máxima de saída para o detector de cruzamento ($vo2(t)$): $5\ V$;
+	\item Corrente máxima de saída com uma impedância de saída de $100k \Omega$ ($vo1(t)$, $vo2(t)$ e $vo3(t)$): $<1\ mA$;
+	\item Tensão de alimentação para o módulo com o sensor de corrente ($VCC+$): $5\ V$ (CC);
+	\item Tensão de alimentação para a placa \textit{Tiva\texttrademark C Series} ($VCC+$): $5\ V$ (CC);
+	\item Tensão de alimentação do amplificador operacional ($VCC+$ e $VCC-$): $5\ V$ simétricos;
+	\item Tensão mínima e máxima de alimentação  ($Va$ e $Vc$): $6\ V$ e $24\ V$ simétricos.
+\end{itemize}
+
+O amplificador operacional escolhido foi o TL074 devido ao seu baixo custo e sua elevada impedância de entrada \cite{tl074}. A $chave1$, altera o nível tensão de entrada e a $chave2$ altera o fundo de escala do microcontrolador, ambas devem ser comutadas ao se trocar a tensão de rede. Os potenciômetros $P1$ e $P2$ ajustam a tensão máxima de saída o seu deslocamento, por isso, o circuito deve ser previamente calibrado antes de ser acoplado a placa contendo o microcontrolador.
+\\
+\begin{landscape}
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=23cm, height=1\textwidth]{materiais_metodos/figuras/circuito.eps}
+	\caption{Diagrama do Circuito do Medidor.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:circuito}
+\end{figure}
+\end{landscape}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Circuito das Cargas de Teste}
+\label{ma_car}
+Os circuitos vistos nas Seções \ref{ref_cl} e \ref{ref_rm} precisam ser implementados para testar o medidor e comparar seus resultados com a teoria. Com a finalidade de facilitar os ensaios, todas as cargas foram unidas em um único circuito como mostra a Figura \ref{fig:cargaesq}. Os valores dos componentes foram estimados com base nos equipamentos presentes na universidade. $F1$ foi usado para limitar a corrente e proteger os demais componentes. A comutação de cargas é feita através da $Chave3$ e da $Chave4$. O reostato e o indutor, por serem mais robustos, devem ser ligados ao circuito com conectores do tipo ``banana'' através das entradas $Ro1$ e $Ro2$, $Lo1$ e $Lo2$, respectivamente. As especificações do circuito são:
+
+\begin{itemize}
+	\item Corrente máxima de pico de entrada: $2,5\ A$;
+	\item Corrente eficaz de entrada: $1,80\ A$;
+	\item Tensão eficaz máxima de entrada: $127\ V$ ou $220\ V$
+	%\item Fator de potência teórico para o CL RI (Equação \eqref{eq:cri_fp_teo}): $0,359$;
+	%\item Fator de potência teórico para o CL RC (Equação \eqref{eq:crc_fp_teo}): $0,441$;
+	%\item Fator de potência teórico para o CNL RMMO (Equação \eqref{eq:rmmo_fp}): $0,707$.
+	%\item $THD_{I}$ simulada simulada para o CL RI: $0\%$;
+	%\item $THD_{I}$ simulada para o CL RC: $0\%$;
+	%\item $THD_{I}$ simulada para o CNL RMMO: $9,714\%$.
+\end{itemize}
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=1\textwidth]{materiais_metodos/figuras/cargas_esq.eps}
+	\caption{Diagrama do Circuito das Cargas.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:cargaesq}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Hardware Desenvolvido}
+\label{ma_prat}
+
+O circuito projetado para condicionamento de sinais de tensão e corrente, necessário para o funcionamento do medidor do $FP$, foi construído em uma placa de circuito impresso. Dessa forma, este capítulo relata a implementação prática do hardware desenvolvido.
+
+\section{Placa de Circuito Impresso}
+\label{ma_prat_pcb}
+Como a proposta é a implementação de um protótipo, através do circuito esquemático da Figura \ref{fig:circuito}, é possível a criação do projeto da Placa de Circuito Impresso \sigla[Placa de Circuito Impresso]{PCI}.
+ 
+Para o projeto, foi considerado o uso de placas com apenas uma camada. Foi necessário o uso de pontes (traços em vermelho na Figura \ref{fig:pcb}) para contornar a dificuldade de ligar alguns pontos. Para facilitar a conexão de fios à placa, usou-se conectores parafusáveis e do tipo \textit{headers}. A placa \textit{Tiva\texttrademark C Series} se encaixará através de conectores de tipo \textit{headers}.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.8\textwidth]{materiais_metodos/figuras/pcb.eps}
+	\caption{\textit{Layout} da PCI do Circuito Condicionador de Sinais.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:pcb}
+\end{figure}
+
+O projeto finalizado foi impresso em papel do tipo \textit{LASER Glossy Photo Paper} com  uma impressora LASER. O desenho foi transferido para a placa de cobre utilizando o método de transferência térmica e um ferro de passar roupas. Em seguida, foi imerso em percloreto de ferro para a corrosão do cobre em excesso. Após a corrosão, o cobre nú foi finalizado com verniz para circuitos impressos, assim, as trilhas de cobre não sofrerão oxidação. As ilhas destinadas às soldas foram lixadas com a finalidade de melhorar a fixação do estanho. A Figura \ref{fig:placa1} mostra a vista inferior da placa ao final do processo de confecção.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.8\textwidth]{materiais_metodos/figuras/placa1.eps}
+	\caption{Vista Inferior da Placa (Sem os Componentes).} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:placa1}
+\end{figure}
+
+Com a placa confeccionada, os componentes foram soldados e o resultado pode ser visto na Figura \ref{fig:placa2}. Os resistores utilizados possuem erro menor que $1\%$ e o conector para a $Chave2$ não aparece pois será adicionado posteriormente na montagem do medidor.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.8\textwidth]{materiais_metodos/figuras/placa2.eps}
+	\caption{Vista Superior da Placa.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:placa2}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Construção do Medidor}
+\label{ma_prat_med}
+O medidor foi montado em uma plataforma de madeira com, aproximadamente, $250\ mm$ de largura e $250\ mm$ de profundidade. Foram adicionados pés para elevar a plataforma e permitir que os fios passem por baixo da mesma, facilitando a instalação. Conectores do tipo ``banana-fêmea'' foram adicionados para permitir maior flexibilidade no seu uso. A Figura \ref{fig:diagmedidor} mostra o diagrama de blocos do medidor e a Figura \ref{fig:medidor} mostra o medidor montado. Para ficar mais claro, a nomenclatura é a mesma usada na Figura \ref{fig:circuito}.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.8\textwidth]{materiais_metodos/figuras/diagmedidor.eps}
+	\caption{Diagrama do Medidor.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:diagmedidor}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=1\textwidth]{materiais_metodos/figuras/medidor.eps}
+	\begin{subfigure}{.49\textwidth}
+				\centering
+        \includegraphics[width=\textwidth, height=0.4\textheight]{materiais_metodos/figuras/medidor_a.eps}
+        \caption{Vista Superior}
+		\end{subfigure}\hfill
+		\begin{subfigure}{.49\textwidth}
+				\centering
+        \includegraphics[width=\textwidth, height=0.4\textheight]{materiais_metodos/figuras/medidor_b.eps}
+        \caption{Vista Inferior}
+		\end{subfigure}
+	
+	\caption{Medidor Montado.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:medidor}
+		\vspace{1cm}\par
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Calibração do Medidor}
+\label{ma_prat_cal}
+O medidor foi calibrado previamente com um osciloscópio. O ajuste foi feito através dos potenciômetros $P1$ e $P2$ (Figuras \ref{fig:circuito} e \ref{fig:placa2}). O componente $P1$ é responsável pelo ajuste da amplitude máxima da saída $vo1$, já $P2$ tem a função de ajustar o descolamento (\textit{offset}) do sinal de tensão na saída. 
+
+A calibração foi realizada ligando na tensão eficaz de $127\ V$ e uma carga puramente resistiva à sua saída (Reostato regulado em $43,5\ \Omega$). A tensão máxima em $vo1$ precisa estar o mais próximo possível de $3.3\ V$ mas nunca maior; a tensão mínima deve ficar próxima de $0\ V$. 
+% \\
+% \begin{figure}[!htbp]
+% 	\centering
+% 	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+% 		%\includegraphics[width=1\textwidth, height=10cm]{materiais_metodos/figuras/calibracao.eps}
+% 		\begin{subfigure}{.49\textwidth}
+% 				\centering
+%         \includegraphics[width=\textwidth, height=0.4\textheight]{materiais_metodos/figuras/calibracao_a.eps}
+%         \caption{Sinais de tensão(amarelo) e corrente(verde) calibradas}
+% 		\end{subfigure}\hfill
+% 		\begin{subfigure}{.49\textwidth}
+% 				\centering
+%         \includegraphics[width=\textwidth, height=0.4\textheight]{materiais_metodos/figuras/calibracao_b.eps}
+%         \caption{Sinais de tensão(amarelo) e detector de cruzamento(verde)}
+% 		\end{subfigure}
+% 	\caption{Calibração do Medidor.} 
+% 	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+% 		\label{fig:calibracao}
+% 		\vspace{0.5cm}\par
+% \end{figure}
+
+Para uma tensão de entrada ($vi1$) de $127\ V$ eficazes, o valor de pico é de aproximadamente $180\ V$. Dessa forma, na entrada do respectivo divisor resistivo a tensão varia entre $-180\ V$ e $180\ V$. Se o circuito condicionador de sinais estiver devidamente calibrado, essa variação representará em sua saída ($vo1$) tensões entre $0\ V$ e $3,3\ V$, como mostra a Figura \ref{fig:calibracao_v}.
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.4\textwidth]{materiais_metodos/figuras/calibracao_v.eps}
+		\caption{Fundo de Escala da Tensão.}
+		\label{fig:calibracao_v}
+\end{figure}
+
+Portanto:
+
+\begin{equation}\label{eq:cal_v}
+\frac{vi1(t)+180}{360}=\frac{vo1(t)}{3,3} \qquad \textnormal{.}
+\end{equation}
+
+\noindent Dessa forma, pode-se isolar o termo $vo1(t)$:
+
+\begin{equation}\label{eq:cal_v2}
+vo1(t)=9,167\ 10^{-3} vi1(t)+1,65 \qquad \textnormal{.}
+\end{equation}
+
+\noindent Como o conversor A/D do \textit{kit} utilizado é de $12\ bits$, tem-se que os valores de tensão em sua entrada ($vo1$), que podem variar entre $0$ e $3,3\ V$, são digitalizados para valores entre $0$ e $2^{12}-1$, respectivamente. Dessa forma, o valor digitalizado pode ser calculado pela expressão:
+
+\begin{equation}\label{eq:Vclas}
+Dv[n] = \left\|\frac{vo1(t)}{3,3}(2^{12}-1)\right\|= \left\|1240,909\ vo1(t)\right\| \qquad \textnormal{.}
+\end{equation}
+
+\noindent Onde $Dv[n]$ é o valor de tensão de entrada digitalizado e $n$ é o índice da amostra.
+
+Para o cálculo do $FP$ é necessário reconstruir o sinal digitalizado $Dv[n]$ em termos da tensão de entrada do circuito ($vi1$). Primeiramente, calcula-se o valor da tensão amostrada, $vo1[n]$, na entrada do conversor:
+
+\begin{equation}\label{eq:vo1}
+vo1[n] = 3,3\ \frac{Dv[n]}{2^{12}-1} \qquad \textnormal{.}
+\end{equation}
+
+\noindent Posteriormente, substitui-se $vo1[n]$ na Equação \eqref{eq:cal_v2}:
+
+\begin{equation}\label{eq:Vrec}
+3,3\ \frac{Dv[n]}{2^{12}-1}=9,167\ 10^{-3}\ vi1[n]+1,65 \qquad \textnormal{.}
+\end{equation}
+
+\noindent Onde obtém-se:
+
+\begin{equation}\label{eq:Vrec2}
+vi1[n]=87,9\ 10^{-3}\ Dv[n]-180 \qquad \textnormal{.}
+\end{equation}
+
+\noindent Onde $vi1[n]$ é o valor amostrado da tensão de entrada.
+
+Para a corrente de entrada, um processo semelhante pode ser realizado para reconstruir o sinal em função do valor digitalizado. De acordo com o fabricante a sensibilidade do módulo sensor de corrente é de $185\ mV/A$ e uma tensão de $2,5\ V$ representa uma corrente nula. Dessa forma, uma corrente de $5\ A$ representa uma tensão na saída do sensor de $3,425 \ V$. Da mesma forma, uma corrente de $-5\ A$ representa um tensão de $1,575 \ V$.
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.5\textwidth]{materiais_metodos/figuras/calibracao_i.eps}
+		\caption{Fundo de Escala da Corrente.}
+		\label{fig:calibracao_i}
+\end{figure}
+
+\noindent Portanto:
+
+\begin{equation}\label{eq:cal_i}
+\frac{i(t)+5}{10}=\frac{vi2(t)-1,575}{1,85} \qquad \textnormal{.}
+\end{equation}
+
+\noindent Dessa forma, pode-se isolar o termo $vi2(t)$:
+
+\begin{equation}\label{eq:cal_i2}
+vi2(t)=0,185\ i1(t)+2,5 \qquad \textnormal{.}
+\end{equation}
+
+Neste caso, a maior tensão de saída do módulo sensor ($3,425\ V$) é ligeiramente superior ao valor suportado pelo kit de desenvolvimento. Por este motivo, foi desenvolvido o circuito formado pelos resistores $R10$, $R11$, $R12$ e $R13$ e o amplificador operacional $U1D$, ilustrado na Figura \ref{fig:circuito}. Para os valores dos resistores utilizados, fica evidente que o ganho de tensão do circuito é de $0,639\ V/V$. Portanto, a relação entre $vo3(t)$ e a corrente de entrada, $i(t)$, é dada por:
+
+\begin{equation}\label{eq:cal_i3}
+vo3(t)=0,118\ i1(t)+1,599 \qquad \textnormal{.}
+\end{equation}
+
+Assim como no caso de amostragem da tensão da rede, o valor digitalizado da tensão $vo3(t)$ pode ser calculado pela expressão:
+
+\begin{equation}\label{eq:Iclas}
+Di[n] = \left\|\frac{vo3(t)}{3,3}(2^{12}-1)\right\| = \left\|1240,909\ vo3(t)\right\| \qquad \textnormal{.}
+\end{equation}
+
+\noindent Onde $Di[n]$ é o valor de tensão de entrada digitalizado referente à tensão $vo3(t)$.
+
+Para reconstruir o sinal digitalizado $Di[n]$, referente à corrente de entrada $i(t)$, primeiramente, calcula-se o valor da tensão amostrada, $vo3[n]$, na entrada do conversor:
+
+\begin{equation}\label{eq:io}
+vo3[n] = 3,3\frac{Di[n]}{2^{12}-1} \qquad \textnormal{.}
+\end{equation}
+
+\noindent Posteriormente, substitui-se $vo3[n]$ na Equação \eqref{eq:cal_i3}: 
+
+\begin{equation}\label{eq:Irec}
+3,3\frac{Di[n]}{2^{12}-1}=0,0,118\ i[n] + 1,599 \qquad \textnormal{.}
+\end{equation}
+
+\noindent Onde obtém-se:
+
+\begin{equation}\label{eq:Irec2}
+i[n] = 6,829\ 10^{-3}\ Di[n] - 13,551 \qquad \textnormal{.}
+\end{equation}
+
+\noindent Onde $i[n]$ é o valor amostrado da corrente de entrada que passa pelo sensor de corrente.
+
+Portando, o microcontrolador amostrará tensões instantâneas de $0V$ a $3.3V$ em suas entradas analógicas e efetuará operações matemáticas, com base nos fundos de escala, para se obter os valores reais de tensão e corrente.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Implementação do Código do Microcontrolador}
+\label{ma_prat_impl}
+Os principais códigos implementados para o microcontrolador foram retirados da Seção \ref{ma_num}. Porém, foram adicionadas outros devido às particularidades da implementação prática. Os códigos foram escritos\footnote{Por ser muito extenso, o código fonte do microcontrolador não será colocado no trabalho, porém estará disponível no CD em anexo e para \textit{download} no link: \url{https://goo.gl/WuGp2k}.} em linguragem C e compilados com a plataforma de desenvolvimento \textit{Code Composer Studio\texttrademark}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Configuração da FPU (\textit{Floating Point Unit})}
+
+O microcontrolador TM4C123G presente na placa de desenvolvimento \textit{Tiva\texttrademark C Series} possui a \textit{Floating Point Unit} \sigla[\textit{Floating Point Unit}]{FPU}; um \textit{hardware} exclusivo para executar operações matemáticas com números do tipo \textit{float} (Reais), tornando-as mais otimizadas \cite{tiva_fpu}. Dessa forma, a FPU foi habilitada para a execução do código.
+
+%O código a seguir mostra como ativá-la:
+%
+%\begin{lstlisting}[caption=Configuração da FPU,label=cod:fpu]
+%ROM_FPUEnable(); //Habilita a unidade.
+%ROM_FPUStackingEnable();//Habilita a pilha de resultados.
+%ROM_FPULazyStackingEnable();//Habilita a pilha de resultados.
+%//Configura o clock para unidade, no caso, 40MHz.
+%ROM_SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ | SYSCTL_OSC_MAIN);
+%/*************/
+%\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Configuração do Conversor A/D}
+O microcontrolador TM4C123G possui dois conversores A/D internos que podem ser multiplexados com sete pinos disponíveis no dispositivo. Quando se deseja realizar aquisição de valores de forma simultânea, usa-se o \textit{sample sequencers} para tal fim. Entradas em diferentes \textit{sequencers} são lidas de forma concomitante. Cada conversor pode ter até quatro \textit{sequencers}; dentro de cada pode existir até oito \textit{steps} ou leituras. Como a corrente e tensão devem ser lidas ao mesmo tempo, devem ser declaras em \textit{sequencers} diferentes. Ainda sobre o conversor, ele possui um recurso de \textit{Hardware Averaging}, o qual retira um número específico de amostras e realiza uma média entre eles, obtendo assim, um valor de leitura mais estável \cite{tiva_a_d} \cite{Kurniawan2014} \cite{tiva_driver}. 
+
+%O código a seguir mostra a configuração usada para o medidor:
+%
+%\begin{lstlisting}[caption=Configuração do Conversor A/D,label=cod:a_d]
+%#define ANALOG_PERIPH SYSCTL_PERIPH_ADC0
+%#define ANALOG_BASE ADC0_BASE
+%#define VOLT_IN ADC_CTL_CH11
+%#define CURRENT_IN ADC_CTL_CH8
+%SysCtlPeripheralEnable(ANALOG_PERIPH); //Habilita o conversor ADC0.
+%/* Configura o cálculo de média por harware, no caso:
+%	uma média calculada a cada 50 amostras.*/
+%ADCHardwareOversampleConfigure(ANALOG_BASE,50);
+%/* Configura o primeiro sequencer para o a tensão. */
+%ADCSequenceConfigure(ANALOG_BASE, 1, ADC_TRIGGER_PROCESSOR, 0);
+%ADCSequenceStepConfigure(ANALOG_BASE, 1, 0, VOLT_IN|ADC_CTL_IE|ADC_CTL_END);
+%ADCSequenceEnable(ANALOG_BASE, 1);
+% /* Configura o segundo sequencer para a corrente. */
+%ADCSequenceConfigure(ANALOG_BASE, 2, ADC_TRIGGER_PROCESSOR, 0);
+%ADCSequenceStepConfigure(ANALOG_BASE, 2, 0,CURRENT_IN|ADC_CTL_IE|ADC_CTL_END);
+%ADCSequenceEnable(ANALOG_BASE, 2);
+%\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Retirada de Amostras}
+O início da retirada de amostras deve coincidir com o início do ciclo de tensão, portando, deve-se aguardar o nível de tensão na saída do detector de cruzamento se elevar para dar prelúdio à amostragem. O intervalo de espera para retirar uma nova amostra (período de amostragem $T_s$ visto na Sub-Seção \ref{ref_ta}) é calculado da seguinte forma:
+
+\begin{equation}\label{eq:micro_amostr}
+T_{s}=\frac{1}{f_{s}}
+\end{equation}
+
+\noindent Onde: $f_{s}$ é frequência de amostragem. O $f_{s}$ pode ser encontrado da seguinte forma:
+
+\begin{equation}\label{eq:micro_amostr}
+f_{s}=f_{sinal} N_{amostras}
+\end{equation}
+
+\noindent Onde: $f_{sinal}$ é frequência fundamental do sinal a ser amostrado e $N_{amostras}$ é número de amostras por período.
+
+Considerando: $64$ amostras por período e a frequência fundamental do sinal amostrado de $60Hz$ (tensão da rede), obtêm-se:
+
+\begin{eqnarray}
+\label{eq:micro_res}
+	&f_{s} = 60\ 64 = 3840 Hz \nonumber\\
+	&T_{s} = \frac{1}{3840} = 260,417 \mu s
+\end{eqnarray}
+
+\noindent Portando, entre cada amostra, o microcontrolador deve aguardar $260,417 \mu s$ respeitando a condição de Nyquist da Equação \eqref{eq:amost_eq}. Para melhorar a exatidão do medidor, amostrou-se dois períodos de tensão e corrente, ou seja, $ 128 $ amostras totais.
+
+%O Código a seguir retira amostras $128$ (correspondente a de dois períodos de tensão) com as condições descritas anteriormente; cria o vetor de tempo a partir do período de amostragem; e utiliza as Equações \eqref{eq:Vrec} e \eqref{eq:Irec} para a reconstrução do sinal:
+%
+%\begin{lstlisting}[caption=Rotina para Retirar Amostras,label=cod:amost]
+%#define MAX_SAMPLE 128 //2 períodos com 64 amostras.
+%#define DELAY_SAMPLE 3840 //Frequência de amostragem.
+%#define F_FUND 60 //Frequência fundamental.
+%t_inter=(((float)1)/ (float)DELAY_SAMPLE); //Cálculo do período de amostragem.
+%analog_const=(float)3.3/(float)4023; //Cálculo do stepSize.
+%SysCtlDelay((SysCtlClockGet()/ 20)/2); // Atraso para processamento de instruções.
+%/* Aguarda o próximo cruzamento por zero. */
+%	while(GPIOPinRead(ZERO_BASE, ZERO_IN)){}
+%i=0;
+%/* Inicia a retirada de amostras de tensão e corrente. */
+%while(i<MAX_SAMPLE){
+%	//Leitura do valor instantâneo da tensão.
+%	ADCIntClear(ANALOG_BASE, 1);
+%	ADCProcessorTrigger(ANALOG_BASE, 1);
+%	while(!ADCIntStatus(ANALOG_BASE, 1, false)){}
+%	ADCSequenceDataGet(ANALOG_BASE, 1, ui32ADC0Value);
+%	//Leitura do valor instantâneo da corrente.
+%	ADCIntClear(ANALOG_BASE, 2);
+%	ADCProcessorTrigger(ANALOG_BASE, 2);
+%	while(!ADCIntStatus(ANALOG_BASE, 2, false)){}
+%	ADCSequenceDataGet(ANALOG_BASE, 2, ui32ADC0Value2);
+%	//Armazena os valores em vetores.
+%	V[i] = (float)ui32ADC0Value[0];
+%	I[i] = (float)ui32ADC0Value2[0];
+%	i++;
+%	/* Realiza o atraso entre as amostras (período de amostragem). */
+%	SysCtlDelay(((float)SysCtlClockGet()/ ((float)DELAY_SAMPLE)/(float)4));
+%}
+%SysCtlDelay(1);//Atraso facultativo.
+%/* Reconstrução dos sinais de tensão e corrente e construção do vetor de tempo. */
+%for(i=0;i<MAX_SAMPLE;i++){
+%	V[i] = analog_const*V[i];
+%	I[i] = analog_const*I[i];
+%	t[i] = t_inter*i;
+%}
+%\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Determinação do Fundo de Escala}
+A $Chave2$ descrita na Figura \ref{fig:circuito} possui a funcionalidade de alterar o fundo de escala da tensão amostrada da rede. Escreveu-se um código para realizar a leitura do estado lógico da $Chave2$ para alterar o fundo de escala da tensão. Dessa forma, o microcontrolador pode identificar o estado da chave e fazer as alterações necessárias para ajustar a escala.
+
+%\begin{lstlisting}[caption=Cálculo do Fundo de Escala,label=cod:fund]
+%
+%/* Realiza a leitura da chave2 */
+%if(GPIOPinRead(SWITCH_BASE, SW_VOLT)){
+%	volt=179.61; //Tensão de tipo da rede para 127V.
+%	amp=5; //Corrente de pico medido pelo sensor.
+%}
+%else{
+%	volt=311.13; //Tensão de tipo da rede para 127V.
+%	amp=5; //Corrente de pico medido pelo sensor.
+%}
+%Voffset=valAVG(t, V, MAX_SAMPLE); //V zero
+%Ioffset=1.65; //I zero.
+%offset(V, I, MAX_SAMPLE, Voffset, Ioffset); //Deslocamento no eixo da amplitude.
+%/* Aplicação do fundo de escala e obtenção dos valores reais amostrados. */
+%setLevels(V, I, MAX_SAMPLE, volt, amp);
+%\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Apuração das Medidas}
+%As medidas são apuradas aplicando os códigos vistos nas Seções \ref{ma_num_fp}, \ref{ma_num_thd} e \ref{ma_num_phi}.
+
+%\begin{lstlisting}[caption=Apuração das Medidas,label=cod:apur]
+%/* O cálculo da THD foi até a décima harmônica. */
+%V_THD=THD(V, NFFT_t, MAX_SAMPLE); /* Cálculo da THD da tensão para comparação. */
+%I_THD=THD(I, NFFT_t, MAX_SAMPLE); //Cálculo da THD da corrente.
+%/* Cálculo do FP, S, P, Vrms e Irms. */
+%powerFactor(t, V, I, MAX_SAMPLE, &fp, &S, &P, &Vrms, &Irms);
+%/* Cálculo do cosseno de lambda e do lambda. */
+%aux=(float)I_THD/(float)100;
+%cos_lamb=(float)1/(float)sqrt(1+(aux*aux));
+%lamb=acos(cos_lamb);
+%/* Cálculo do theta e do cosseno de theta. */
+%Vz=zeroCross(V,MAX_SAMPLE); Iz=zeroCross(I,MAX_SAMPLE);
+%theta=t[Vz]-t[Iz];
+%theta=((float)TWOPI*theta)/((float)t_inter*MAX_SAMPLE);
+%cos_theta=cos(theta);
+%/* Cálculo da projeção de S */
+%S_proj=S*cos_lamb;
+%/* Cálculo do cosseno de phi e do phi. */
+%cos_phi=(float)P/(float)S_proj;
+%phi=acos(cos_phi);
+%/* Cálculo da potência aparente. */
+%Q=sin(phi)*S_proj;
+%/* Cálculo da potência de distorção. */
+%D=S*sin(lamb);
+%/* Cálculo do fator de potência pela multiplicação dos cossenos. */
+%fp_2=cos_lamb*cos_phi;
+%/* Determinação aproximada do tipo de fator de potência. */
+%if(fp>0.95)	print("resistivo");
+%else if (I_THD>=1.5)print("nao linear");
+%else if(theta>0 && lamb<=0.1)	print("capacitivo");
+%else if(theta<0 && lamb<=0.1)	print("indutivo");
+%print(";");
+%\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comunicação}
+O microcontrolador foi configurado para se comunicar através da \textit{Universal Asynchronous Receiver/Transmitter} \sigla[\textit{Universal Asynchronous Receiver/Transmitter}]{UART} com os seguintes parâmetros:
+
+\begin{itemize}
+	\item \textit{Baud Rate}: $115200$ baud;
+	\item \textit{Bits} de dados: $8$;
+	\item Paridade: par;
+	\item \textit{Stop bits}: $2$.
+\end{itemize}
+
+A paridade e o \textit{stop bit} são medidas para contornar possíveis perdas de dados, mais prováveis de acontecer devido à alta velocidade.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Fluxograma do Código}
+Os principais pontos do código elaborado para o microcontrolador pode ser estruturado de acordo com a Figura \ref{fig:fluxograma}. Como fica evidente, para realizar novas medidas, há necessidade de reiniciar o microcontrolador. Essa estratégia evita a inundação de dados na porta de comunicação e, consequentemente, o recebimento de dados corrompidos.
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.4\textwidth]{materiais_metodos/figuras/fluxograma.eps}
+	\caption{Fluxograma do Código do Microcontrolador.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:fluxograma}
+\end{figure}
+\vspace{0.5cm}\par
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Construção do Circuito das Cargas de Teste}
+\label{ma_prat_teste}
+O digrama esquemático da Figura \ref{fig:cargaesq}, por não possuir muitos componentes e demandar uma corrente moderada, foi montado com um conector para fios do tipo ``barra'' de $10\ mm$ (Figuras \ref{fig:diagcarga} e \ref{fig:carga}). Os componentes e os conectores do tipo ``banana'' fêmea foram colocados em uma plataforma de madeira e fixados com fita dupla face. As chaves 3 e 4 são para painéis de comandos e suportam até correntes eficazes de até $15\ A$; $C1$ é um capacitor para partida de motores monofásicos e suporta tensões eficazes de até $250\ V$; $D1$ é um diodo de potência e suporta correntes de pico de até $6\ A$ em polarização direta \cite{diodo_pot}; $F1$ é um fusível de vidro de $5\ A$. O indutor ($L1$) e suporta correntes de pico de até $3\ A$ (Figura \ref{fig:rob} (a)); o reostato ($R1$) suporta dissipar potências de até $1000\ W$ e deve ser regulado em $43,5\ \Omega$ (Figura \ref{fig:rob} (b)), para se obter uma corrente de pico máxima de aproximadamente $4,13\ A$ ao ser ligado diretamente na rede. Portanto, o dispositivo gerará correntes de pico máxima menores que $3\ A$ quando ligado em tensão de $127\ V$ eficazes pois o reostato estará em série com outros componentes que possuem também resistências internas.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=0.8\textwidth]{materiais_metodos/figuras/indutor.eps}
+	\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{materiais_metodos/figuras/indutor_a.eps}
+			\caption{Indutor de potência}
+	\end{subfigure}\hfill
+	\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{materiais_metodos/figuras/indutor_b.eps}
+			\caption{Reostato regulado em $43,5 \Omega$}
+	\end{subfigure}
+		
+	\caption{Componentes Robustos.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:rob}
+		\vspace{0.5cm}\par
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.7\textwidth]{materiais_metodos/figuras/diagcarga.eps}
+	\caption{Diagrama do Completo do Circuito das Cargas.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:diagcarga}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=1\textwidth]{materiais_metodos/figuras/carga.eps}
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth, height=0.4\textheight]{materiais_metodos/figuras/carga_a.eps}
+			\caption{Vista superior}
+	\end{subfigure}\hfill
+	\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth,height=0.40\textheight]{materiais_metodos/figuras/carga_b.eps}
+			\caption{Vista inferior}
+	\end{subfigure}
+	\caption{Cargas de Teste.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:carga}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Terminal de Comunicação}
+\label{ma_prat_term}
+A necessidade de apresentar as medições obtidas de forma clara e objetiva é um quesito muito importante para o medidor. Optou-se pelo desenvolvimento de um \textit{software} para ler os dados enviados pelo medidor (via USB) e mostrá-los na tela do computador.
+
+O \textit{software} da figura \ref{fig:term} foi desenvolvido com a plataforma \textit{Qt Creator} em linguagem C++, a partir de um código exemplo \cite{qt_term}. O \textit{Qt Creator} possui licença LGPL (\textit{Lesser General Public License}), ou seja, é gratuito para fins acadêmicos e não comerciais \cite{qt_license}. O código fonte foi disponibilizado em um repositório\footnote{Por ser muito extenso, o código fonte do terminal de comunicação não será colocado no trabalho, porém estará disponível no CD em anexo e para \textit{download} no link: \url{https://db.tt/K5sSqiLP}.}.
+
+O terminal se conecta à placa através da comunicação serial virtual nativa da placa \textit{Tiva\texttrademark C Series}. Para os testes, foram usados as seguintes configurações:
+
+\begin{itemize}
+	\item \textit{Baud Rate}: $115200$ baud;
+	\item \textit{Bits} de dados: $8$;
+	\item Paridade: par;
+	\item \textit{Stop bits}: $2$.
+\end{itemize}
+
+A interface mostra os dados medidos e os gráficos de tensão e corrente das amostras retiradas no instante da medição.
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=1.0\textwidth]{materiais_metodos/figuras/terminal.eps}
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth, height=0.4\textheight]{materiais_metodos/figuras/terminal_a.eps}
+			\caption{Medições}
+	\end{subfigure}\hfill
+	\begin{subfigure}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth,height=0.4\textheight]{materiais_metodos/figuras/terminal_b.eps}
+			\caption{Gráficos das amostras de tensão e corrente}
+	\end{subfigure}
+	\caption{Terminal de Comunicação.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:term}
+	\vspace{0.5cm}\par
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Diagrama de Blocos do Sistema de Medição}
+\label{ma_prat_sist}
+Define-se sistema de medição como o processo completo para obter me\-di\-ções \cite{vim2310}. O dispositivo construído consiste basicamente em um medidor de fator de potência, potência ativa, potência aparente, taxa de distorção harmônica (tensão e corrente até a décima harmônica) para CM do tipo: CRI, CRC e RMMO. Para se medir essas grandezas, aplicou-se o sistema representado pelo diagrama da Figura \ref{fig:diag_med}. O Variac foi utilizado para garantir que a tenha $127V$ eficazes na entrada do medidor, pois as tensões vindas da rede podem oscilar. O medidor está programado para retirar $128$ amostras, ou seja, serão amostrados dois ciclos de tensão e corrente.
+
+\begin{landscape}
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=23cm, height=12cm]{materiais_metodos/figuras/diagsistmed.eps}
+	\caption{Diagrama do Sistema de Medição.}
+	\label{fig:diag_med}
+\end{figure}
+\end{landscape}
+
+A Figura \ref{fig:sist} mostra o sistema completo de medição utilizado para apurar as medidas.
+
+\vspace{0.5cm}\par
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=1\textwidth]{materiais_metodos/figuras/sistemamedicao.eps}
+	\caption{Sistema de Medição Montado.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:sist}
+\end{figure}
+
+Cada componente presente no circuito de cargas foi previamente medido com um multímetro\footnote{Instrumento da marca \textit{Agilent Technologies} (modelo: U1731A), a frequência de teste usada foi de $120Hz$, a menor disponível e mais próxima da frequência fundamental da rede ($60Hz$).} antes de iniciar os testes (Tabela \ref{tab:com_med}). Os fatores de potência teóricos foram calculados com os valores ideias dos componentes, assim como os utilizados nas simulações do $THD_{I}$.
+%Foi desconsiderado a resistência interna dos componentes usados.
+%Devido à baixa resistência do reostato, precisa-se considerar também a resistência elétrica interna do indutor, a do capacitor foi desprezada por ser muito pequena.
+\\
+\begin{table}[!htbp]
+\captionsetup{justification=centering,font={footnotesize,bf}}
+\caption{Lista de Componentes Medidos.}
+	\label{tab:com_med}
+	\begin{center}
+%	\resizebox{\columnwidth}{!}{%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tabular}{llll}
+\hline
+Componente & Valor Ideal & Valor Medido & Unidade \\ 
+\hline
+Indutor (L1) & 300 & 317 & $m H$ \\ 
+Capacitor (C2) & 30 & 30,36 & $\mu F$ \\ 
+Reostato (R1) & 43,5 & 43,6 & $\Omega$ \\ 
+\hline
+\end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%	}
+	\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Resultados Experimentais}
+\label{res}
+Com o sistema de medição montado, iniciou-se os ensaios. A metodologia adotada foi de aferir dez medidas para cada tipo de carga com a mesma fonte de alimentação (tomada) e equipamentos, em horários próximos; forma de prevenir grandes divergências entre as medidas por conta de influências externas.
+
+O dispositivo construído é capaz de medir: tensão eficaz ($V_{RMS}$), corrente eficaz ($I_{RMS}$), potência atica ($P$), potência aparente ($S$), potência reativa ($Q$), potência de distorção ($D$), projeção da potência aparente ($S'$), taxa de distorção harmônica da tensão ($THD_{V}$), taxa de distorção harmônica da corrente ($THD_{I1}$), $cos(\lambda)$,  $cos(\varphi)$, fator potência calculado com  a Equação \eqref{eq:fp_eq} ($FP_{1}$), fator de potência calculado com a Equação \eqref{eq:fp_thd} ($FP_{2}$). Como o objetivo do trabalho é calcular o $FP$, serão apresentados apenas os resultados e os erros relativos desse fator. A título de curiosidade, os valores do $THD_{I1}$ serão apresentados.
+
+O $FP_{3}$ é o valor teórico do $FP$, já o $THD_{I2}$ é o valor simulado da taxa de distorção da corrente, ambos foram comparados com $FP_{1}$ e $THD_{I1}$, respectivamente; para finalmente se obter o erro relativo percentual ($e_{\%}$). O $FP_{2}$ não foi comparado com os valores teóricos pois possui valores muito próximos ao $FP_{1}$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Medições Feitas com o CRI}
+\label{res_crl}
+O CRI possui a característica de apresentar a curva de corrente atrasada com relação a de tensão, no regime estacionário. A Figura \ref{fig:term_crl}, retirada de uma das medidas, deixa evidente essa característica. É evidente a existência de distorções em amplitude na curva da corrente, com base no conteúdo visto na Sub-Seção \ref{refe_fp}, pode-se concluir que as medidas do $FP$ e do $THD_{I}$ são sensíveis a essas distorções, pois elas geram erros que se propagam pelas operações matemáticas, contribuindo, assim, com aumento dos erros obtidos nas medidas finais. Uma causa provável para existência dessas distorções são os ruídos vindos da rede de alimentação.
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=1\textwidth]{materiais_metodos/figuras/res_rl.eps}
+	\caption{Gráfico Obtido no Terminal com o CRI. Curva de tensão (superior); curva de corrente (inferior).} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:term_crl}
+		\vspace{0.5cm}\par
+\end{figure}
+
+Dos valores medidos com o CRI, foram extraídos o $FP_{1}$ e o $THD_{I1}$ para serem comparados com os valores teóricos $FP_{3}$ (obtido com a Equação \eqref{eq:cri_fp_teo}) e $THD_{I2}$ (obtido com um \textit{software} simulador de circuitos). Desta maneira, os erros percentuais entre os valores de $FP$ foram calculados e organizados. A Tabela \ref{tab:CRI_comp} mostra os resultados obtidos incluindo a média aritmética e o desvio padrão de cada coluna.
+\\
+\begin{table}[!htbp]
+\captionsetup{justification=centering,font={footnotesize,bf}}
+\caption{Valores Teóricos e Medidos com o CRI.}
+	\label{tab:CRI_comp}
+	\begin{center}
+	\resizebox{\columnwidth}{!}{%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tabular}{llllll}
+	\hline
+	Amostra & $FP_{3}=cos\left(arctg\left(-(\omega L)/R\right)\right)$ & $FP_{1}=P/S$ & $THD_{I2} (\%)$ & $THD_{I1} (\%)$ & $e_{\%}=(FP_{3}-FP_{1}/FP_{3}) 100 (\%)$ \\ 
+	\hline
+	1 & 0,359 & 0,334 & 0 & 0,683 & 6,964 \\ 
+	2 & 0,359 & 0,330 & 0 & 0,695 & 8,078 \\ 
+	3 & 0,359 & 0,321 & 0 & 0,890 & 10,585 \\ 
+	4 & 0,359 & 0,329 & 0 & 0,715 & 8,357 \\ 
+	5 & 0,359 & 0,322 & 0 & 0,650 & 10,306 \\ 
+	6 & 0,359 & 0,319 & 0 & 0,728 & 11,142 \\ 
+	7 & 0,359 & 0,317 & 0 & 0,645 & 11,699 \\ 
+	8 & 0,359 & 0,302 & 0 & 1,090 & 15,877 \\ 
+	9 & 0,359 & 0,295 & 0 & 0,994 & 17,827 \\ 
+	10 & 0,359 & 0,297 & 0 & 0,950 & 17,270 \\ 
+	\hline
+	Média &  & 0,317 &  & 0,804 & 11,811 \\ 
+	Desvio Padrão &  & 0,014 &  & 0,162 &  \\ 
+	\hline
+\end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+	}
+	\end{center}
+\end{table}
+
+O desvio padrão dos valores do $FP_{1}$ e do $I_{THD1}$ indicaram uma dispersão para as medidas, provavelmente causada pelas harmônicas inseridas pela rede de alimentação. Os valores de $I_{THD1}$ não foram nulos pelo mesmo motivo.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Medições Feitas com o CRC}
+\label{res_crc}
+
+O CRC possui a característica de apresentar a curva de corrente adiantada com relação a de tensão no regime estacionário. A Figura \ref{fig:term_crc}, retirada de uma das medidas realizadas, deixa evidente essa característica.
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=1\textwidth]{materiais_metodos/figuras/res_rc.eps}
+	\caption{Gráfico Obtido no Terminal com o CRC.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:term_crc}
+		\vspace{0.5cm}\par
+\end{figure}
+
+O procedimento para extração das medidas foi o mesmo realizado na Sub-Seção \ref{res_crl}. A Tabela \ref{tab:CRC_comp} mostra os resultados obtidos.
+
+\begin{table}[!htbp]
+\captionsetup{justification=centering,font={footnotesize,bf}}
+\caption{Valores Teóricos e Medidos com o CRC.}
+	\label{tab:CRC_comp}
+	\begin{center}
+	\resizebox{\columnwidth}{!}{%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tabular}{llllll}
+	\hline
+	Amostra & $FP_{3}=cos\left(arctg\left(1/(\omega R C)\right)\right)$ & $FP_{1}=P/S$ & $THD_{I2} (\%)$ & $THD_{I1} (\%)$ & $e_{\%}=(FP_{3}-FP_{1}/FP_{3}) 100 (\%)$ \\ 
+	\hline
+	1 & 0,441 & 0,415 & 0 & 0,781 & 5,896 \\ 
+	2 & 0,441 & 0,423 & 0 & 0,822 & 4,082 \\ 
+	3 & 0,441 & 0,411 & 0 & 0,883 & 6,803 \\ 
+	4 & 0,441 & 0,419 & 0 & 0,673 & 4,989 \\ 
+	5 & 0,441 & 0,421 & 0 & 0,596 & 4,535 \\ 
+	6 & 0,441 & 0,425 & 0 & 1,030 & 3,628 \\ 
+	7 & 0,441 & 0,440 & 0 & 0,888 & 0,227 \\ 
+	8 & 0,441 & 0,417 & 0 & 0,931 & 5,442 \\ 
+	9 & 0,441 & 0,421 & 0 & 0,672 & 4,535 \\ 
+	10 & 0,441 & 0,420 & 0 & 0,652 & 4,762 \\ 
+	\hline
+	Média &  & 0,421 &  & 0,793 & 4,490 \\ 
+	Desvio Padrão &  & 0,008 &  & 0,142 &  \\ 
+	\hline
+\end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+	}
+	\end{center}
+\end{table}
+
+Como no circuito anterior, o desvio padrão dos valores do $FP_{1}$ e do $THD_{I1}$ indicaram uma dispersão para as medidas, provavelmente causada pelas harmônicas inseridas pela rede de alimentação. Os valores de $THD_{I1}$ não foram nulos pelo mesmo motivo.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Medições Feitas com o RMMO}
+\label{res_rmmo}
+No RMMO, a corrente é não linear, ou melhor, possui o formato de uma meia senoide com somente partes positivas (Figura \ref{fig:rmmo}). A Figura \ref{fig:term_rmmo}, retirada de uma das medidas realizadas, evidência essa característica.
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=1\textwidth]{materiais_metodos/figuras/res_rmmo.eps}
+	\caption{Gráfico Obtido no Terminal com o RMMO.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:term_rmmo}
+\end{figure}
+
+O procedimento para extração das medidas foi o mesmo realizado na Sub-Seção \ref{res_crl}. A Tabela \ref{tab:RMMO_comp} mostra os resultados obtidos e esses podem ser organizados em gráficos.
+
+\begin{table}[!htbp]
+\captionsetup{justification=centering,font={footnotesize,bf}}
+\caption{Valores Teóricos e Medidos com o RMMO.}
+	\label{tab:RMMO_comp}
+	\begin{center}
+	\resizebox{\columnwidth}{!}{%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tabular}{llllll}
+	\hline
+	Amostra & $FP_{3}=\sqrt{2}/2$ & $FP_{1}=P/S$ & $THD_{I2} (\%)$ & $THD_{I1} (\%)$ & $e_{\%}=(FP_{3}-FP_{1}/FP_{3}) 100 (\%)$ \\ 
+	\hline
+	1 & 0,707 & 0,689 & 9,714 & 7,808 & 2,546 \\ 
+	2 & 0,707 & 0,687 & 9,714 & 7,940 & 2,829 \\ 
+	3 & 0,707 & 0,677 & 9,714 & 7,609 & 4,543 \\ 
+	4 & 0,707 & 0,689 & 9,714 & 7,970 & 2,546 \\ 
+	5 & 0,707 & 0,683 & 9,714 & 7,773 & 3,395 \\ 
+	6 & 0,707 & 0,694 & 9,714 & 7,968 & 1,839 \\ 
+	7 & 0,707 & 0,686 & 9,714 & 7,846 & 2,970 \\ 
+	8 & 0,707 & 0,681 & 9,714 & 7,721 & 3,677 \\ 
+	9 & 0,707 & 0,684 & 9,714 & 7,717 & 3,253 \\ 
+	10 & 0,707 & 0,682 & 9,714 & 7,781 & 3,536 \\ 
+	\hline
+	Média &  & 0,685 &  & 7,813 & 3,083 \\ 
+	Desvio Padrão &  & 0,005 &  & 0,119 &  \\ 
+	\hline
+\end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+	}
+	\end{center}
+\end{table}
+
+O desvio padrão dos valores do $FP_{1}$ e do $THD_{I1}$ indicaram uma dispersão para as medidas, provavelmente causada pelas harmônicas inseridas pela rede de alimentação. Os valores de $THD_{I1}$ divergiram mais dos simulados que os do CRI e CRC, isso aconteceu pois os harmônicos associados a não linearidade da carga se somarão aos da rede, aumentando assim, a taxa de distorção harmônica total.
+
+\section{Discussões e Conclusões}
+
+Como previsto nos objetivos, o sistema construído foi capaz de apurar as medidas do fator de potência, porem com erro relativamente elevado, quando comparado com medidores comerciais. O erro de medida chegou próximo dos 12\% em alguns casos. Uma das possíveis razões para a baixa precisão do sistema é o ruido elevado na saída do módulo sensor de corrente. Tal ruido pode ser evidenciado nas figuras \ref{fig:term_crl}, \ref{fig:term_crc} e \ref{fig:term_rmmo}. Vale ressaltar que, apesar do erro elevado, as rotinas programadas no sistema são capazes de calcular o $FP$ com erro relativo de 0,2\%, assim como demonstrado na seção \ref{ma_num}. Dessa forma, é necessário obter novos métodos para amostrar com maior precisão a corrente dos circuitos.
+
+O sistema se mostrou incapaz de medir com precisão aceitável a $THD$ em relação aos valores teóricos e obtidos por \textit{software} de simulação de circuitos. Tal fato também pode estar relacionado ao ruído elevado no sinal de corrente. Embora ainda não seja o suficiente para a utilização do sistema desenvolvido para instrumentação profissional, o desenvolvimento do protótipo foi o passo inicial para a construção de um medidor de qualidade de energia, onde alguns ajustes e novos estudos podem elevar a precisão das medições. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Conclusão}
+\label{con}
+%A construção do medidor se mostrou desafiadora por conta da confecção da placa de circuito impresso, pois foi construída com métodos artesanais. Esse processo precisou ser repetido quatro vezes até se obter o sucesso. O restante da execução foi feita sem dificuldades. Os componentes da placa, com exceção da placa de desenvolvimento \textit{Tiva\texttrademark C Series}, são fáceis de se encontrarem no mercado. 
+
+%O desenvolvimento do circuito das cargas de testes apresentou o empecilho da limitação do número de reostatos disponíveis na universidade e a limitação de potência dos mesmos, sendo necessário, o devido cuidado para não queima-lo. Os outros componentes foram fáceis de se encontrarem tanto na universidade como no mercado.
+
+O projeto e construção do dispositivo foram feitos com o objetivo de se apurar digitalmente o cálculo do fator de potência, testar a viabilidade do cálculo da taxa de distorção harmônica da corrente e testar a eficácia do medidor em diferentes situações. Construiu-se, também, cargas lineares (CRC e CRI) e não lineares (RMMO).
+
+Através da retirada de amostras dos sinais de tensão, corrente e métodos numéricos, conseguiu-se um dispositivo capaz de mensurar o $FP$ embora com certas imprecisões. Ademais, pode-se conhecer melhor a construção e o funcionamento do \textit{software} e \textit{hardware} associados a esse método, tendo em vista, a carência de trabalhos nessa área.
+
+%O tempo gasto pelo microcontrolador para apurar as medidas foi menor que um segundo, tornando assim, viável o uso do dispositivo.
+
+O $FP$ para o CRI apresentou o maior erro percentual médio ($11,81\%$) quando comparados com o CRC ($4,490\%$) e o RMMO ($3,083\%$); a causa mais provável é o erro nos valores de indutância do componente usado e o elevado ruído presente na corrente amostrada. É importante notar que, apesar do erro elevado, as rotinas programadas no sistema são capazes de calcular o $FP$ com erro relativo de 0,2\%, assim como demonstrado na seção \ref{ma_num}, onde sinais teóricos de tensão e corrente são inseridos no sistema. Devido ao tempo destinado ao projeto, não foi possível desenvolver técnicas para amenizar o ruído do sinal de corrente. É imperativo a melhoria na aquisição do sinal de corrente para se obter uma melhor precisão na medida do $FP$. Apesar o erro elevado, as medidas apresentaram valores coerentes com os teóricos. 
+
+A medida da THD não foi condizente com os valores teóricos obtidos por \textit{software} de simulação de circuitos. Um possível fator para isto pode estar relacionado ao elevado ruído no sinal de corrente. Embora ainda não seja o suficiente para a utilização do sistema desenvolvido como um medidor profissional, o desenvolvimento do protótipo foi o passo inicial para a construção de um medidor de qualidade de energia e serviu de base para o levantamento teórico necessário para a construção do instrumento. Alguns ajustes, mudanças e novos estudos podem elevar a precisão das medições.
+
+O trabalho provou a eficiência do uso digital dos métodos abordados na Sub-Seção \ref{refe_fp}. Sua aplicação, devido aos erros nas medidas, limitou-se em experimentos laboratoriais de teste. Caso seja eliminado boa parte do ruido presente no sinal de corrente, o sistema pode ser aplicado também em experimentos de correção do fator de potência, mas modificado para atuar como um controlador.
+
+\section{Propostas para Trabalhos Futuros}
+Durante os testes práticos, verificou-se determinados pontos que podem ser estudados em trabalhos futuros, a lista a seguir mostra os principais:
+
+\begin{itemize}
+\item Buscar novos métodos para medida de corrente que não sejam tão ruidosos;
+\item Acrescentar filtros nos circuitos condicionadores de sinais;
+\item Amostrar mais períodos de rede para se obter uma medida mais exata;
+\item Remover o circuito detector de cruzamento por zero através de um \textit{software} mais inteligente;
+\item Possibilidade de identificar o tipo de carga (indutiva, capacitiva e não linear);
+\item Verificar a possibilidade de utilizar o sistema como medidor digital de energia remoto;
+\item Chaveamento automático da escala do medidor para melhorar a resolução de medida de tensão e corrente;
+\item Utilizar o dispositivo como um controlador de banco de capacitores;
+\item Medir o fator de potência para cargas trifásicas.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\chapter{Materiais e Métodos}
+%\label{ma_me} 
+%O dispositivo proposto consiste em um medidor de fator de po\-tên\-cia, po\-tên\-cia ativa e po\-tên\-cia aparente para cargas mo\-no\-fá\-si\-cas lineares e retificadores monofásicos de tensão. Devido a complexidade dos cálculos realizados e capacidade limitada do \textit{hardware} embarcado, será verificada a possibilidade de disponibilizar também a medida da $THD$. Os valores calculados pelo dispositivo estarão disponíveis em uma interface homem-máquina \sigla[Interface Homem-Máquina]{IHM}.\\
+%
+%A Figura \ref{fig:dispositivo} mostra o digrama de blocos do sistema de medição e do conjunto de blocos pertencentes ao dispositivo. A fonte de tensão usada deverá ser monofásica. Entre o medidor e a fonte deverá ser colocado um transformador variável para controle da tensão eficaz. O medidor retirará amostras de corrente e tensão através dos sensores. Os sinais de tensão deverão ser condicionados para níveis de tensão compatíveis com o microcontrolador. A carga de teste poderá ser: CRI na configuração série, CRC na configuração série ou um RMMO.\\
+%
+%\begin{figure}[!htbp]
+	%\centering
+	%\captionsetup{width=0.50\textwidth,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=1.0\textwidth]{materiais_metodos/figuras/dispositivo.eps}
+	%\caption{Diagrama do Dispositivo Proposto.} \\\footnotesize\textbf{Fonte: Autoria Própria.}
+		%\label{fig:dispositivo}
+%\end{figure}
+%
+%É possível realizar uma análise mais detalhada da funcionalidade lógica do dispositivo, conforme apresenta a Figura \ref{fig:logico}. Inicialmente, inicia-se as configurações iniciais do microcontrolador, como a taxa de amostragem. O número de amostras por ciclo deverá ser 16, no mínimo, com um conversor A/D de pelo menos 12 bits de resolução\footnote{``Taxa de amostragem de 16 amostras por ciclo; Conversor A/D (Analógico/Digital) do sinal de tensão de 12 bits;'' (ANEEL - RESOLUÇÃO NORMATIVA NO. 505, 2001, p. 9)}, para monitorar a $THD$ é recomendado 64 amostras por ciclo \cite{schl}. Depois, espera-se por um cruzamento por zero, para iniciar a amostragem dos sinais de tensão e corrente. Ao detectar outro cruzamento, essa rotina é interrompida. A partir disso, inicia-se a integração numérica, cálculo das potências e do $FP$. Por se tratar de um sistema embarcado, essas rotinas devem ser otimizadas.\\
+%
+%\begin{figure}[!htbp]
+	%\centering
+	%\captionsetup{width=0.60\textwidth,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=0.4\textwidth]{materiais_metodos/figuras/logico.eps}
+	%\caption{Diagrama Lógico do Dispositivo Proposto.} \\\footnotesize\textbf{Fonte: Autoria Própria.}
+		%\label{fig:logico}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Materiais}
+%\label{mate}
+%Os materiais escolhidos nesse projeto atendem as necessidades do equipamento com o menor custo possível. Componentes abordados nessa seção são os que possuem custo mais relevante para o projeto.\\
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Placa de Desenvolvimento \textit{Tiva\texttrademark C Series}}
+%\label{mat_tiva}
+%A \textit{Tiva\texttrademark C Series} TM4C123G \textit{LaunchPad Evaluation Kit}, Figura \ref{fig:tivaC},  é uma plataforma de baixo custo com um microcontrolador baseado em ARM\textregistered Cortex\texttrademark - M4F, da \textit{Texas Instruments}, de 32 bits operando com um \textit{clock} de 80MHz \cite{tivaC}. Devido ao seu grande poder computacional, mostrou-se a mais adequada para projeto.\\
+%\indent Entre as principais características e vantagens pode-se citar:\\
+%
+%\begin{itemize}
+	%\item Dois botões programáveis;
+	%\item Um light emitting diode \sigla[\textit{Light Emitting Diode}]{LED} \sigla[\textit{Red, Green and Blue}]{RGB};
+	%\item 40 pinos, incluindo: entradas, saídas e alimentação;
+	%\item Conversor A/D com 12 bits de resolução e oito entradas analógicas;
+	%\item 256 KB de memória \textit{flash} e 32 KB de random access memories \sigla[\textit{Random Access Memories}]{RAM};
+	%\item Seis \textit{timers} de 64 bits e seis \textit{timers} de 32 bits;
+	%\item \textit{Code Composer Studio\texttrademark} com todas as funcionalidades;
+	%\item Comunicação \textit{serial} via USB.
+%\end{itemize}
+%
+%\begin{figure}[!htbp]
+	%\centering
+	%\captionsetup{width=0.60\textwidth,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=0.2\textwidth]{materiais_metodos/figuras/tivaC.eps}
+	%\caption{Placa de Desenvolvimento \textit{Tiva\texttrademark C Series}.} \\\footnotesize\textbf{Fonte: Site da \textit{Texas Instruments}.}
+		%\label{fig:tivaC}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Sensor de Corrente Baseado no Efeito \textit{Hall} ACS712}
+%\label{mat_hall}
+%O ACS712 (Figura \ref{fig:hall}), produzido pela empresa \textit{Allegro\texttrademark}, é um sensor de precisão baseado no efeito \textit{Hall} com capacidade de medir correntes de até 30A. Esse deve ser inserido em série com o circuito de interesse. A corrente que flui através de seus terminais gera um campo magnético detectável pelo efeito Hall, esse é convertido em uma tensão proporcional e linear. A exatidão do dispositivo é otimizada, pois a sua sensibilidade à ruídos é reduzida quando comparado a outros métodos de medição de corrente \cite{acs712}. Esse será usado como sensor de corrente do dispositivo.\\
+%
+%\begin{figure}[!htbp]
+	%\centering
+	%\captionsetup{width=0.50\textwidth,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=0.2\textwidth]{materiais_metodos/figuras/acs712.eps}
+	%\caption{Sensor de Corrente ACS712.} \\\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		%\label{fig:hall}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\subsection{Circuito Integrado TL072}
+%%\label{mat_amp}
+%%O componente TL072 (figura \ref{fig:tl072}), produzido pela \textit{Texas Instruments}, possui internamente dois amplificadores operacionais. Entre suas vantagens estão: baixa tensão de polarização, possui uma resposta rápida à variações da entrada, baixo custo, baixa distorção harmônica, baixo nível de ruído e entradas de alta impedância juntamente com estágios de saída com baixa impedância (melhor aproveitamento do ganho total) \cite{tl072}; adequado para aplicações de alta fidelidade. O componente fará parte do sensor de tensão, grampeador de tensão e detector de cruzamento por zero.\\
+%%
+%%\begin{figure}[!htbp]
+	%%\centering
+	%%\captionsetup{width=0.50\textwidth} % Tamanho da legenda da figura (70% da largura do texto).
+		%%\includegraphics[width=0.3\textwidth]{materiais_metodos/figuras/tl072.eps}
+	%%\caption{Circuito Integrado TL072.} \\\textbf{Fonte:} http://detail.1688.com/offer/1248237590.html.
+		%%\label{fig:tl072}
+%%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Transformador Monofásico Abaixador}
+%\label{mat_transf}
+%Transformadores monofásicos abaixadores geralmente são encontrados em fonte de alimentação de circuitos eletrônicos de baixa potência, como rádios e televisões, ou seja, são fáceis de encontrar. Esses rebaixam a tensão CA vinda da rede de alimentação para níveis de CA compatíveis com os circuitos eletrônicos para o projeto, será utilizado um transformador 127V por 12+12V (valores eficazes). Será usado com transformador monofásico abaixador (isolação galvânica).\\
+%
+%\begin{figure}[!htbp]
+	%\centering
+	%\captionsetup{width=0.60\textwidth,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=0.3\textwidth]{materiais_metodos/figuras/transformador.eps}
+	%\caption{Transformador Monofásico Abaixador.} \\\footnotesize\textbf{Fonte: Site da Hu Infinito.}
+		%\label{fig:transformador}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Capacitor para Partida de Motores}
+%\label{mat_cap}
+%Esses capacitores são geralmente usados em partida de motores mo\-no\-fá\-si\-cos. São construídos para operar em CA, suportar correntes moderadas (até 30A) e apresentar uma ca\-pa\-ci\-tân\-cia alta \cite{capacitor}. A Figura \ref{fig:capacitor} mostra um exemplo de capacitor de partida que se\-rá u\-sa\-do para as cargas de teste do tipo CRC.\\
+%
+%\begin{figure}[!htbp]
+	%\centering
+	%\captionsetup{width=0.70\textwidth,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=0.2\textwidth]{materiais_metodos/figuras/capacitor.eps}
+	%\caption{Capacitor para Partida de Motores.}
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da JL Capacitores.}
+		%\label{fig:capacitor}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Indutor de Potência}
+%\label{mat_ind}
+%Indutor de potência, Figura \ref{fig:indutor}, é construído para possuir uma indutância moderada e suportar correntes de até 30A \cite{indutor_pot}. É muito comum em reatores de partida de lâmpadas fluorescentes e fontes chaveadas. Esses, por muitas vezes, podem ser obtidos de sucatas. Será aplicado nas cargas de teste do tipo CRI.\\
+%
+%\begin{figure}[!htbp]
+	%\centering
+	%\captionsetup{width=0.45\textwidth,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=0.2\textwidth]{materiais_metodos/figuras/indutor.eps}
+	%\caption{Indutor de Potência Toroidal.} \\\footnotesize\textbf{Fonte: Site da XP Power.}
+		%\label{fig:indutor}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Reostato}
+%\label{mat_reos}
+%Reostato é um componente usado para variar a resistência elétrica de um circuito, conseguindo assim, alterar a potência. Sua principal diferença com relação a um potenciômetro convencional é a sua capacidade de suportar maiores correntes \cite{reostato_ref}. Geralmente é constituído de um fio enrolado em um material isolante com uma bucha deslizante sobre esse. A Figura \ref{fig:reostato} mostra um reostato blindado. Esse será usado como resistência para todas as cargas de teste.\\
+%
+%\begin{figure}[!htbp]
+	%\centering
+	%\captionsetup{width=0.35\textwidth,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=0.4\textwidth]{materiais_metodos/figuras/reostato.eps}
+	%\caption{Reostato Blindado.} \\\footnotesize\textbf{Fonte: Site da Politerm.}
+		%\label{fig:reostato}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\subsection{Diodo 1N5404}
+%%\label{mat_rmmo}
+%%Diodo 1N5404, figura \ref{fig:diodo}, é um diodo destinado à correntes de até 3A (polarização direta), \cite{diodo_pot}. Será usado na carga de teste RMMO, pois suporta correntes moderadas.\\
+%%
+%%\begin{figure}[!htbp]
+	%%\centering
+	%%\captionsetup{width=0.50\textwidth} % Tamanho da legenda da figura (70% da largura do texto).
+		%%\includegraphics[width=0.3\textwidth]{materiais_metodos/figuras/1N5404.eps}
+	%%\caption{Diodo de Potência 1N5404.} \\\textbf{Fonte:} http://www.protostack.com/semiconductors/diodes/1n5404-general-purpose-400v-3a-rectifier-diode.
+		%%\label{fig:diodo}
+%%\end{figure}
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\subsection{RMOC em Ponte RS405L}
+%%\label{mat_rmoc}
+%%O RS405L é um retificador com ponte de diodos integrado, figura \ref{fig:rs405}. Suporta correntes de até 4A (polarização direta) e tensões de 50V a 1000V de pico \cite{rs405}. Por ser mais compacto, facilita as montagens e reduz a quantidade de componentes na placa. Será usado para a carga de teste com do tipo RMOC.\\
+%%
+%%\begin{figure}[!htbp]
+	%%\centering
+	%%\captionsetup{width=0.450\textwidth} % Tamanho da legenda da figura (70% da largura do texto).
+		%%\includegraphics[width=0.3\textwidth]{materiais_metodos/figuras/rs405.eps}
+	%%\caption{RMOC em Ponte RS405L.} \\\textbf{Fonte:} http://www.chipdip.ru/product/kbl06/.
+		%%\label{fig:rs405}
+%%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Transformador Variável (Variac)}
+%\label{mat_variac}
+%Uma das formas de variar a tensão alternada é usando um transformador variável \sigla[Transformador Variável]{Variac}, Figura \ref{fig:variac}. Esse é um tipo de autotransformador no qual as tensões de saída podem ser mudadas de forma contínua. E será usado para testar o sistema com segurança.\\
+%
+%\begin{figure}[!htbp]
+	%\centering
+	%\captionsetup{width=0.50\textwidth,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=0.2\textwidth]{materiais_metodos/figuras/variac.eps}
+	%\caption{Transformador Variável (Variac).} \\ \footnotesize\textbf{Fonte: Site da Entran.}
+		%\label{fig:variac}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Osciloscópio}
+%\label{mat_osc}
+%Para poder calibrar e conferir o medidor, necessita-se de uma outra forma de mensurar o $FP$. O osciloscópio, Figura \ref{fig:osc}, além de mostrar as formas de onda é capaz também de mensurar o $FP$.\\
+%
+%\begin{figure}[!htbp]
+	%\centering
+	%\captionsetup{width=0.50\textwidth,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=0.2\textwidth]{materiais_metodos/figuras/osc.eps}
+	%\caption{Osciloscópio Digital Agilent.} \\\footnotesize\textbf{Fonte: Site da Agilent.}
+		%\label{fig:osc}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Métodos (Procedimentos Metodológicos)}
+%\label{met}
+%Os métodos propostos são: etapa inicial, etapa de desenvolvimento e etapa final.\\
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Etapa Inicial}
+%\label{met_ini}
+%Nessa etapa serão analisados os parâmetros de trabalho do dispositivo e, a partir deles, serão desenvolvidos os projetos dos circuitos. Todos os circuitos envolvidos serão simulados a fim de prever possíveis problemas. Logo após, serão desenvolvidas as rotinas numéricas a partir de ferramentas computacionais.\\
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Etapa de Desenvolvimento}
+%\label{met_ini}
+%Com a lista de componentes necessários, será realizado a aquisição dos mesmos, sendo que os circuitos serão provisoriamente montados em matrizes de contatos. Nessa etapa, os códigos para a o microcontrolador serão escritos e as primeiras medidas serão feitas. Com uma versão mais estável do sistema, iniciar-se-á o projeto, o desenvolvimento e a montagem da placa de circuito impresso que conterá todos os circuitos do medidor.\\
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Etapa Final}
+%\label{met_fin}
+%A etapa final abrangerá a revisão final de todo o projeto, no qual será comparado o projeto proposto com o projeto implementado. Todo o conteúdo será documentado de forma lógica, progressiva e organizada em um relatório. Serão incluídos, também, os resultados finais.\\

@@ -1,0 +1,107 @@
+\chapter{Introdução}
+\label{intro}
+
+Escrever a introdução neste arquivo.
+
+O Capítulo \ref{intro} é a ``Introdução''.
+
+O Capítulo \ref{del} refere-se a ``Delimitação do Tema''.
+
+O Capítulo \ref{prob} refere-se a ``Problemas e Premissas''.
+
+
+A Figura \ref{fig:elem1} ocupa toda a largura do texto.
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{width=0.50\textwidth} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=1.00\textwidth]{../figuras/elementos.eps}
+	\caption{Primeira Figura.}
+		\label{fig:elem1}
+\end{figure}
+
+A Figura \ref{fig:elem2} ocupa metade da largura do texto.
+
+\begin{figure}[!htbp]
+	\centering
+		\captionsetup{width=0.50\textwidth} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=.50\textwidth]{../figuras/elementos.eps}
+	\caption{Segunda Figura.}
+		\label{fig:elem2}
+
+\end{figure}
+
+A Figura \ref{fig:elem3} ocupa um quarto da largura do texto.
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{width=0.50\textwidth} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=.25\textwidth]{../figuras/elementos.eps}
+	\caption{Terceira Figura}
+		\label{fig:elem3}
+\end{figure}
+
+A Figura \ref{fig:elem3} ocupa um oitavo da largura do texto.
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{width=0.50\textwidth} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=.125\textwidth]{../figuras/elementos.eps}
+	\caption{Quarta Figura}
+		\label{fig:elem4}
+\end{figure}
+
+
+\clearpage
+
+A Tabela \ref{tab:t1}  é apresentada abaixo.
+\begin{table}[!htbp]
+	\centering
+	\captionsetup{width=0.30\textwidth} % Tamanho da legenda da figura (30% da largura do texto).
+	\caption{Primeira tabela}
+\begin{tabular}{llllll}
+\hline
+\multicolumn{1}{|l|}{e} & \multicolumn{1}{l|}{a1} & \multicolumn{1}{l|}{a2} & \multicolumn{1}{c|}{teste} & \multicolumn{1}{r|}{f} & \multicolumn{1}{r|}{z} \\ 
+\hline
+\multicolumn{1}{|l|}{12} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & \multicolumn{1}{r|}{} & \multicolumn{1}{r|}{} \\ 
+\hline
+3 &  & 5 & r &  &  \\ 
+4 & 5\% &  &  &  &  \\ 
+\hline
+\end{tabular}
+
+	\label{tab:t1}
+\end{table}
+
+
+A Tabela \ref{tab:t2} é apresentada abaixo.
+\begin{table}[!htbp]
+	\centering
+	\captionsetup{width=0.3\textwidth} % Tamanho da legenda da figura (30% da largura do texto).
+	\caption{Segunda tabela}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{} & \multicolumn{1}{c|}{Aceleração (m/s)} & \multicolumn{1}{c|}{Tempo (s)} & \multicolumn{1}{c|}{} \\ 
+\hline
+\multicolumn{1}{|c|}{} & \multicolumn{1}{c|}{0} & \multicolumn{1}{c|}{0} & \multicolumn{1}{c|}{} \\ 
+\hline
+\multicolumn{1}{|c|}{} & \multicolumn{1}{c|}{1} & \multicolumn{1}{c|}{10} & \multicolumn{1}{c|}{} \\ 
+\hline
+\multicolumn{1}{|c|}{} & \multicolumn{1}{c|}{2} & \multicolumn{1}{c|}{20} & \multicolumn{1}{c|}{} \\ 
+\hline
+\end{tabular}
+
+	\label{tab:t2}
+\end{table}
+
+
+sendo que \simb[Diâmetro da circunferência]{\alpha} é o diâmetro da circunferência.
+
+\noindent Este símbolo (\simb[Gradiente de uma função]{\nabla}) foi inserido no texto, fora do ambiente \textit{equation}.
+
+
+
+Exemplos de siglas:
+A organização das nações unidas \sigla[Organização das Nações Unicas]{ONU};
+\sigla[Teste da lista de siglas 2. Esta possui um significado bem grande que ocupa mais de uma linha]{EASREFER};
+\sigla[Teste da lista de siglas 3]{ER}.
+
+A primeira referência \cite{abntex-doc} é um livro. A segunda referência \cite{anil2004} é um artigo e periódico. A terceira é um link \cite{matlab}. 

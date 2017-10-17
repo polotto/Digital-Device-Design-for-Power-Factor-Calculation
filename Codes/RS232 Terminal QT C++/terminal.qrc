@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/connect.png</file>
+        <file>images/disconnect.png</file>
+        <file>images/application-exit.png</file>
+        <file>images/settings.png</file>
+        <file>images/clear.png</file>
+        <file>images/pot.png</file>
+        <file>images/pot_harm.png</file>
+        <file>images/atras.png</file>
+        <file>images/icon.png</file>
+    </qresource>
+</RCC>

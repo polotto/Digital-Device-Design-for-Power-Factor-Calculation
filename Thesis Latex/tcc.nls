@@ -1,0 +1,50 @@
+\begin{thenomenclature} 
+
+ \nomgroup{A}
+
+  \item [{$FP$}]\begingroup Fator de Potência\nomeqref {1.0.0}
+		\nompageref{1}
+  \item [{$THD$}]\begingroup \textit {Total Harmonic Distortion}\nomeqref {1.0.0}
+		\nompageref{1}
+  \item [{A/D}]\begingroup Conversor de Analógico para Digital\nomeqref {5.5.0}
+		\nompageref{16}
+  \item [{AmpOp}]\begingroup Amplificador Operacional\nomeqref {5.7.0}
+		\nompageref{19}
+  \item [{CA}]\begingroup Corrente Alternada\nomeqref {1.0.0}
+		\nompageref{1}
+  \item [{CC}]\begingroup Corrente Contínua\nomeqref {1.0.0}
+		\nompageref{1}
+  \item [{CL}]\begingroup Circuitos Lineares\nomeqref {5.1.0}
+		\nompageref{6}
+  \item [{CM}]\begingroup Cargas Monofásicas\nomeqref {3.2.0}
+		\nompageref{3}
+  \item [{CNL}]\begingroup Circuitos não Lineares\nomeqref {5.1.0}
+		\nompageref{7}
+  \item [{CRC}]\begingroup Circuitos com Resistor e Capacitor\nomeqref {3.2.0}
+		\nompageref{3}
+  \item [{CRI}]\begingroup Circuitos com Resistor e Indutor\nomeqref {3.2.0}
+		\nompageref{3}
+  \item [{DFT}]\begingroup \textit {Discret Fourier Transform}\nomeqref {5.11.0}
+		\nompageref{22}
+  \item [{FFT}]\begingroup \textit {Fast Fourier Transform}\nomeqref {5.11.1}
+		\nompageref{22}
+  \item [{FPU}]\begingroup \textit {Floating Point Unit}\nomeqref {11.4.0}
+		\nompageref{49}
+  \item [{LED}]\begingroup \textit {Light Emitting Diode}\nomeqref {7.0.0}
+		\nompageref{34}
+  \item [{PCI}]\begingroup Placa de Circuito Impresso\nomeqref {11.1.0}
+		\nompageref{42}
+  \item [{PROCEL}]\begingroup Programa Nacional de Conservação de Energia Elétrica\nomeqref {4.0.0}
+		\nompageref{5}
+  \item [{RAM}]\begingroup \textit {Random Access Memories}\nomeqref {7.0.0}
+		\nompageref{35}
+  \item [{RGB}]\begingroup \textit {Red, Green and Blue}\nomeqref {7.0.0}
+		\nompageref{34}
+  \item [{RMMO}]\begingroup Retificadores Monofásicos Meia-Onda\nomeqref {3.2.0}
+		\nompageref{3}
+  \item [{RMOC}]\begingroup Retificadores Monofásicos Onda Completa\nomeqref {3.2.0}
+		\nompageref{3}
+  \item [{UART}]\begingroup \textit {Universal Asynchronous Receiver/Transmitter}\nomeqref {11.4.3}
+		\nompageref{54}
+
+\end{thenomenclature}

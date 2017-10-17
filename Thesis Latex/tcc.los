@@ -1,0 +1,20 @@
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {P}} \parbox [t]{\textwidth - \simbmaxwidth }{Pot\^encia Ativa}}{1}{chapter.1}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {S}} \parbox [t]{\textwidth - \simbmaxwidth }{Pot\^encia Aparente}}{1}{chapter.1}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {V_{RMS}}} \parbox [t]{\textwidth - \simbmaxwidth }{Tens\~ao Eficaz}}{4}{section.3.2}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {I_{RMS}}} \parbox [t]{\textwidth - \simbmaxwidth }{Corrente Eficaz}}{4}{section.3.2}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {Q}} \parbox [t]{\textwidth - \simbmaxwidth }{Pot\^encia Reativa}}{8}{figure.caption.9}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {\varphi }} \parbox [t]{\textwidth - \simbmaxwidth }{\^Angulo entre os vetores da pot\^encia ativa e aparente}}{8}{figure.caption.9}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {D}} \parbox [t]{\textwidth - \simbmaxwidth }{Pot\^encia de Distor\c c\~ao}}{8}{figure.caption.10}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {S'}} \parbox [t]{\textwidth - \simbmaxwidth }{Proje\c c\~ao do Vetor $S$}}{8}{figure.caption.10}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {\lambda }} \parbox [t]{\textwidth - \simbmaxwidth }{\^Angulo entre a pot\^encia parcial e pot\^encia aparente}}{8}{figure.caption.10}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {v(t)}} \parbox [t]{\textwidth - \simbmaxwidth }{Tens\~ao instant\^anea}}{8}{equation.5.1.1}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {i(t)}} \parbox [t]{\textwidth - \simbmaxwidth }{Corrente Instant\^anea}}{8}{equation.5.1.1}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {THD_{I}}} \parbox [t]{\textwidth - \simbmaxwidth }{Taxa de distor\c c\~ao harm\^onica da corrente}}{10}{figure.caption.13}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {R}} \parbox [t]{\textwidth - \simbmaxwidth }{Valor de resist\^encia}}{12}{section.5.2}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {L}} \parbox [t]{\textwidth - \simbmaxwidth }{Valor da indut\^ancia}}{12}{section.5.2}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {\Theta }} \parbox [t]{\textwidth - \simbmaxwidth }{\^Angulo de defasagem da corrente}}{12}{section.5.2}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {V_p}} \parbox [t]{\textwidth - \simbmaxwidth }{Tens\~ao de pico}}{12}{equation.5.2.3}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {I_p}} \parbox [t]{\textwidth - \simbmaxwidth }{Tens\~ao de pico}}{12}{equation.5.2.3}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {t}} \parbox [t]{\textwidth - \simbmaxwidth }{Instante de Tempo (segundos)}}{12}{equation.5.2.3}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {T_s}} \parbox [t]{\textwidth - \simbmaxwidth }{Per\IeC {\'\i }odo de amostragem}}{16}{section.5.4}
+\contentsline {simbolo}{\parbox [t]{\simbmaxwidth }{\ensuremath {f_s}} \parbox [t]{\textwidth - \simbmaxwidth }{Frequ\^encia de amostragem}}{16}{section.5.4}

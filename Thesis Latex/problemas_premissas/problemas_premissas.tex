@@ -1,0 +1,596 @@
+\chapter{Referencial Teórico}
+\label{refe}
+O medidor descrito na Seção \ref{obje} possui, basicamente, fundamentos teóricos nas áreas de: instrumentação elétrica, eletrônica de potência, condicionamento de sinais elétricos, processamento digital de sinal e cálculo numérico. Para ambientar o leitor e resumir o trabalho, escolheu-se os conceitos mais relevantes de cada área.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{FATOR DE POTÊNCIA}
+\label{refe_fp}
+
+Primeiramente, precisa-se de uma breve contextualização sobre circuitos estacionários de corrente alternada. A análise é feita sempre desconsiderando os transientes, tanto os iniciais como os finais. Isso contribui na modelagem matemática do $FP$ \cite{Sadiku371}.
+
+Para todos os casos estudados, sempre será considerada uma carga acoplada a uma fonte de tensão senoidal. Além de ser a mais presente em sistemas de potência, contribui também para simplificações. Vale ressaltar que o $FP$ sempre é calculado como ilustra a Figura \ref{fig:fator}, ou seja, as formas de onda da tensão e da correntes vindas da fonte de alimentação.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.55\textwidth]{problemas_premissas/figuras/fator.eps}
+	\caption{Ponto de Medição do Fator de Potência.} 
+	\centering\footnotesize\textbf{Fonte: Adaptado de POMILIO (2014).}
+		\label{fig:fator}
+\end{figure}
+
+O uso de fonte senoidal traz as seguintes contribuições: a frequência da tensão será a mesma para qualquer parte do circuito para circuitos lineares \sigla[Circuitos Lineares]{CL}. As curvas de tensão e corrente em qualquer ponto serão sempre senoidais com a mesma frequência da fonte. Também para CL, as curvas de tensão e corrente da entrada do sistema podem estar deslocadas entre si e possuírem diferentes valores de pico \cite{Dorf399}.
+
+\textit{Observação: Essas condições não são válidas para circuitos não lineares \sigla[Circuitos não Lineares]{CNL}.}
+
+Para CL, é possível obter três tipos de potências: po\-tên\-cia ativa ($P$), po\-tên\-cia reativa (\simb[Potência Reativa]{Q}) e potência aparente ($S$). Usa-se a representação vetorial para relacionar essas três grandezas (Figura \ref{fig:pot_fasor}) \cite{hayt440}. A variável \simb[Ângulo entre os vetores da potência ativa e aparente]{\varphi} é o ângulo entre os vetores de potência ativa e aparente.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.45\textwidth]{problemas_premissas/figuras/pot_fasor.eps}
+	\caption{Representação Vetorial das Potências para CL.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de DORF (2010).}
+		\label{fig:pot_fasor}
+\end{figure}
+
+A representação vetorial das potências em CNL deve incluir a potência de distorção (\simb[Potência de Distorção]{D}), gerada pelas componentes harmônicas. Essa é perpendicular à projeção do vetor $S$ (\simb[Projeção do Vetor $S$]{S'}); formando assim, um tetraedro com uma nova potência aparente apresentado pela Figura \ref{fig:pot_fasor_har} \cite{cotrim421}. O simbolo \simb[Ângulo entre a potência parcial e potência aparente]{\lambda} é o ângulo entre a potência aparente e sua projeção e o $\varphi$ é ângulo entre a potência ativa e $S'$. Para CL essa representação também pode ser usada, pois a potência de distorção é nula. Sendo assim, $S$ será igual ao $S'$, ou seja, um triângulo de potências.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.45\textwidth]{problemas_premissas/figuras/pot_fasor_har.eps}
+	\caption{Representação Vetorial das Potências para CNL.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de COTRIM (2009).}
+		\label{fig:pot_fasor_har}
+\end{figure}
+
+A grandeza $P$ representa a energia realmente convertida em trabalho (potência ativa). Essa é calculada usando a equação \eqref{eq:pot_ativ}, tando para CL como para CNL \cite{irwin431}.
+
+\begin{equation} \label{eq:pot_ativ}
+	P = \frac{1}{T}
+	\int_{0}^{T}v(t)i(t)dt
+\end{equation}
+
+\noindent onde: $T$ é o período de $v(t)$, \simb[Tensão instantânea]{v(t)} é a tensão instantânea e \simb[Corrente Instantânea]{i(t)} é a corrente instantânea.
+
+A variável $Q$ representa a potência absorvida em componentes reativos à corrente alternada, como indutores e capacitores. Essa pode ser calculada através da análises trigonométricas que serão abordadas mais a frente.
+
+A potência $S$ é a total do ponto de vista da fonte, essa é definida pela equação \eqref{eq:pot_apar} \cite{irwin444}. Por sua vez, os valor de $V_{RMS}$ e $I_{RMS}$ são calculados através das equações \eqref{eq:v_rms} e \eqref{eq:i_rms}, respectivamente; tanto para CL como para CNL \cite{irwin441}.
+
+\begin{equation} \label{eq:pot_apar}
+	S = V_{RMS} I_{RMS}
+\end{equation}
+
+\begin{equation} \label{eq:v_rms}
+	V_{RMS} = \sqrt{
+	\frac{1}{T}
+	\int_{0}^{T}v(t)^2dt
+	}
+\end{equation}
+
+\begin{equation} \label{eq:i_rms}
+	I_{RMS} = \sqrt{
+	\frac{1}{T}
+	\int_{0}^{T}i(t)^2dt
+	}
+\end{equation}
+
+A $THD$ é um método usado para estimar o quão distorcida em amplitude uma forma de onda é com relação a uma forma de onda senoidal completa com o mesmo período. Cargas não lineares (como fontes chaveadas, inversores de frequência e circuitos retificadores) possuem a tendência de inserir harmônicos nas formas de onda da corrente. Na implementação de medidores reais, considera-se os harmônicos da tensão nulos ou muito pequenos, pois grande parte das cargas são alimentadas por tensões puramente senoidais ($THD$ nulo). Portando, a sua contribuição para a potência de distorção pode ser desprezada \cite{thd}. A Figura \ref{fig:thd} ilustra um sinal com harmônicas nulas ($i(t)$) e um sinal com distorção harmônica ($i_{2}(t)$).
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.3\textwidth]{problemas_premissas/figuras/thd.eps}
+	\caption{Distorção Harmônica da Corrente.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de POMILIO (2014).}
+		\label{fig:thd}
+\end{figure}
+
+No domínio da frequência é possível visualizar de forma mais clara as componentes harmônicas eficazes de um sinal de corrente, como mostra a Figura \ref{fig:thd_freq}. Como fica claro, a harmônica fundamental é $f_{1}$ pois ela possui a maior amplitude. Aplicando a Equação \eqref{eq:i_rms} em cada uma das componentes harmônicas, obtêm-se: 
+
+\begin{equation} \label{eq:thd_i}
+	I_{RMS} = \sqrt{I_{1 RMS}^2+\sum_{n=2}^{\infty}I_{n RMS}^2}
+\end{equation}
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.4\textwidth]{problemas_premissas/figuras/thd_freq.eps}
+	\caption{Corrente com distorção harmônica no domínio da frequência.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de POMILIO (2014).}
+		\label{fig:thd_freq}
+\end{figure}
+
+Por fim, define-se a \simb[Taxa de distorção harmônica da corrente]{THD_{I}} como sendo a razão entre a raiz quadrada do somatório dos quadrados dos valores eficazes das componentes harmônicas da corrente ($I_{n RMS}$) e o da componente fundamental ($I_{1 RMS}$), Equação \eqref{eq:thd_eq}. Essa razão produz valores menores que um, esses podem ser multiplicado por 100 para obter o percentual da taxa de distorção harmônica.
+
+\begin{equation} \label{eq:thd_eq}
+	THD_{I} = \frac{\sqrt{\sum_{n=2}^{\infty}I_{n RMS}^2}}{I_{1 RMS}}
+\end{equation}
+
+%A $THD$ é sempre relevante para CNL, pois para circuitos CL: $\sum_{n=2}^{\infty}I_{n RMS}^2=0$; o sinal de corrente é uma senoide perfeita, ou seja: $THD_{I}=0$.
+
+%Ainda relacionado as potências, é possível obter a definição geral do $FP$, através da Equação , ou seja, a expressão pode ser usada para CL e CNL.
+
+De acordo com \cite{boy509}, é possível obter o fator de potência através da razão entre a potência ativa e a potência aparente, de acordo com a Equação \eqref{eq:fp_eq}. Esta é uma expressão geral e pode ser utilizada em qualquer tipo de circuito, seja lineares ou não lineares.
+
+\begin{equation} \label{eq:fp_eq}
+	FP = \frac{P}{S} = \frac{\frac{1}{T}\int_{0}^{T}v(t)i(t)dt}{V_{RMS} I_{RMS}}
+\end{equation}
+
+Outra possibilidade para o cálculo  de FP é a Equação \eqref{eq:fp_thd} \cite{souza2000}. O angulo $\varphi$ é o mesmo apresentado nas Figuras \ref{fig:pot_fasor} e \ref{fig:pot_fasor_har}. Em CL, onde $THD_{I}=0$, e, portanto, $cos(\lambda)=1$. Valores positivos de $\varphi$ indicam que a corrente está atrasada em re\-la\-ção a tensão, típico de cargas indutivas ($\varphi > 0$, o caso mais recorrente); já para valores negativos, a tensão está atrasada em relação a corrente, comum de cargas capacitivas ($\varphi < 0$); quando $\varphi$ é zero, a tensão e a correntes estão em fase, recorrente em cargas puramente resistivas ($\varphi = 0$). Em CNL ($THD_{I}>0$), $\varphi$ é a defasagem entre a curva de tensão e a curva da harmônica fundamental da corrente ($I_1$) ou o ângulo entre $S'$ e $P$. O cosseno do ângulo $\lambda$ (ângulo entre $S'$ e $D$) é igual a Equação \eqref{eq:lamb}. Nesse caso, o $FP$ é sempre menor que a unidade, desfavorecendo assim, o aproveitamento da energia.
+
+\begin{equation} \label{eq:fp_thd}
+	FP = \frac{cos(\varphi)}{\sqrt{1+THD_{I}^2}} = cos(\varphi) cos(\lambda)
+\end{equation}
+
+%Até então, somente é possível obter os valores de $P$, $S$ e $THD$ através das Equações \eqref{eq:pot_ativ}, \eqref{eq:pot_apar} e \eqref{eq:thd_eq}, respectivamente; necessita-se das Equações \eqref{eq:lamb}, \eqref{eq:s_proj}, \eqref{eq:phi}, \eqref{eq:pot_reat} e \eqref{eq:pot_dist} para obter os valores de $cos(\lambda)$, $S'$, $cos(\varphi)$, $Q$ e $D$.
+
+Os valores de $cos(\lambda)$, $S'$, $cos(\varphi)$, $Q$ e $D$ podem ser calculados através das Equações \eqref{eq:lamb}, \eqref{eq:s_proj}, \eqref{eq:phi}, \eqref{eq:pot_reat} e \eqref{eq:pot_dist}, respectivamente.
+
+\begin{equation} \label{eq:lamb}
+	cos(\lambda) = \frac{1}{\sqrt{1+THD_{I}^2}}
+\end{equation}
+
+\begin{equation} \label{eq:s_proj}
+	 S' = S cos(\lambda)  
+\end{equation}
+
+\begin{equation} \label{eq:phi}
+	cos(\varphi) = \frac{P}{S'}
+\end{equation}
+
+\begin{equation} \label{eq:pot_reat}
+	 Q = S' sen(acos(cos(\varphi)))  
+\end{equation}
+
+\begin{equation} \label{eq:pot_dist}
+	 D = S sen(acos(cos(\lambda)))
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Taxa de Distorção Harmônica (THD)}
+%\label{ref_thd}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{CARGAS LINEARES (CL)}
+\label{ref_cl}
+Como dito na Sub-Seção \ref{refe_fp}, para CL as curvas de tensão e corrente são sempre senoidais ao longo de todos os nós. Devido a essa característica, esses sistemas são fáceis de serem analisados. Para os ensaios do sistema descrito na Seção \ref{obje}, serão usados cargas CRI e CRC na configuração série.
+
+Carga do tipo CRI em série possui um $FP$ abaixo de 1(um) (corrente atrasada com relação a tensão). Devido a essa característica, é possível estudar a sensibilidade e exatidão do medidor para atrasos de corrente. A Figura \ref{fig:crl} mostra uma configuração típica para esse tipo de circuito: $v(t)$ é a tensão de entrada, \simb[Valor de resistência]{R} é o valor do resistor do circuito, \simb[Valor da indutância]{L} é o valor da indutância, $i(t)$ é a corrente e \simb[Ângulo de defasagem da corrente]{\Theta} é o atraso de fase da corrente.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.60\textwidth]{problemas_premissas/figuras/crl.eps} 
+	\caption{Circuito com Resistor e Indutor em Série.} 
+	\centering\footnotesize\textbf{Fonte: Adaptado de JUNIOR (2008).}
+		\label{fig:crl}
+\end{figure}
+
+Sendo $v(t)$ e $i(t)$ definido por:
+\begin{equation}\label{eq:vt}
+	v(t) = V_p sen(\omega t )
+\end{equation}
+\begin{equation}\label{eq:it}
+	i(t) = I_p sen(\omega t -\Theta)
+\end{equation}
+
+\noindent obtêm-se a Equação \eqref{eq:crl_ativ} utilizando a Equação \eqref{eq:pot_ativ}.
+
+\begin{align} \label{eq:crl_ativ}
+	&P = \frac{1}{T}
+	\int_{0}^{T}v(t)i(t)dt
+	= \frac{1}{2\pi}
+	\int_{0}^{2\pi}V_p sen(\omega t) I_p sen(\omega t-\Theta)d\omega t \nonumber \\
+	&= \frac{V_p I_p}{2\pi}
+	\int_{0}^{2\pi}sen(\omega t) sen(\omega t -\Theta) d\omega t
+\end{align}
+
+\noindent onde: \simb[Tensão de pico]{V_p} é a tensão de pico, \simb[Tensão de pico]{I_p} é a corrente de pico e \simb[Instante de Tempo (segundos)]{t} é o instante de tempo. Aplicando a identidade trigonométrica:
+
+\begin{equation}\label{eq:trig_sen_sen}
+	sen(u)sen(v) = \frac{cos(u-v)-cos(u+v)}{2}
+\end{equation}
+
+\noindent resulta na Equação \eqref{eq:crl_ativ2}.
+
+\begin{align} \label{eq:crl_ativ2}
+	%P = \frac{V_p I_p}{4\pi} \left(
+	%\int_{0}^{2\pi}cos(-\Theta) d\omega t - \int_{0}^{2\pi} cos(2 \omega t +\Theta) d\omega t \right)\nonumber\\
+	P = \frac{V_p I_p}{4\pi} \left(
+		2\pi cos(-\Theta)\right) - 
+		\frac{V_p I_p}{4\pi} \left(
+		\int_{0}^{2\pi} cos(2 \omega t +\Theta) d\omega t \right)
+\end{align}
+
+A segunda parte da Equação \eqref{eq:crl_ativ2} é igual a zero, pois é a integração de uma função do tipo cosseno durante um período. Portanto:
+
+\begin{align}\label{eq:crl_ativ3}
+	P = \frac{V_p I_p}{2} cos(-\Theta) \qquad \textnormal{.}
+\end{align}
+
+A potência aparente pode ser obtida pela Equação \eqref{eq:pot_apar}, resultando em:
+
+\begin{align}\label{eq:crl_s}
+	S = \frac{V_p I_p}{2} \qquad \textnormal{.}
+\end{align}
+
+Como as curvas de tensão e corrente podem ser obtidas aplicando as Equações \eqref{eq:v_rms} e \eqref{eq:i_rms}, seus respectivos valores eficazes são expressos por:
+
+\begin{equation}\label{eq:crl_vrms}
+	V_{RMS} = \frac{V_p}{\sqrt{2}}
+\end{equation}
+
+\begin{align}\label{eq:crl_irms}
+	I_{RMS} = \frac{I_p}{\sqrt{2}} \qquad \textnormal{.}
+\end{align}
+
+Por fim, o fator de potência pode ser obtido pela equação  \eqref{eq:fp_eq}.
+
+\begin{equation}\label{eq:crl_fp}
+	FP = \frac{P}{S} = \frac{\frac{V_p I_p}{2} cos(-\Theta)}{\frac{V_p I_p}{2}} = cos(-\Theta)
+\end{equation}
+
+De modo semelhante, é possível realizar uma análise de um CRC série (Figura \ref{fig:crc}). Com essa configuração é possível estudar a sensibilidade e exatidão do medidor à correntes adiantadas. 
+
+Primeiramente altera-se a fase da corrente, pois essa está adiantada com relação a tensão.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.60\textwidth]{problemas_premissas/figuras/crc.eps}
+	\caption{Circuito com Resistor e Capacitor em Série.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de JUNIOR (2008).}
+		\label{fig:crc}
+\end{figure}
+
+As Equações \eqref{eq:vt_2}, \eqref{eq:it_2} e \eqref{eq:crc_eq} mostram todos os passos para obter a potência ativa do CRC série.
+
+\begin{equation}\label{eq:vt_2}
+	v(t) = V_p sen(\omega t )
+\end{equation}
+
+\begin{equation}\label{eq:it_2}
+	i(t) = I_p sen(\omega t +\Theta)
+\end{equation}
+
+\begin{align} \label{eq:crc_eq}
+	&P = \frac{1}{T}
+	\int_{0}^{T}v(t)i(t)dt
+	= \frac{1}{2\pi}
+	\int_{0}^{2\pi}V_p sen(\omega t) I_p sen(\omega t+\Theta)d\omega t \nonumber\\
+	&= \frac{V_p I_p}{2\pi}
+	\int_{0}^{2\pi}sen(\omega t) sen(\omega t +\Theta) d\omega t
+	= \frac{V_p I_p}{2} cos(\Theta)
+\end{align}
+
+Para circuito CRC, as curvas de tensão e corrente também são puramente senoidais, portanto, a potência aparente é a mesma do circuito CRI. Substituindo os valores na Equação \eqref{eq:fp_eq}, obtêm-se: 
+
+\begin{equation}\label{eq:crc_fp}
+	FP = \frac{P}{S} = \frac{\frac{V_p I_p}{2} cos(\Theta)}{\frac{V_p I_p}{2}} = cos(\Theta) \qquad \textnormal{.}
+\end{equation}
+
+Como o esperado, a Equação \eqref{eq:fp_eq} pode ser aplicada em circuitos lineares para obter o fator de potência. Mas os resultados obtidos com as Equações \eqref{eq:crl_fp} e \eqref{eq:crc_fp} não é o suficiente para obter o fator de potência teórico para os circuitos CRI e CRC. Para isso, usa-se a Equação \eqref{eq:cri_fp_teo} para circuitos CRI e a Equação \eqref{eq:crc_fp_teo} para circuitos CRC \cite{hayt384}.
+
+\begin{equation}\label{eq:cri_fp_teo}
+	FP = cos\left(arctg\left(-\frac{\omega L}{R}\right)\right)
+\end{equation}
+
+\begin{equation}\label{eq:crc_fp_teo}
+	FP = cos\left(arctg\left(\frac{1}{\omega R C}\right)\right)
+\end{equation}
+
+Onde:  $\omega=2 \pi f$ e $f$ é a frequência da tensão.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{CARGAS NÃO LINEARES}
+\label{ref_rm}
+Cargas não lineares são circuitos compostos, geralmente, por chaves ele\-trônicas, como diodos ou tiristores. Muito comuns em grande parte dos equipamentos eletrônicos, como fontes não controladas e controladas, \textit{soft starter} e \textit{dimmers}.
+
+O foco dessa sub-seção será o retificador monofásico não controlado. Comumente usados para obter tensões ou correntes constantes a partir de fonte CA. Esses circuitos possuem a característica de serem não lineares, ou seja, a curva de corrente gerada por esse circuito possui várias componentes harmônicas. O retificador pode ser usado para testar a exatidão do medidor para um circuito não linear (CNL). Nesse tópico será abordado a configuração: retificador monofásico meia-onda (RMMO) considerando o modelo do diodo ideal para simplificar as modelagens.
+
+O RMMO é uma das configurações mais simples de retificador (Figura \ref{fig:rmmo}) para esses circuitos, a curva da corrente é semelhante a ilustração: uma meia senoide com valores maiores que zero \cite{ahmed149}.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.55\textwidth]{problemas_premissas/figuras/rmmo.eps}
+	\caption{Retificador Monofásico Meia Onda.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de AHMED (2010).}
+	\vspace{0.5cm}\par
+		\label{fig:rmmo}
+\end{figure}
+
+A potência ativa pode ser calculada através da equação \eqref{eq:pot_ativ} resultando em:
+
+\begin{equation} \label{eq:rmmo_v}
+	v(\omega t) = V_p sen(\omega t) \\
+\end{equation}
+	%\intertext{De 0 até \pi} \nonumber\\
+\begin{equation} \label{eq:rmmo_i}
+	i(\omega t) = I_p sen(\omega t) = \frac{V_p sen(\omega t)}{R} \\
+\end{equation}
+\begin{align} \label{eq:rmmo_ativ}
+	&P = \frac{1}{T}
+	\int_{0}^{T}v(t)i(t)dt
+	= \frac{1}{2\pi}
+	\int_{0}^{\pi}\frac{V_p^2 sen(\omega t)^2}{R}d\omega t \nonumber\\
+	&= \frac{V_p^2}{2\pi R}
+	\int_{0}^{\pi}\frac{1-cos(2 \omega t)}{2}d\omega t
+	= \frac{V_p^2}{4R} \qquad \textnormal{.}
+\end{align}
+
+Como a tensão é puramente senoidal, seu valor eficaz é dado por $\frac{V_p}{\sqrt{2}}$. O valor eficaz da corrente pode ser calculado pela expressão \eqref{eq:i_rms} e resulta em: $\frac{V_p}{2R}$. Dessa forma, a potência aparente resulta em $\frac{V_p^{2}}{2\sqrt{2}R}$.
+
+A partir de \eqref{eq:fp_eq}, obtém-se a expressão \eqref{eq:rmmo_fp}, para o fator de potência
+
+\begin{align} \label{eq:rmmo_fp}
+	FP = \frac{P}{S} = \frac{\frac{V_p^2}{4R}}{\frac{V_p^2}{2\sqrt{2}R}} = \frac{\sqrt{2}}{2} \approx 0,707 \qquad \textnormal{.}
+\end{align}
+
+O $FP$ do RMMO é abaixo de 1 (um) mesmo sem atrasos evidentes entre as curvas de corrente e tensão, pois a potência aparente inclui componentes de distorção harmônica, como dito anteriormente.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{TAXA DE AMOSTRAGEM}
+\label{ref_ta}
+A amostragem é a conversão de um sinal contínuo para um sinal discreto. Essa ferramenta é usada para obter um sinal compatível com a arquitetura digital dos microcontroladores. A amostra é o valor do sinal contínuo em um determinado tempo. A distância de tempo entre as amostras é definido como tempo de amostragem (\simb[Período de amostragem]{T_s}), o seu inverso é chamado de frequência de amostragem (\simb[Frequência de amostragem]{f_s}). Na Figura \ref{fig:amostragem} está representado um exemplo de amostragem de sinal.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.4\textwidth]{problemas_premissas/figuras/amostragem.eps}
+	\caption{Sinal Contínuo e Sinal Amostrado.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de SMITH (2003).}
+		\label{fig:amostragem}
+\end{figure}
+
+O sinal s(t) é contínuo e por isso deve ser amostrado, resultando no sinal s[n]. Para não haver perdas de informação na reconstrução do sinal (\textit{aliasing} na etapa de quantização), a escolha de $f_s$ deve o estar de acordo com a condição de Nyquist, \eqref{eq:amost_eq} \cite{smith39}.
+
+\begin{eqnarray}
+\label{eq:amost_eq}
+%	&f_s = \frac{1}{Ts} \nonumber\\
+	&f_s > 2 f_{sinal}
+\end{eqnarray}
+
+Onde: $f_{sinal}$ é frequência fundamental de oscilação do sinal que será amostrado e $f_{s}$ é a frequência de amostragem do sinal.
+
+Caso se queira amostrar um sinal com frequência de 60Hz, f$_{s}$ deve ser maior que 120Hz, para garantir a menor perda de informação possível.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{QUANTIZAÇÃO DE UM SINAL DISCRETO}
+\label{ref_eq}
+Quantização é o processo de mapeamento de um valor pertencente a um grande conjunto de valores para um conjunto menor, o arredondamento de valores é um exemplo \cite{parker27}. Esse processo gera um erro de quantificação. No conversor analógico-digital \sigla[Conversor de Analógico para Digital]{A/D}, esse processo é necessário pois os microcontroladores operam apenas com valores discretos (conjunto de valores limitado) e o sinal amostrado, na maioria dos casos, é analógico (grande conjunto de valores). A Figura \ref{fig:quantizacao} mostra um exemplo.
+
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.4\textwidth]{problemas_premissas/figuras/quantizacao.eps}
+	\caption{Sinal Amostrado, Reconstruído e Erro de Quantização.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de PARKER (2010).}
+		\label{fig:quantizacao}
+\end{figure}
+
+Primeiramente, calcula-se o $stepSize$, a constante de conversão entre valores de tensão e número de bits, com base na resolução do conversor ($N$ Bits) e a sua tensão máxima de entrada ($V_{\text{máxima}}$) \eqref{eq:quant_step}.
+
+\begin{equation}
+\label{eq:quant_step}
+	stepSize = \frac{2^N-1}{V_{\text{máxima}}}
+\end{equation}
+ 
+Em seguida é realizado classificação do sinal, de acordo com a Equação \eqref{eq:quant_clas}, nesse processo ocorre o arredondamento de $X[n]$ para um número inteiro mais próximo. O critério de escolha dependerá de condições internas dos conversores.
+
+\begin{equation}
+\label{eq:quant_clas}
+	s[n] = \left\|X[n]stepSize\right\|
+\end{equation}
+
+Por fim, é feita a reconstrução do sinal para determinar os valores de tensão lidos na entrada do conversor A/D, Equação \eqref{eq:quant_res}.
+
+\begin{eqnarray}
+\label{eq:quant_res}
+	Y[n] = \frac{s[n]}{stepSize} \qquad
+	%e[n] = X[n]-Y[n]
+\end{eqnarray}
+
+%Simulando as equações (código \ref{anexo_1_quan}) com os valores: X[n]=5$sen(2\pi\omega f t)$, f=60Hz, N=4Bits e V$_{máxima}$=5V; obteve-se a figura \ref{fig:quantizacao_simu}.
+%
+%\begin{figure}[!htbp]
+	%\centering
+	%\captionsetup{width=0.60\textwidth} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=1.0\textwidth,height=10cm]{problemas_premissas/figuras/quantizacao_simu.eps}
+	%\caption{Simulação da Quantização de uma Senoide.} \\\textbf{Fonte:} Autoria Própria.
+		%\label{fig:quantizacao_simu}
+%\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{CÁLCULO DE INTEGRAIS PELA REGRA DOS TRAPÉZIOS}
+\label{ref_rt}
+Como visto na Sub-Seção \ref{refe_fp}, para o calculo do $FP$, precisa-se realizar a o\-pe\-ra\-ção matemática de integração. Para essa ser realizada na forma digital, necessita-se do uso de algoritmos de integração numérica. Há vários métodos disponíveis, entretanto, devido a facilidade de implementação, a regra dos trapézios para funções discretas é a mais adequada.\\
+
+A função discreta pode ser interpretada, geometricamente, como uma série de trapézios somados (Figura \ref{fig:trap}). A área abaixo da curva é a interpretação ge\-o\-mé\-tri\-ca da integração, essa pode ser aproximada pela soma da área dos trapézios \cite{barroso206}. Matematicamente, a regra dos trapézios pode ser descrita pela Equação \eqref{eq:trap}.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.7\textwidth]{problemas_premissas/figuras/trapezio.eps}
+	\caption{Regra dos Trapézios para Sinais Discretos.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de BARROSO (1987).}
+		\label{fig:trap}
+\end{figure}
+
+\begin{align}
+\label{eq:trap}
+	&Int = \int s[n] dt
+	= \sum_{i=0}^{n}\frac{(b[i]+B[i])H[i]}{2}
+	= \sum_{i=0}^{n-1}\frac{(s[i]+s[i+1])(t[i+1]-t[i])}{2}
+\end{align}
+
+\noindent onde: $b[i]$, $B[i]$ e $H[i]$ estão ilustrados na Figura \ref{fig:trap}; $s[i]$ é um ponto qualquer de $s[n]$ na posição $i$; e $t[i]$ é o tempo do sinal $s[n]$ na posição $i$.
+
+Esse método gera erros inversamente proporcionais ao número de elementos do sinal discreto, por isso é importante uma frequência de amostragem grande o suficiente para gerar erros pouco significativos. As frequências mínimas para esse projeto serão discutidas na Sub-Seção \ref{ma_prat_cal}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{CIRCUITOS DETECTORES DE CRUZAMENTO POR ZERO}
+\label{ref_cdct}
+Para garantir a amostragem de um ciclo de tensão, é necessário um circuito para indicar ao microcontrolador quando iniciar e terminar a retirada de amostras. O ideal é que o início das amostragens coincida com o início de um ciclo, assim como o adequado é que o fim equipare com o inicio do próximo ciclo (amostragem de um período). Para isso, usa-se circuitos que indicam quando uma tensão na sua entrada cruza por zero. O sistema da Figura \ref{fig:zero} gera uma borda de subida quando há um cruzamento ascendente por zero na sua entrada, caso contrário, gera um borda de descida\cite{junior82}.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.5\textwidth]{problemas_premissas/figuras/zero.eps}
+	\caption{Circuito Detector de Cruzamento por Zero.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de JUNIOR (2012).}
+		\label{fig:zero}
+\end{figure}
+
+O amplificador operacional \sigla[Amplificador Operacional]{AmpOp} está configurado como um comparador de tensão, portanto: para $Vi > 0V \rightarrow v1=Vcc$ e para $Vi<0V \rightarrow v1=-Vcc$. O diodo retifica a onda quadrada deixando passar somente os semi-ciclos positivos.
+
+Para o circuito operar de forma correta, a resistência $RL$ deverá possuir um valor adequado para polarizar o diodo $D$ e este terá que conter uma queda de tensão pequena para reduzir as perdas de tensão na saída.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{CIRCUITO DESLOCADOR DE TENSÃO ou Positivadores de Tensão}
+\label{ref_cdr}
+Alguns conversores A/D só conseguem efetuar leitura de níveis positivos de tensão. Por conta disso, é necessário o uso de deslocadores de tensão. Nesses o sinal de saída é descolado para níveis positivos ou negativos de tensão sem adicionar qualquer deslocamento no tempo. A figura \ref{fig:desloc} apresenta um amplificador subtrator modificado em série com o um amplificador inversor \cite{sedra116}. Juntos formam um sistema deslocador de tensão.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=1\textwidth]{problemas_premissas/figuras/deslocador.eps}
+	\caption{Circuito Deslocador de Tensão.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de BOYLESTAD (2004).}
+		\label{fig:desloc}
+\end{figure}
+
+Considerando $i-$ e $i+$ nulos e o amplificador com um ganho muito elevado, obtêm-se as seguintes equações para $V+$ e $V-$ através da análise das correntes das malhas:
+
+\begin{equation}
+\label{eq:gramp_sub1}
+	V+ = \left(\frac{Vcc_{+}}{R3} + \frac{Vcc_{-}}{R4}\right) \frac{R3 R4}{R3+R4}
+\end{equation}
+
+\begin{equation}
+\label{eq:gramp_sub2}
+	V- = \left(\frac{va}{R1} + \frac{vb}{R2}\right) \frac{R1 R2}{R1+R2} \qquad \textnormal{.}
+\end{equation}
+
+Aplicando-se um curto circuito virtual ($V+=V-$) nas entradas do amplificador, pode-se isolar a saída $vb$ obtendo:
+
+\begin{equation}
+\label{eq:gramp_sub1}
+	vb = \left(-va\frac{R2}{R1+R2}+Vcc_{+}\frac{R4}{R3+R4}+Vcc_{-}\frac{R3}{R3+R4}\right) \frac{R1+R2}{R1}
+\end{equation}
+
+Portanto, o deslocamento do sinal de saída é controlada através dos resistores $R3$ e $R4$. O ganho é controlado por $R1$ e $R2$. Os componentes $R5$ e $R6$ devem ser escolhidos com a Equação \eqref{eq:gramp_eq}, ganho para amplificadores inversores. Para evitar a saturação, o ganho dever ser próximo de um.
+
+\begin{equation}
+\label{eq:gramp_eq}
+	A_v = \frac{v_o}{v} = -\frac{R_6}{R_5}
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{CIRCUITOS DIVISORES DE TENSÃO}
+\label{ref_cdt}
+Sinais de instrumentação, em sistemas de potência, pode possuir uma tensão muito acima da suportada pelos circuitos digitais, para sua leitura, é necessário sua divisão. Um método de realizar essa tarefa é utilizar um divisor resistivo (Figura \ref{fig:divisor}).
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.55\textwidth]{problemas_premissas/figuras/divisor.eps}
+	\caption{Divisor de Tensão com \textit{Buffer}.} 
+	\centering\footnotesize\textbf{Fonte: Adaptado de BOYLESTAD (2004).}
+		\label{fig:divisor}
+\end{figure}
+
+O sinal da saída é obtido através da Equação \ref{eq:div_eq}. Geralmente $R1$ deve ser duas ordens de grandeza maior que $R2$, dependendo da máxima excursão de saída desejada \cite{boyele459}. Por exemplo, caso a tensão de entrada tiver uma amplitude de 250 V objetivando uma excursão de 2,5 V na saída do circuito, pode-se utilizar R1=1 k$\Omega$ e R2=100 k$\Omega$.
+
+\begin{equation}
+\label{eq:div_eq}
+	vo(t) = v(t)\frac{R2}{R1+R2}
+\end{equation}
+
+Para melhorar o desempenho do circuito, deve-se reduzir ao máximo a corrente na saída. Para isso, pode-se acoplar um amplificador operacional na configuração não inversora atuando como \textit{buffer} de tensão para a saída.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{TRANSFORMADOR MONOFÁSICO ISOLADO}
+%\label{ref_ig}
+%Antes de mais nada, deve-se definir o conceito de isolação galvânica. A isolação galvânica é a separação elétrica de dois ou mais sistemas para evitar o fluxo de corrente entre eles. Cabe ressaltar que não há qualquer tipo de conexão elétrica entre eles, sendo a energia trocada por outros métodos: circuitos eletromagnéticos, meios ópticos ou sistemas eletro-mecânicos. O método mais comum é o uso de efeitos eletromagnéticos (efeito hall ou indução eletromagnética). Para o sensoriamento de sistemas de potência, o uso dessa técnica é muito recorrente, pois ajuda a garantir a segurança do circuito de medição.\\
+%
+%O transformador monofásico isolado é um dispositivo que oferece uma iso\-la\-ção galvânica para medições de tensão de um sistema de potência \cite{fritz69}. Esse técnica será necessária para extração das amostras de tensão. Por se tratar de tensões monofásicas entre 127V e 220V (valores eficazes), um transformador monofásico abaixador com tensão de 12V (RMS) no secundário será o suficiente para o projeto.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{SENSOR DE EFEITO \textit{HALL}}
+%\label{ref_eh}
+%Quando um feixe de partículas carregadas passa através de um campo magnético, forças atuam sobre as partículas e o feixe é desviado de um caminho linear (efeito \textit{Hall}), isso ocorre para condutores e semi-condutores. Como consequência, um lado do condutor ficará carregado negativamente e o lado contrário ficará carregado positivamente \cite{hallid208}. Uma diferença de potencial irá surgir entre ambos os lados, que define a tensão \textit{Hall}. Para o dispositivo, as amostras da corrente serão feitas por meio de um sensor de efeito \textit{Hall}. Espera-se reduzir o ruído do sinal da corrente, obtendo assim, medidas mais exatas.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Transformada Rápida de Fourier (Método de  Danielson-Lanczos Lemma)}
+%\label{ref_fft}
+%Para realizar o cálculo da $THD$, é preciso aplicar a transformada de Fourier para o sinal amostrado, assim, as harmônicas do sinal são separadas para então aplicar a Equação \eqref{eq:thd_eq}. A  Transformada Discreta de Fourier, do inglês \textit{Discret Fourier Transform} \sigla[\textit{Discret Fourier Transform}]{DFT}, pode ser escrita como \cite{briggs1995dft}:
+%
+%\begin{equation} \label{eq:dft}
+%	H = \sum_{n=0}^{N-1} \sum_{k=0}^{N-1} s[k] e^{\frac{2 \pi i n k}{N}} = \sum_{n=0}^{N-1} \sum_{k=0}^{N-1} s[k] W^{n k}
+%\end{equation}
+%
+%Computacionalmente, os somatórios são implementados através de laços. A Equação \eqref{eq:dft}, por possuir dois somatórios, poderia ser implementada com dois laços um dentro do outro. Isso causaria uma complexidade algorítmica desvantajosa de $O(N^{2})$, onde $O$ é função que representa a complexidade e $N$ o número de elementos do vetor de entrada. Ou seja, o aumento do número de elementos do sinal $s[k]$ aumentaria exponencialmente o tempo de processamento da transformada. A transformada rápida de Fourier \sigla[\textit{Fast Fourier Transform}]{FFT} são métodos de processar a DFT com uma complexidade $O(N \log_{2} N)$. Para esse caso, a complexidade algorítmica é menor com aumento do número de elementos, característica comum de uma função logarítmica. Para um $N=10^6$ e considerando um processador com capacidade de realizar uma operação matemática a cada um microsegundo, por exemplo, a complexidade $O(N^{2})$ levaria duas semanas para processar a transformada, enquanto que a  $O(N \log_{2} N)$ levaria 30 segundos \cite{numerialC1}.
+%
+%Danielson e Lanczos mostraram que a DFT pode ser divida como a soma de duas transformadas de tamanho $N/2$ \cite{weisstein2015fast}. Uma formada pelos elementos pares da transformada $N$, o outra pelos elementos ímpares:
+%
+%\begin{align} \label{eq:fft}
+%	&H = \sum_{n=0}^{N-1} \sum_{k=0}^{N-1} s[k] e^{\frac{2 \pi i n k}{N}} = \sum_{n=0}^{N-1} \left( \sum_{k=0}^{N/2-1} e^{\frac{2 \pi j n (2 k)}{N}}s[2k] + \sum_{k=0}^{N/2-1} e^{\frac{2 \pi j n (2 k + 1)}{N}}s[2k+1] \right) \nonumber\\
+%	& = \sum_{n=0}^{N-1} \left( \sum_{k=0}^{N/2-1} e^{\frac{2 \pi j n (2 k)}{N}}s[2k] + e^{\frac{2 \pi j n}{N}} \sum_{k=0}^{N/2-1} e^{\frac{2 \pi j n (2 k + 1)}{N}}s[2k+1] \right) \nonumber\\ 
+%	& = \sum_{n=0}^{N-1} \left( \underbrace{\sum_{k=0}^{N/2-1} e^{\frac{2 \pi j n (2 k)}{N}}s[2k]}_\text{Termos Pares} + \underbrace{W^n \sum_{k=0}^{N/2-1} e^{\frac{2 \pi j n (2 k + 1)}{N}}s[2k+1]}_\text{Termos Ímpares} \right)
+%\end{align}
+%
+%\noindent Onde $j$ é a unidade imaginária.
+%
+%Apesar de melhorar o desempenho do algoritmo, esse método é complicado de ser implementado de forma não recursiva. A recursividade faz com que a transformada de um vetor muito grande inunde a fila de pré-processamento, algo não desejável em um dispositivo embarcado. Como alternativa a esse problema, foi criado uma variação desse método:  Danielson-Lanczos Lemma. A diferença está no fato dele dividir cada termo par e ímpar e mais dois termos pares e ímpares e assim consecutivamente. Para a transformada de um vetor com $N=8$ elementos, pode-se expandir a transformada de acordo com a Figura \ref{fig:fft}. Cada termo pode ser dividido e processado por apenar um laço, otimizando assim, o desempenho do algoritmo.
+%\\
+%\begin{figure}[!htbp]
+%	\centering
+%	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+%		\includegraphics[width=0.85\textwidth]{problemas_premissas/figuras/fft.eps}
+%	\caption{Expansão do método Danielson-Lanczos Lemma.}
+%	\centering\footnotesize\textbf{Fonte: Adaptado de AlwaysLearn\protect\footnotemark.}
+%		\label{fig:fft}
+%\end{figure}
+%
+%\footnotetext{Disponível em: <\url{http://goo.gl/3ircAc}>. Acesso em: 01 nov. 2015}
+%
+%Como é esperado, o número de elementos do vetor deve ser sempre múl\-ti\-plo de dois. Para vetores com número de elementos não múltiplo de dois, deve-se preencher o vetor com zeros até atingir o próximo múltiplo. Isso pode inserir erros na transformada resultante. Portando, o número de amostras deve ser preferencialmente múltiplo de dois.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{METROLOGIA}
+%\label{ref_m}
+%Metrologia é a ciência que trata das medições. Ela abrange todos os aspectos teóricos e práticos relativos às medições, em quaisquer campos da ciência ou da tecnologia. A finalidade dessa é garantir a confiável e segura comparabilidade de resultados obtidos em locais e momentos diferentes \cite{vim2310}. É necessário verificar se o equipamento está efetuando medidas coerentes da grandeza envolvidas.
+%
+%\begin{itemize}
+	%\item Comparabilidade: A propriedade dos resultados de medições, para grandezas de uma dada natureza, que os tornam comparáveis porque eles são metrologicamente rastreáveis aos mesmos padrões de referência metrológicos estabelecidos.
+	%\item Grandezas: Propriedade de um fenômeno, de um corpo ou de uma substância, que pode ser expressa quantitativamente sob a forma de um número e de uma referência.
+	%\item Medida: É a leitura do resultado numérico propriamente dito ou a informação obtida através da medição. É através da medida, que se qualifica um produto, ou qualquer das fases de um processo. E, será com base na confiabilidade da medida que se tornará ações sobre a conformidade de determinada característica.
+	%\item Padrão: Realização da definição de uma dada grandeza, com um valor determinado e uma incerteza de medição associada, utilizada como referência.
+	%\item Instrumento de Medição: É o dispositivo usado para se fazer a medição, o instrumento, é em geral apenas um incremento, que com o auxílio de outros incrementos, fornecem a medida.
+	%\item Sistema de Medição: É o conjunto de instrumentos utilizados no processo de medição, onde se requer determinada exatidão e estabilidade dentro de uma faixa de resolução.
+	%\item Sensibilidade: Variação da resposta de um instrumento de medição dividida pela correspondente variação do estímulo.
+	%\item Faixa Nominal: Conjunto de valores compreendidos entre duas indicações extremas arredondadas ou aproximadas de um instrumento de medição ou sistema de medição.
+	%\item Resolução: Menor variação da grandeza medida que causa uma variação perceptível na indicação correspondente.
+	%\item Repetitividade: Grau de concordância entre os resultados de medições sucessivas de um mesmo mensurando efetuadas sob condição de repetitividade.
+	%\item Exatidão ou Acurácia: É o grau de concordância entre o resultado de uma medição e o valor verdadeiro do mensurando. A resolução, repetitividade e exatidão podem ser relacionadas de forma ilustrativa, figura \ref{fig:alvo}. Os círculos em preto são as várias medidas de uma grandeza efetuada por um instrumento ou sistema de medição.
+	%
+	%\begin{figure}[!htbp]
+		%\centering
+		%\captionsetup{width=0.60\textwidth,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		%\includegraphics[width=0.5\textwidth]{problemas_premissas/figuras/alvo.eps}
+		%\caption{Resolução, Repetitividade e Exatidão.} \\\footnotesize\textbf{Fonte: Autoria Própria.}
+		%\label{fig:alvo}
+	%\end{figure}
+	%
+	%\item Valor de Referência: Valor de uma grandeza utilizado como base para comparação com valores de grandezas do mesmo tipo.
+	%\item Veracidade: Grau de concordância entre a média de um número infinito de valores medidos repetidos e um valor de referência.
+	%\item Erro: Diferença entre o valor medido de uma grandeza e um valor de referência. Pode ser:
+		%\begin{itemize}
+			%\item Sistemático: Componente do erro de medição que, em medições repetidas, permanece constante ou varia de  aneira previsível.
+			%\item Aleatório: Componente do erro de medição que, em medições repetidas, varia de maneira imprevisível.
+		%\end{itemize}
+%\end{itemize}
+%

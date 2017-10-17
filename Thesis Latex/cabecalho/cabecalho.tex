@@ -1,0 +1,159 @@
+% Exemplo de utilização do modelo utfprtex.
+%
+% por Miguel Moreto, 2011
+% 
+% Use por sua conta e risco.
+% Definição da classe a ser utilizada:
+\documentclass[capchap,sumariocompleto,a4paper,12pt,ruledheader,normaltoc]{utfprtex}%
+
+%%%%%%%%%%%%%%%%%%%%%% TCC1 ou TCC2 %%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{utfprtexPropostaTCC} % usar no TCC1
+\usepackage{utfprtexTCC} % usar no TCC2
+%%%%%%%%%%%%%%%%%%%%%% TCC1 ou TCC2 %%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+%\usepackage[T1]{fontenc}%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\numberwithin{equation}{section} %Numerar as equações com subseção.
+
+\usepackage[dvips]{color}
+\usepackage[dvips,linktocpage=true,a4paper,%colorlinks,breaklinks,unicode,
+pdfauthor={Angelo Polotto}, %Autor sem acento
+pdftitle={Projeto de Dispositivo Digital para Calculo do Fator de Potencia}, %Titulo sem acento
+pdfsubject={Projeto de Dispositivo Digital para Calculo do Fator de Potencia}, %SubTitulo sem acento
+pdfcreator={LaTeX e Dvips}]{hyperref}
+
+%\usepackage[alf,abnt-emphasize=bf,abnt-etal-text=it,bibjustif,abnt-etal-cite=2,abnt-etal-list=0,abnt-full-initials=yes]{abntcite}
+
+% Se você quiser utilizar o estilo de citação numérica, ex. [1], [2], comente a linha acima e use o código que está comentado nas 3 linhas abaixo:
+  \usepackage[num,bibjustif,recuo=1cm]{abntcite}
+  \usepackage{colchetesrefs} % Coloca colchetes na lista de referências ao final do documento. Precisa do arquivo!
+  \citebrackets{[}{]}
+% Não esqueça do comando \bibliographystyle{abnt-num} antes the chamar o seu arquivo .bib. (\bibliography) ao final do documento para que a lista de referências também esteja no formato numérico.
+
+\usepackage{nomencl} % Pacote necessário para a lista de siglas.
+% O comando a seguir diz ao Latex para salvar as siglas em um arquivo separado:
+\fazlistasiglas[Lista de Abreviaturas e Siglas] % Parâmetro opcional é o título da lista.
+
+% Para gerar a lista de siglas é necessário rodar o executável makeindex.exe
+% No TeXnicCenter vá em Build -> Define Output Profiles. Escolha o profile que estiver usando
+% por exemplo LaTeX => DVI e na área do Makeindex prencha o campo ``Command line arguments...'' com: 
+%
+% "%tm".nlo -s nomencl.ist -o "%tm".nls
+%
+% Certifique-se de que nas propriedades do projeto (Project -> properties) o caixa ``Uses Makeindex'' esteja selecionada.
+
+\usepackage{adjustbox}
+
+% Pacote para inserção de figuras em formato .eps.
+\usepackage{graphicx}
+
+% Pacote para incluir imagens .eps no pdf, deve sempre vir após o pacote graphicx
+\usepackage{epstopdf}
+% Pacote para inserir arquivos PDF como anexos
+\usepackage{pdfpages}
+
+%Habilitar o uso de subfiguras
+\usepackage{caption, subcaption}
+\captionsetup[subfigure]{justification=centering,font={footnotesize,bf}}
+%\usepackage{subfig}
+%\usepackage{circuitikz}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% biblioteca para colocar código e no texto
+%\usepackage[utf8]{inputenc}
+%\usepackage[portuguese]{babel}
+%\usepackage[T1, T2A]{fontenc} %Retirar o erro do bibtex
+\usepackage{xcolor} %Para usar o listings
+\usepackage{textcomp} %Para usar o listings
+\usepackage{listings}%Para inserir código fonte
+\renewcommand{\lstlistingname}{Código}
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=0.1cm,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\lstdefinestyle{customasm}{
+  belowcaptionskip=1\baselineskip,
+  frame=L,
+  xleftmargin=\parindent,
+  language=[x86masm]Assembler,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\itshape\color{purple!40!black},
+}
+\lstset{escapechar=@,style=customc}
+%\usepackage[T1]{fontenc}
+%\usepackage{lmodern} % better tt fonts!
+%\usepackage{lipsum}% dummy text
+\captionsetup[lstlisting]{justification=centering, font={footnotesize,bf}}
+
+%Rotacionaar a pagina
+\usepackage{url}
+\usepackage{lscape}
+%Insere link com hiperreferência no texto
+\usepackage{hyperref}
+
+\newcommand{\fasor}[2]{#1/\!\!\!\underline{\;#2}}%Criação de simbologia de fasores
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Se quiseres trocar a fonte do documento, descomente a linha abaixo. O parâmetro cmr
+% indica a fonte ComputerModern, aquela padrão do latex.
+%\renewcommand{\familydefault}{cmr}
+
+% A seguinte linha evita algumas mensagens de warning por parte do hyperref.
+% Comentar se o pacote hyperref não estiver sendo utilizado.
+\pdfstringdefDisableCommands{\edef\uppercase{}}
+
+
+% Os comandos a seguir ajustam o posicionamento dos floats (figures e tables).
+\renewcommand{\floatpagefraction}{0.90}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+\setlength{\intextsep}{5pt}
+\setlength{\textfloatsep}{5pt}
+\setlength{\floatsep}{5pt}
+
+
+
+
+
+%%%%%%%%% Início das definições iniciais %%%%%%%%%
+
+
+\autorA{ÂNGELO POLOTTO}
+%\autorB{Nome do Aluno B}
+\titulo{\normalsize PROJETO DE DISPOSITIVO DIGITAL PARA CÁLCULO DO FATOR DE POTÊNCIA} % Título do documento
+
+% Nos 2 comandos abaixo o parâmetro opcional entre [] pode ser preenchido para o caso de
+% alguma dessas pessoas ser mulher. Se não especificado, vale o valor default.
+%  Valores default: Orientador:  e Co-orientador: .
+\orientador{Prof. Dr. Felipe W. D. Pfrimer}
+%\coorientador[Coorientadora: ]{Marie Curie}
+
+\palavraschave{qualidade de energia, fator de potência, sistemas embarcados, processamento digital de sinais} % Palavras chave
+\keywords{power quality, power factor, embedded systems, digital signal processing} % Palavras chave em inglês
+
+\local{TOLEDO}
+
+\data{2015} % Mes de publicação
+
+\atanumero{1} % Número da ata de defesa.
+
+
+
+
+%%%%%%%%% Fim das definições iniciais %%%%%%%%%
+
+

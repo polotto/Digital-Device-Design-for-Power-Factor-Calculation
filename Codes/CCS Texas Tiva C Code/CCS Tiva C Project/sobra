@@ -1,0 +1,236 @@
+    //
+    // Setup the system clock to run at 50 Mhz from PLL with crystal reference
+    //
+    SysCtlClockSet(SYSCTL_SYSDIV_4|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|
+                    SYSCTL_OSC_MAIN);
+
+    //
+    // Enable and configure the GPIO port for the LED operation.
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, RED_LED|BLUE_LED|GREEN_LED);
+
+    //
+    // Loop Forever
+    //
+    while(1)
+    {
+        //
+        // Turn on the LED
+        //
+        GPIOPinWrite(GPIO_PORTF_BASE, RED_LED|BLUE_LED|GREEN_LED, RED_LED);
+
+        //
+        // Delay for a bit
+        //
+        SysCtlDelay(2000000);
+
+        //
+        // Turn on the LED
+        //
+        GPIOPinWrite(GPIO_PORTF_BASE, RED_LED|BLUE_LED|GREEN_LED, BLUE_LED);
+
+        //
+        // Delay for a bit
+        //
+        SysCtlDelay(2000000);
+    }
+}
+
+//if(counter>100000) counter=0;
+	//time_diff = (SysCtlClockGet()-time1) / ;
+	/*if(status & ZERO_INT_IN == ZERO_INT_IN){
+		//Then there was a Button pin interrupt
+		uint8_t value=0;
+
+		value= GPIOPinRead(ZERO_BASE,ZERO_IN);
+
+		if( value==0)
+			status^=GREEN_LED;
+
+		GPIOPinWrite(LED_BASE, RED_LED|BLUE_LED|GREEN_LED, !GREEN_LED);
+
+	}*/
+	/*
+  This delay is for deboucing but since it's in a interrupt it
+  should be used a better method that is faster
+	 */
+	//Delay de 1s
+	//SysCtlDelay((SysCtlClockGet()/ 1 )/2);
+	//time1 = SysCtlClockGet();	
+
+//Função para manipular o estouro do timer 1
+void Timer1IntHandler(void){
+	// Read the current state of the GPIO pin and
+	// write back the opposite state
+	if(GPIOPinRead(GPIO_PORTF_BASE, BLUE_LED))
+	{
+		GPIOPinWrite(GPIO_PORTF_BASE, RED_LED|BLUE_LED|GREEN_LED, !BLUE_LED);//Apaga o LED
+	}
+	else
+	{
+		GPIOPinWrite(GPIO_PORTF_BASE, BLUE_LED, BLUE_LED);//Acende o LED
+	}
+
+	TimerIntClear(TIME_COUNT_BASE, TIMER_TIMA_TIMEOUT);
+	freq = counter*0.01;
+	//if(counter!=0)	freq = 1/((float)counter*(1/FREQ_COUNT));
+	//else	freq=0;
+	counter=0;
+	//SysCtlDelay((SysCtlClockGet()/ 1 )/2);
+}
+
+/************************************20/10/2015********************************************************/
+//Main
+//while(1){
+	/*
+	LOOP FOREVER EVER EVER EVER EVER..........................................................................................
+	 */
+	//Leitura do ADC
+	//ADCIntClear(ANALOG_BASE, 1);
+	//ADCProcessorTrigger(ANALOG_BASE, 1);
+	//while(!ADCIntStatus(ANALOG_BASE, 1, false)){}
+	//ADCSequenceDataGet(ANALOG_BASE, 1, ui32ADC0Value);
+	//ui32TempAvg = ui32ADC0Value[0];
+	//ui32TempValueC = (1475 - ((2475 * ui32TempAvg)) / 4096)/10;
+	//ui32TempValueF = ((ui32TempValueC * 9) + 160) / 5;
+	//ui32PotPB5Volt = ui32ADC0Value[1];
+	//ui32PotPE5Curr = ui32ADC0Value[2];
+	//freq=0.12;
+	//ftoa(freq, pcBuffer, 2);//
+	/*** Alfabeto: V"tensão",A"corrente",Z"cruz. zero",I"tensão da rede";T"temperatura",F"frequencia"\n ***/
+	//print("V");send_int(ui32PotPB5Volt);print(",A");send_int(ui32PotPE5Curr);print(",Z");send_int(GPIOPinRead(ZERO_BASE, ZERO_IN) ? 0 : 1);print(",I");send_int(IN127V);print(",");
+	//print("T");send_int(ui32TempValueC);print(",F");println(pcBuffer);
+
+	//print("");send_int(ui32TempValueC);print(",F");println(pcBuffer);
+
+
+	/*if(!GPIOPinRead(GPIO_PORTF_BASE, SW1))//Faz a leitura do botão
+	{
+		GPIOPinWrite(GPIO_PORTF_BASE, RED_LED|BLUE_LED|GREEN_LED, RED_LED);//Acende somente o led vermelho
+	}*/
+//}
+
+//Timer0
+if(GPIOPinRead(LED_BASE, GREEN_LED))	GPIOPinWrite(LED_BASE, GREEN_LED, !GREEN_LED);//Apaga o LED
+	else	GPIOPinWrite(LED_BASE, GREEN_LED, GREEN_LED);
+	if(i<MAX_SAMPLE){
+		ADCIntClear(ANALOG_BASE, 1);
+		ADCProcessorTrigger(ANALOG_BASE, 1);
+		while(!ADCIntStatus(ANALOG_BASE, 1, false)){}
+		ADCSequenceDataGet(ANALOG_BASE, 1, ui32ADC0Value);
+		t[i] = t_inter*i;
+		V[i] = (3.3/4023)*(float)ui32ADC0Value[0];
+		I[i] = (3.3/4023)*(float)ui32ADC0Value[1];
+		i++;
+	}
+	else {
+		while(i==MAX_SAMPLE){
+			unsigned int j=0;
+			print("t;V;I;");
+			println("");
+			while(j<MAX_SAMPLE){
+				ftoa(t[j], pcBuffer, 6);
+				print(pcBuffer);print(";");
+				ftoa(V[j], pcBuffer, 2);
+				print(pcBuffer);print(";");
+				ftoa(I[j], pcBuffer, 2);
+				print(pcBuffer);print(";");
+				println("");
+				j++;
+			}
+			//i=0;
+			i++;
+		}
+	}*/
+	
+//Timer1
+
+// reverses a string 'str' of length 'len'
+void reverse(char *str, unsigned int len){
+	int i=0, j=len-1, temp;
+	while (i<j){
+		temp = str[i];
+		str[i] = str[j];
+		str[j] = temp;
+		i++; j--;
+	}
+}
+
+// Converts a given integer x to string str[].  d is the number
+// of digits required in output. If d is more than the number
+// of digits in x, then 0s are added at the beginning.
+int intToStr(int x, char str[], unsigned int d){
+	int i = 0;
+	while (x){
+		str[i++] = (x%10) + '0';
+		x = x/10;
+	}
+
+	// If number of digits required is more, then
+	// add 0s at the beginning
+	while (i < d)
+		str[i++] = '0';
+
+	reverse(str, i);
+	str[i] = '\0';
+	return i;
+}
+
+// Converts a floating point number to string.
+void ftoa(float n, char *res, unsigned int afterpoint){
+	// Extract integer part
+	int ipart = (int)n;
+
+	// Extract floating part
+	float fpart = n - (float)ipart;
+
+	// convert integer part to string
+	int i = intToStr(ipart, res, 0);
+
+	// check for display option after point
+	if (afterpoint != 0){
+		res[i] = '.';  // add dot
+
+		// Get the value of fraction part upto given no.
+		// of points after dot. The third parameter is needed
+		// to handle cases like 233.007
+		fpart = fpart * pow(10, afterpoint);
+
+		intToStr((int)fpart, res + i + 1, afterpoint);
+	}
+}
+
+float maxVal(float *V, unsigned int size){
+    float max = V[0];
+    int i=0;
+    for (i=0;i<size;i++){
+        if (V[i] > max){
+            max = V[i];
+        }
+    }
+    return max;
+}
+
+float offCalc(float *V, unsigned int size){
+    float min = V[0];
+    float max = V[0];
+    int i=0;
+    for (i=0;i<size;i++){
+        if (V[i] < min){
+            min = V[i];
+        }
+    }
+    for (i=0;i<size;i++)
+    	V[i]=V[i]-min;
+
+    for (i=0;i<size;i++){
+		if (V[i] > max){
+			max = V[i];
+		}
+		else if (V[i] < min){
+			min = V[i];
+		}
+	}
+    return (float)(max-min)/(float)2;
+}

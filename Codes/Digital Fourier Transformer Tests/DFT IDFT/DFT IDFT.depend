@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1406656289 source:c:\users\usuário\desktop\dft idft\main.c
+	<stdio.h>
+	<stdlib.h>
+	<complex.h>
+	"Conv.h"
+
+1406663942 c:\users\usuário\desktop\dft idft\conv.h
+
+1406663928 source:c:\users\usuário\desktop\dft idft\conv.c
+	<stdio.h>
+	<stdlib.h>
+	<complex.h>
+	"Conv.h"
+

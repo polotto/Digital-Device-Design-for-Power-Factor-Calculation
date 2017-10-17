@@ -1,0 +1,27 @@
+\chapter {Objetivos (Geral e Específico)}
+\label{obje}
+
+\section{Objetivo Geral}
+\label{geral}
+O objetivo desse trabalho é a construção de um dispositivo embarcado que pode ser acoplado entre a fonte de alimentação e a carga de teste (monofásica) capaz de calcular o fator de potência (Figura \ref{fig:ilustracao}), com base em valores amostrados de tensão e corrente na entrada (cargas analisadas serão retificadores monofásicos e circuitos lineares). %A THD da corrente foi apurada, mas os métodos utilizados mostraram-se pouco confiáveis e devem ser revistos em trabalhos futuros. %Será verificada a possibilidade do cálculo da taxa de distorção harmônica.
+\\
+\begin{figure}[!htbp]
+	\centering
+	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.8\textwidth]{objetivos/figuras/medidor.eps}
+	\caption{Ilustração do Projeto Proposto.}
+	\centering\footnotesize\textbf{Fonte: Adaptado de POMILIO (2014).}
+		\label{fig:ilustracao}
+\end{figure}
+
+\section{Objetivos Específicos}
+\label{espec}
+O foco do projeto é o desenvolvimento do \textit{hardware} e \textit{software} necessários para medir o fator de potência ($FP$) para cargas monofásicas \sigla[Cargas Monofásicas]{CM} lineares: circuitos com resistor e indutor \sigla[Circuitos com Resistor e Indutor]{CRI}; circuitos com resistor e capacitor \sigla[Circuitos com Resistor e Capacitor]{CRC}; retificadores monofásicos meia-onda \sigla[Retificadores Monofásicos Meia-Onda]{RMMO} e retificadores monofásicos onda completa \sigla[Retificadores Monofásicos Onda Completa]{RMOC}.
+
+O processo de medição iniciará após a identificação de um cruzamento ascendente por zero do sinal da tensão, assim sendo, os valores de tensão e corrente serão amostrados pelo sistema por um certo período mínimo. Consequentemente, o algoritmo iniciará os cálculos de tensão eficaz (\simb[Tensão Eficaz]{V_{RMS}}), corrente eficaz (\simb[Corrente Eficaz]{I_{RMS}}), potência ativa ($P$), potência aparente ($S$) e fator de potência ($FP$). Uma vez obtido o $FP$, o dispositivo o disponibilizará através de uma interface para o usuário. Esse processo deverá se repetir, enquanto houver alimentação, ao se pressionar um botão.
+
+Os resultados obtidos pelo protótipo serão comparados com valores obtidos através de simulações dos circuitos utilizados como carga (CRC, CRI e RMMO).
+
+%Todo o equipamento de medição será embarcado e alimentado por uma fonte de tensão contínua simétrica e pela interface USB. Conexões adicionais serão utilizadas na interface com o usuário.
+
+%Adicionalmente, é desejado o desenvolvimento de algoritmos numéricos necessários para as operações matemáticas e análises de viabilidade de cálculo da taxa de distorção harmônica ($THD$), sendo o último o mais complexo do ponto de vista computacional.

@@ -1,0 +1,45 @@
+[Eagle]
+Version="07 03 00"
+Platform="Windows"
+Serial="62191E841E-LSR-WLM-1EL"
+Globals="Globals"
+Desktop="Desktop"
+
+[Globals]
+AutoSaveProject=1
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/GeekAmmo.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/LilyPad-Wearables.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-Aesthetics.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-AnalogIC.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-Boards.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-Capacitors.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-Connectors.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-DigitalIC.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-DiscreteSemi.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-Displays.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-Electromechanical.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-FreqCtrl.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-LED.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-Passives.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-PowerIC.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-Resistors.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-Retired.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-RF.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/SparkFun-Sensors.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/SparkFun-Eagle-Libraries-master/User-Submitted.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/EAGLE BoosterPack Library/EAGLE_BoosterPack_Library.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/monowave/Op Amps.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/monowave/Switches.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/monowave/Power Jacks.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/monowave/Supply.lbr"
+UsedLibrary="C:/EAGLE-7.4.0/lbr/myLibrary/ACS712.lbr"
+
+[Win_1]
+Type="Control Panel"
+Loc="-8 -8 1357 696"
+State=1
+Number=0
+
+[Desktop]
+Screen="1366 768"
+Window="Win_1"

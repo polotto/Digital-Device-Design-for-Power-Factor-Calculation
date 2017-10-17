@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1449083060 source:c:\users\polotto.pc\workspace_v5_4\func_test\main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+

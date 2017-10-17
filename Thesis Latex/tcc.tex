@@ -1,0 +1,26 @@
+\input{cabecalho/cabecalho.tex}
+
+\begin{document} % Início do documento.
+\capa
+%\pagenumbering{arabic} % para que a numeração se inicie na folha de rosto
+\folhaderosto
+\includepdf[pages={1}]{folha_aprovacao.pdf}
+\input{inicial/inicio.tex}
+\listadefiguras
+\listadetabelas
+\listadesiglas
+\listadesimbolos
+\sumario 
+\pagenumbering{arabic} % para que a numeração se inicie na folha de rosto
+\input{introducao/introducao.tex}
+%%\input{tema/tema.tex} % Usar se necessário
+\input{objetivos/objetivos.tex}
+\input{justificativa/justificativas.tex}
+\input{problemas_premissas/problemas_premissas.tex}
+\input{materiais_metodos/mm.tex}
+%\input{cronograma/cronograma.tex} %necessário para TCC1
+\input{referencias/referencias.tex}
+\input{anexos/anexos.tex}
+
+\end{document}
+

@@ -1,0 +1,119 @@
+\begin{landscape}
+\chapter{Cronograma}
+\label{crono}
+
+\begin{table}[!htbp]
+\caption{Cronograma para o Desenvolvimento do Projeto.}
+	\label{tab:Cronograma}
+	\begin{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{Etapa/Mês} & \multicolumn{5}{c|}{2015} \\ 
+\cline{2-6}
+ & Agosto & Setembro & Outubro & Novembro & Dezembro \\ 
+\hline
+Modelagem dos Circuitos & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ 
+\hline
+Elaboração das Rotinas Numéricas & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ 
+\hline
+Compra dos Componentes & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ 
+\hline
+Previsão de Entrega dos Componentes & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ 
+\hline
+Montagem na Matriz de Contatos & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ 
+\hline
+Programação do Sistema & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ 
+\hline
+Testes de Medição & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ 
+\hline
+Criação da Placa de Circuito Impresso & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ 
+\hline
+Montagem do Circuito Impresso & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{} \\ 
+\hline
+Testes Finais do Sistema & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{} \\ 
+\hline
+Elaboração do Relatório & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{X} & \multicolumn{1}{c|}{X} \\ 
+\hline
+\end{tabular}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+	\end{center}
+\end{table}
+\end{landscape}
+
+%%
+%%
+%%%%%%%%%%%% Orçamento %%%%%%%%%%%%%%
+\chapter{Demonstrativo da Aplicação dos Recursos Pleiteados no Projeto}
+\label{orca}
+
+A Tabela \ref{tab:Orcamento} mostra o orçamento necessário para a construção do projeto. Essa está organizada da seguinte forma: do item 1 ao 12, são os recursos para montar o circuito do projeto (incluindo a o microprocessador); do 13 ao 23, são os recursos necessários para a construção das cargas para calibrar e testar o equipamento com segurança. O custo total poderá oscilar devido as flutuações do dólar (o item 1 será comprado no exterior). 
+
+Embora o objetivo seja a construção de apenas um medidor e uma carga teste de cada tipo, a compra de mais de uma peça é necessária devido à reposição de componentes em caso manutenção, falha ou queima. Esse procedimento é comum em projetos eletrônicos, devido à grande sensibilidade dos componentes envolvidos.
+
+Os itens descritos nas seções: \ref{mat_transf}, \ref{mat_ind}, \ref{mat_reos}, \ref{mat_variac} e \ref{mat_osc}, são equipamentos existentes nos laboratórios da universidade, portanto, não estão incluídos no orçamento.
+
+\begin{landscape}
+\begin{table}[!htbp]
+\caption{Orçamento para o Desenvolvimento do Projeto.}
+	\label{tab:Orcamento}
+	\begin{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tabular}{llrlr}
+\hline
+Item & Descrição & Quantidade & Valor Unitário (R \$) & Valor Total (R \$) \\ 
+\hline
+1 & Placa de Desenvolvimento \textit{Tiva\texttrademark C Series} & 2 & \multicolumn{1}{r}{80,00} & 160,00 \\ 
+\hline
+2 & Sensor de Corrente Baseado no Efeito \textit{Hall} 30A & 3 & \multicolumn{1}{r}{16,00} & 48,00 \\ 
+\hline
+3 & Sensor de Corrente Baseado no Efeito \textit{Hall} 5A & 3 & \multicolumn{1}{r}{14,39} & 43,17 \\ 
+\hline
+4 & Fabricação da placa de controle & 10 & \multicolumn{1}{r}{30,00} & 300,00 \\ 
+\hline
+5 & Circuito integrado TL074 (DIP-14) & 5 & \multicolumn{1}{r}{1,00} & 5,00 \\ 
+\hline
+6 & Regulador de tensão  LM78L05 (TO-92)  & 60 & \multicolumn{1}{r}{0,30} & 18,00 \\ 
+\hline
+7 & Regulador de tensão LM79L05 (TO-92) & 5 & \multicolumn{1}{r}{3,80} & 19,00 \\ 
+\hline
+8 & Barra de pinos 180° dois lados macho (40 pinos) & 10 & \multicolumn{1}{r}{0,95} & 9,50 \\ 
+\hline
+9 & Barra de pinos 180° dois lados fêmea (40 pinos) & 10 & \multicolumn{1}{r}{1,50} & 10,50 \\ 
+\hline
+10 & Resistor de precisão (erro de 1 \% por 1/4W) & 40 & \multicolumn{1}{r}{0,10} & 4,00 \\ 
+\hline
+11 & Conector parafusável (borne) 3 terminais (espaçamento 5,08mm) & 10 & \multicolumn{1}{r}{0,79} & 7,90 \\ 
+\hline
+12 & Conector parafusável (borne) 2 terminais (espaçamento 5,08mm) & 10 & \multicolumn{1}{r}{0,55} & 5,50 \\ 
+\hline
+13 & Acoplador óptico (4N38) & 5 & \multicolumn{1}{r}{2,99} & 14,95 \\ 
+\hline
+14 & Acoplador óptico (MOC3041) & 5 & \multicolumn{1}{r}{1,70} & 8,50 \\ 
+\hline
+15 & Acoplador óptico (MOC3023) & 5 & \multicolumn{1}{r}{1,75} & 8,75 \\ 
+\hline
+16 & Triac (BTA08-600) & 5 & \multicolumn{1}{r}{1,95} & 9,75 \\ 
+\hline
+17 & Diac (DB3) & 5 & \multicolumn{1}{r}{0,12} & 0,60 \\ 
+\hline
+18 & Diodo retificador 1N5408 & 10 & \multicolumn{1}{r}{0,25} & 2,50 \\ 
+\hline
+19 & Capacitor eletrolítico (680 $\mu$F/400V) & 2 & \multicolumn{1}{r}{22,50} & 45,00 \\ 
+\hline
+20 &  Capacitor para partida de motores (30 $\mu$ F/250 $V_{AC$}) & 2 & \multicolumn{1}{r}{11,30} & 22,60 \\ 
+\hline
+21 & Resistor 10W 0,47 $\Omega$ & 10 & \multicolumn{1}{r}{1,95} & 19,50 \\ 
+\hline
+22 & Placa de Circuito Impresso Ilhada 150x150mm & 3 & \multicolumn{1}{r}{13,90} & 39,00 \\ 
+\hline
+23 & Espaquete termoretrátil (20mm x 1m) & 3 & \multicolumn{1}{r}{3,16} & 9,48 \\ 
+\hline
+ &  &  & \multicolumn{1}{c}{Total:} & 811,20 \\ 
+\cline{4-5}
+\end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+	\end{center}
+\end{table}
+\end{landscape}

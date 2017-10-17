@@ -1,0 +1,236 @@
+\anexo
+
+%\chapter{Programas Usados para Desenvolver o Trabalho}
+%Abaixo uma lista dos principais programas usados para desenvolver o trabalho.
+%
+%\begin{itemize}
+%	\item \textbf{CodeBlocks:} Usado para compilar e escrever os códigos da simulação.
+%	\item \textbf{Inkscape:} \textit{Software} para criação de desenhos vetoriais.
+%	\item \textbf{GIMP:} Edição de imagens.
+%	\item \textbf{TeXnixCenter:} Edição dos documentos \LaTeX.
+%	\item \textbf{MikTex:} Compilador \LaTeX.
+%	\item \textbf{Ghostscript} e \textbf{GhostView:} Visualização dos arquivos do tipo \textit{PostScript}.
+%	\item \textbf{Sumatra:} Leitor de arquivos do tipo PDF.
+%\end{itemize}
+
+%\chapter{Código para o Cálculo da FFT}
+%\label{anex:fft}
+%\begin{lstlisting}[caption=Cálculo da FFT, label=cod:fft]
+%void four1(float data[], int nn, int isign)
+%{
+%    int n, mmax, m, j, istep, i;
+%    float wtemp, wr, wpr, wpi, wi, theta;
+%    float tempr, tempi;
+%
+%    n = nn << 1;
+%    j = 1;
+%    for (i = 1; i < n; i += 2) {
+%	if (j > i) {
+%	    tempr = data[j];     data[j] = data[i];     data[i] = tempr;
+%	    tempr = data[j+1]; data[j+1] = data[i+1]; data[i+1] = tempr;
+%	}
+%	m = n >> 1;
+%	while (m >= 2 && j > m) {
+%	    j -= m;
+%	    m >>= 1;
+%	}
+%	j += m;
+%    }
+%    mmax = 2;
+%    while (n > mmax) {
+%	istep = 2*mmax;
+%	theta = TWOPI/(isign*mmax);
+%	wtemp = sin(0.5*theta);
+%	wpr = -2.0*wtemp*wtemp;
+%	wpi = sin(theta);
+%	wr = 1.0;
+%	wi = 0.0;
+%	for (m = 1; m < mmax; m += 2) {
+%	    for (i = m; i <= n; i += istep) {
+%		j =i + mmax;
+%		tempr = wr*data[j]   - wi*data[j+1];
+%		tempi = wr*data[j+1] + wi*data[j];
+%		data[j]   = data[i]   - tempr;
+%		data[j+1] = data[i+1] - tempi;
+%		data[i] += tempr;
+%		data[i+1] += tempi;
+%	    }
+%	    wr = (wtemp = wr)*wpr - wi*wpi + wr;
+%	    wi = wi*wpr + wtemp*wpi + wi;
+%	}
+%	mmax = istep;
+%    }
+%}
+%\end{lstlisting}
+
+\appendix
+%\chapter{Código Fonte da Simulação}
+%\label{apen:sim}
+%Por ser muito extenso, o código fonte da simulação não será colocado no trabalho, porém estará disponível no CD em anexo e para \textit{download} no link: \url{https://db.tt/8aSte919}.
+%
+%\chapter{Código Fonte do Microcontrolador}
+%\label{apen:tiva}
+%Por ser muito extenso, o código fonte do microcontrolador não será colocado no trabalho, porém estará disponível no CD em anexo e para \textit{download} no link: \url{https://db.tt/Lz5etF1R}.
+%
+%\chapter{Código Fonte do Terminal}
+%\label{apen:term}
+%Por ser muito extenso, o código fonte do terminal de comunicação não será colocado no trabalho, porém estará disponível no CD em anexo e para \textit{download} no link: \url{https://db.tt/K5sSqiLP}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{landscape}
+%\chapter{Medições Obtidas com o CRI}
+%\label{apen:crl}
+%
+%\begin{table}[!htbp]
+%\captionsetup{justification=centering,font={footnotesize,bf}}
+%\caption{Medições Obtidas com o CRI.}
+%	\label{tab:CRI}
+%	\begin{center}
+%	\resizebox{\columnwidth}{!}{%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{tabular}{lllllllllllllll}
+%\hline
+%Amostra & $V_{RMS} (V)$ & $I_{RMS} (A)$ & $P (W)$ & $S (VA)$ & $Q (VAr)$ & $D (DVA)$ & $S' (VA)$ & $V_{THD} (\%)$ & $I_{THD1} (\%)$ & $cos(\lambda)=1/\sqrt{1+THD^2}$ & $cos(\varphi)$ & $FP_{1}=P/S$ & $FP_{2}=cos(\varphi) cos(\lambda)$ & $FP_{3}$ (Teórico) \\ 
+%\hline
+%1 & 129,478 & 0,283 & 12,240 & 36,649 & 34,544 & 0,250 & 36,648 & 1,013 & 0,683 & 1,000 & 0,334 & 0,334 & 0,334 & 0,359 \\ 
+%2 & 128,953 & 0,273 & 11,633 & 35,262 & 33,287 & 0,245 & 35,261 & 1,129 & 0,695 & 1,000 & 0,330 & 0,330 & 0,330 & 0,359 \\ 
+%3 & 127,894 & 0,266 & 10,916 & 34,016 & 32,216 & 0,303 & 34,015 & 1,061 & 0,890 & 1,000 & 0,321 & 0,321 & 0,321 & 0,359 \\ 
+%4 & 127,363 & 0,268 & 11,251 & 34,161 & 32,254 & 0,244 & 34,160 & 1,110 & 0,715 & 1,000 & 0,329 & 0,329 & 0,329 & 0,359 \\ 
+%5 & 126,589 & 0,267 & 10,881 & 33,815 & 32,016 & 0,220 & 33,815 & 1,108 & 0,650 & 1,000 & 0,322 & 0,322 & 0,322 & 0,359 \\ 
+%6 & 127,636 & 0,270 & 10,974 & 34,402 & 32,604 & 0,250 & 34,401 & 1,099 & 0,728 & 1,000 & 0,319 & 0,319 & 0,319 & 0,359 \\ 
+%7 & 127,603 & 0,270 & 10,933 & 34,474 & 32,694 & 0,222 & 34,473 & 1,121 & 0,645 & 1,000 & 0,317 & 0,317 & 0,317 & 0,359 \\ 
+%8 & 128,70 & 0,269 & 10,428 & 34,576 & 32,9632 & 0,376 & 34,574 & 1,019 & 1,090 & 1,000 & 0,302 & 0,302 & 0,302 & 0,359 \\ 
+%9 & 127,577 & 0,265 & 9,956 & 33,744 & 32,240 & 0,336 & 33,743 & 1,135 & 0,994 & 1,000 & 0,295 & 0,295 & 0,295 & 0,359 \\ 
+%10 & 127,563 & 0,285 & 10,790 & 36,299 & 34,656 & 0,345 & 36,297 & 1,093 & 0,950 & 1,000 & 0,297 & 0,297 & 0,297 & 0,359 \\ 
+%\hline
+%Média & 127,936 & 0,272 & 11,000 & 34,740 & 32,947 & 0,279 & 34,739 & 1,089 & 0,804 & 1,000 & 0,317 & 0,317 & 0,317 & 0,359 \\ 
+%\hline
+%\end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	}
+%	\end{center}
+%\end{table}
+%\end{landscape}
+%
+%\begin{figure}[!htbp]
+%	\centering
+%	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+%		\includegraphics[width=0.8\textwidth]{materiais_metodos/figuras/res_graf_rl.eps}
+%	\caption{Comparação entre os valores de FP para o CRI para os Valores da Tabela \ref{tab:CRI_comp}.}
+%		\label{fig:res_graf_rl}
+%		\vspace{0.5cm}\par
+%\end{figure}
+%
+%\begin{figure}[!htbp]
+%	\centering
+%	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+%		\includegraphics[width=0.8\textwidth]{materiais_metodos/figuras/res_graf_rl_thd.eps}
+%	\caption{Comparação entre os valores de $I_{THD}$ para o CRI para os Valores da Tabela \ref{tab:CRI_comp}.} 
+%		\label{fig:res_graf_rl_thd}
+%		\vspace{0.5cm}\par
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{landscape}
+%\chapter{Medições Obtidas o CRC}
+%\label{apen:crc}
+%
+%\begin{table}[!htbp]
+%\captionsetup{justification=centering,font={footnotesize,bf}}
+%\caption{Medições Obtidas com o CRC.}
+%	\label{tab:CRC}
+%	\begin{center}
+%	\resizebox{\columnwidth}{!}{%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{tabular}{lllllllllllllll}
+%\hline
+%Amostra & $V_{RMS} (V)$ & $I_{RMS} (A)$ & $P (W)$ & $S (VA)$ & $Q (VAr)$ & $D (DVA)$ & $S' (VA)$ & $V_{THD} (\%)$ & $I_{THD1} (\%)$ & $cos(\lambda)=1/\sqrt{1+THD^2}$ & $cos(\varphi)$ & $FP_{1}=P/S$ & $FP_{2}=cos(\varphi) cos(\lambda)$ & $FP_{3}$ (Teórico) \\ 
+%\hline
+%1 & 127,344 & 0,486 & 25,630 & 61,833 & 56,269 & 0,483 & 61,831 & 1,041 & 0,781 & 1,000 & 0,415 & 0,415 & 0,415 & 0,441 \\ 
+%2 & 126,800 & 0,486 & 26,064 & 61,648 & 55,865 & 0,506 & 61,646 & 1,105 & 0,822 & 1,000 & 0,423 & 0,423 & 0,423 & 0,441 \\ 
+%3 & 126,690 & 0,485 & 25,253 & 61,485 & 56,057 & 0,543 & 61,482 & 1,103 & 0,883 & 1,000 & 0,411 & 0,411 & 0,411 & 0,441 \\ 
+%4 & 128,0157 & 0,492 & 26,403 & 62,996 & 57,195 & 0,423 & 62,995 & 1,077 & 0,673 & 1,000 & 0,419 & 0,419 & 0,419 & 0,441 \\ 
+%5 & 126,851 & 0,489 & 26,131 & 62,022 & 56,247 & 0,398 & 62,020 & 1,089 & 0,596 & 1,000 & 0,421 & 0,421 & 0,421 & 0,441 \\ 
+%6 & 127,706 & 0,472 & 25,646 & 60,334 & 54,608 & 0,621 & 60,331 & 0,901 & 1,030 & 1,000 & 0,425 & 0,425 & 0,425 & 0,441 \\ 
+%7 & 128,133 & 0,479 & 26,992 & 61,385 & 55,129 & 0,544 & 61,382 & 0,830 & 0,888 & 1,000 & 0,440 & 0,440 & 0,440 & 0,441 \\ 
+%8 & 127,476 & 0,475 & 25,246 & 60,511 & 54,990 & 0,563 & 60,508 & 0,891 & 0,931 & 1,000 & 0,417 & 0,417 & 0,417 & 0,441 \\ 
+%9 & 127,672 & 0,492 & 26,465 & 62,839 & 56,993 & 0,422 & 62,838 & 1,086 & 0,672 & 1,000 & 0,421 & 0,421 & 0,421 & 0,441 \\ 
+%10 & 127,843 & 0,493 & 26,483 & 63,090 & 57,261 & 0,411 & 63,089 & 1,074 & 0,652 & 1,000 & 0,420 & 0,420 & 0,420 & 0,441 \\ 
+%\hline
+%Média & 127,453 & 0,485 & 26,031 & 61,814 & 56,061 & 0,491 & 61,812 & 1,020 & 0,793 & 1,000 & 0,421 & 0,421 & 0,421 & 0,441 \\ 
+%\hline
+%\end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	}
+%	\end{center}
+%\end{table}
+%\end{landscape}
+%
+%\begin{figure}[!htbp]
+%	\centering
+%	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+%		\includegraphics[width=0.8\textwidth]{materiais_metodos/figuras/res_graf_rc.eps}
+%	\caption{Comparação entre os valores de FP para o CRC para os Valores da Tabela \ref{tab:CRC_comp}.} 
+%		\label{fig:res_graf_rc}
+%\end{figure}
+%
+%\begin{figure}[!htbp]
+%	\centering
+%	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+%		\includegraphics[width=0.8\textwidth]{materiais_metodos/figuras/res_graf_rc_thd.eps}
+%	\caption{Comparação entre os valores de $I_{THD}$ para o CRC para os Valores da Tabela \ref{tab:CRC_comp}.} 
+%		\label{fig:res_graf_rc_thd}
+%\end{figure}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{landscape}
+%\chapter{Medições Obtidas com o RMMO}
+%\label{apen:rmmo}
+%
+%\begin{table}[!htbp]
+%\captionsetup{justification=centering,font={footnotesize,bf}}
+%\caption{Medições Obtidas com o RMMO.}
+%	\label{tab:RMMO}
+%	\begin{center}
+%	\resizebox{\columnwidth}{!}{%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{tabular}{lllllllllllllll}
+%\hline
+%Amostra & $V_{RMS} (V)$ & $I_{RMS} (A)$ & $P (W)$ & $S (VA)$ & $Q (VAr)$ & $D (DVA)$ & $S' (VA)$ & $V_{THD} (\%)$ & $I_{THD1} (\%)$ & $cos(\lambda)=1/\sqrt{1+THD^2}$ & $cos(\varphi)$ & $FP_{1}=P/S$ & $FP_{2}=cos(\varphi) cos(\lambda)$ & $FP_{3}$ (Teórico) \\ 
+%\hline
+%1 & 127,127 & 0,753 & 66,094 & 95,983 & 69,199 & 7,471 & 95,691 & 0,893 & 7,808 & 0,997 & 0,691 & 0,689 & 0,689 & 0,707 \\ 
+%2 & 126,556 & 0,749 & 65,181 & 94,802 & 68,429 & 7,503 & 94,505 & 1,081 & 7,940 & 0,997 & 0,690 & 0,687 & 0,687 & 0,707 \\ 
+%3 & 127,354 & 0,768 & 66,199 & 97,846 & 71,668 & 7,424 & 97,564 & 1,090 & 7,609 & 0,997 & 0,692 & 0,677 & 0,677 & 0,707 \\ 
+%4 & 127,475 & 0,759 & 66,705 & 96,810 & 69,739 & 7,692 & 96,504 & 1,110 & 7,970 & 0,997 & 0,691 & 0,689 & 0,689 & 0,707 \\ 
+%5 & 127,595 & 0,758 & 66,034 & 96,671 & 70,204 & 7,492 & 96,381 & 1,075 & 7,773 & 0,997 & 0,685 & 0,683 & 0,686 & 0,707 \\ 
+%6 & 127,760 & 0,760 & 67,437 & 97,150 & 69,504 & 7,716 & 96,843 & 1,090 & 7,968 & 0,997 & 0,696 & 0,694 & 0,694 & 0,707 \\ 
+%7 & 127,781 & 0,762 & 66,799 & 97,341 & 70,394 & 7,614 & 97,043 & 1,126 & 7,846 & 0,997 & 0,688 & 0,686 & 0,686 & 0,707 \\ 
+%8 & 127,617 & 0,767 & 66,650 & 97,895 & 71,306 & 7,536 & 97,605 & 1,093 & 7,721 & 0,997 & 0,683 & 0,681 & 0,681 & 0,707 \\ 
+%9 & 128,435 & 0,786 & 69,118 & 100,978 & 73,105 & 7,770 & 100,680 & 1,010 & 7,717 & 0,997 & 0,687 & 0,684 & 0,684 & 0,707 \\ 
+%10 & 127,776 & 0,763 & 66,478 & 97,497 & 70,917 & 7,563 & 97,204 & 1,080 & 7,781 & 0,997 & 0,684 & 0,682 & 0,682 & 0,707 \\ 
+%\hline
+%Média & 127,548 & 0,763 & 66,670 & 97,294 & 70,447 & 7,578 & 97,002 & 1,065 & 7,813 & 0,997 & 0,689 & 0,685 & 0,686 & 0,707 \\ 
+%\hline
+%\end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	}
+%	\end{center}
+%\end{table}
+%\end{landscape}
+%
+%\begin{figure}[!htbp]
+%	\centering
+%	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+%		\includegraphics[width=0.8\textwidth]{materiais_metodos/figuras/res_graf_rmmo.eps}
+%	\caption{Comparação entre os valores de FP para o RMMO para os Valores da Tabela \ref{tab:RMMO_comp}.} 
+%	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+%		\label{fig:res_graf_rmmo}
+%\end{figure}
+%
+%\begin{figure}[!htbp]
+%	\centering
+%	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+%		\includegraphics[width=0.8\textwidth]{materiais_metodos/figuras/res_graf_rmmo_thd.eps}
+%	\caption{Comparação entre os valores de $I_{THD}$ para o RMMO para os Valores da Tabela \ref{tab:RMMO_comp}.} 
+%	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+%		\label{fig:res_graf_rmmo_thd}
+%\end{figure}

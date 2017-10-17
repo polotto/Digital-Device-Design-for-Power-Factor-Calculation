@@ -1,0 +1,23 @@
+\chapter{Introdução}
+\label{intro}
+
+Ao final do século XIX, iniciou-se grandes debates sobre como deveria ser transmitida a energia elétrica aos consumidores finais. Uma parte dos engenheiros eletricistas defendiam a transmissão através da corrente contínua \sigla[Corrente Contínua]{CC} a outra através da corrente alternada \sigla[Corrente Alternada]{CA} \cite{Sadiku370}. Entretanto, a transmissão em CA se demonstrou muito mais eficiente para longas distâncias, e consequentemente, grande parte dos sistemas atuais são feitos dessa forma.
+
+Em contrapartida, sistemas com correntes e tensões variantes no tempo possuem o problema de absorção de potência através da linha de transmissão, devido à suas características reativas à frequência. Um problema adicional é o fato de ser inviável mudar as características presentes nestas linhas. Além disso, o consumidor pode conectar à rede cargas que agravam esses valores, ou seja, provocam aumentos nos valores da corrente e, consequentemente, as perdas na rede elétrica \cite{Dorf477}.
+
+Uma forma de monitorar esse tipo de perda, é a apuração do fator de potência \sigla[Fator de Potência]{$FP$}. Definido como a razão entre a potência ativa \simb[Potência Ativa]{P} (geradora de trabalho) e a potência aparente \simb[Potência Aparente]{S} (total consumida pelo sistema), tem-se uma proporção na qual valores próximos a uma unidade denotam um melhor aproveitamento da energia fornecida. Na prática, o $FP$ não pode ser obtido de forma direta, sendo necessário o cálculo através das formas de onda de tensão e corrente ao longo do tempo \cite{Balbinot}. %\cite{Vargas}.
+
+Nota-se, ainda, que cargas não lineares conectadas a um sistema de po\-tên\-cia podem causar distorções na forma de onda da corrente. Isso resulta no surgimento de problemas relacionados à qualidade de energia, entres esses estão: aquecimento de condutores e motores, falha em controladores de velocidade, torque não contínuo em motores, falhas em detectores de cruzamento por zero e super dimensionamento de transformadores de potência. Uma forma de medir essas distorções é o cálculo da taxa de distorção harmônica \sigla[\textit{Total Harmonic Distortion}]{$THD$}  \cite{thdPower}.
+
+Consequentemente, desenvolver métodos para se obter de forma digital, a partir de valores amostrados de tensão e corrente, as grandezas $P$, $S$, $FP$ e $THD$ não é um processo simples devido as complexidades dos cálculos envolvidos e são de grande importância para distribuir a energia elétrica com qualidade e poucas perdas.
+
+Dessa forma, este trabalho propõe o desenvolvimento de um protótipo de sistema embarcado capaz de medir o fator de potência de cargas monofásicas, lineares e não lineares, através de métodos numéricos utilizando os valores amostrados de tensão e corrente na entrada de alimentação dos circuitos.
+
+\chapter{Delimitação do Tema}
+\label{deli}
+
+O assunto abordado por esse trabalho será o projeto e implementação de um dispositivo capaz de calcular o fator de potência através de métodos numéricos. O medidor será projetado e construído com técnicas de eletrônica embarcada e processamento digital de sinais, para examinar os sinais de tensão e a corrente na entrada de alguns circuitos predefinidos. Além disso, será limitado à capacidade de mensurar o FP em cargas monofásicas lineares e não lineares básicas, mais especificamente, retificadores monofásicos com cargas não chaveadas.
+
+Como já abordado na Seção \ref{intro}, a transmissão da maior parte da energia elétrica é feita em corrente alternada por questões práticas. Como as perdas são eminentes, estudar métodos de mensurá-las e reduzi-las são necessários para a qualidade do sistema elétrico como um todo. Embora as autoridades responsáveis pela qualidade da energia no Brasil controlem perdas relativas ao fator de potência somente para grandes consumidores, o estudo de como medi-lo é abrangente para qualquer nível de potência. O protótipo proposto neste trabalho é capaz de mensurar o $FP$  para cargas alimentadas com tensões alternadas monofásicas menores ou iguais a 220 V e com correntes de no máximo 5 A.
+
+%Devido às limitações de processamento numérico de dispositivos embarcados, serão feitas análises de viabilidade para medir também o $THD$.

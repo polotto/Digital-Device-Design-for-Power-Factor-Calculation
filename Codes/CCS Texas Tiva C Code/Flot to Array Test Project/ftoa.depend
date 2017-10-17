@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1445298559 source:c:\users\polotto.pc\workspace_v5_4\ftoa\main.c
+	<stdio.h>
+	<stdlib.h>
+
