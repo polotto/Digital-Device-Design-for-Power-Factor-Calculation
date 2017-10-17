@@ -28,7 +28,7 @@ To my thesis text, I used Latex code. All the thesis text was written in portugu
 
 The power factor (PF) is one of the parameters related to power quality whose inadequate values cause: increasing internal power losses and voltage drops in the facility; reduction of usable capacity of transformers and engines; heated drivers; among others. Aiming for an application in the power quality area, this study proposes the development of a device capable of measuring PF of linear and nonlinear circuits (particularly single-phase rectifiers with resistive loads). The prototype will consist of a microcontroller, a Hall effect sensor to measure current and a circuit for conditioning the voltage and current signals. The embedded software developed for the system is responsible for sampling the involved quantities and, through numerical methods, calculate PF and make it accessible to the user on an interface. The operation of meter is compared with simulation data.
 
-## Thesis Abstract in Portuguses
+## Thesis Abstract in Portuguese
 
 ### Projeto de Dispositivo Digital para Cálculo do Fator de Potência
 
