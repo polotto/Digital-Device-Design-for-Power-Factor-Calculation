@@ -8,6 +8,7 @@ To my thesis text, I used Latex code. All the thesis text was written in portugu
 
 ## Content of This Repository
 
+* Thesis_Polotto_TD_COELE_2015_2_026_Portuguese: PDF of my thesis in portuguse.
 * Circuit Design
   * Eagle Board PDF Exported: Board design exported to PDF.
   * Eagle Board Project: Board design project made with Eagle software.
@@ -20,13 +21,12 @@ To my thesis text, I used Latex code. All the thesis text was written in portugu
     * Functions Test: Test of the algorithms written in C.
     * Matlab: Algorithm tests.
 * Thesis Latex: All my thesis latex content.
-* Thesis_Polotto_TD_COELE_2015_2_026_Portuguese: PDF of my thesis in portuguse.
 
 ## Thesis Summary in Inglish
 
 ### Digital Device Design for Power Factor Calculation
 
-The power factor (PF) is one of the parameters related to power quality whose inadequate values cause: increasing internal power losses and voltage drops in the facility; reduction of usable capacity of transformers and engines; heated drivers; among others. Aiming for an application in the power quality area, this study proposes the development of a device capable of measuring $PF$ of linear and nonlinear circuits (particularly single-phase rectifiers with resistive loads). The prototype will consist of a microcontroller, a Hall effect sensor to measure current and a circuit for conditioning the voltage and current signals. The embedded software developed for the system is responsible for sampling the involved quantities and, through numerical methods, calculate PF and make it accessible to the user on an interface. The operation of meter is compared with simulation data.
+The power factor (PF) is one of the parameters related to power quality whose inadequate values cause: increasing internal power losses and voltage drops in the facility; reduction of usable capacity of transformers and engines; heated drivers; among others. Aiming for an application in the power quality area, this study proposes the development of a device capable of measuring PF of linear and nonlinear circuits (particularly single-phase rectifiers with resistive loads). The prototype will consist of a microcontroller, a Hall effect sensor to measure current and a circuit for conditioning the voltage and current signals. The embedded software developed for the system is responsible for sampling the involved quantities and, through numerical methods, calculate PF and make it accessible to the user on an interface. The operation of meter is compared with simulation data.
 
 ## Thesis Summary in Portuguses
 
