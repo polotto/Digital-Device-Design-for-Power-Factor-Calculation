@@ -1,4 +1,4 @@
-# Digital-Device-Design-for-Power-Factor-Calculation
+# Digital Device Design for Power Factor Calculation
 
 ## Introduction / Introdução
 
