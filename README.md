@@ -2,7 +2,7 @@
 
 ## Introduction / Introdução
 
-This is my graduation thesis complete. My work was design and build a digial power factor meter, I used for that Tiva C microcontroller from Texas Instruments and ACS712 hall effect sensor. All the information about the measurement is displayed in a graphic serial monitor running on the computer.
+This is my complete graduation thesis. My work was design and build a digial power factor meter, I used for that Tiva C microcontroller from Texas Instruments and ACS712 hall effect sensor. All the information about the measurement is displayed in a graphic serial monitor running on the computer.
 All the Tiva C code was written in C language and the serial monitor was writter in Qt C++. The simulation code was written in Matlab and C ANSI.
 To my thesis text, I used Latex code. All the thesis text was written in portuguse, if someone want to translate, please, fell free to do it.
 
@@ -22,7 +22,7 @@ To my thesis text, I used Latex code. All the thesis text was written in portugu
     * Matlab: Algorithm tests.
 * Thesis Latex: All my thesis latex content.
 
-## Thesis Abstract in Inglish
+## Thesis Abstract in English
 
 ### Digital Device Design for Power Factor Calculation
 
