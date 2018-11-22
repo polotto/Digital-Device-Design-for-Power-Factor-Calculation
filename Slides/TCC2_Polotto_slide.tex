@@ -1,0 +1,653 @@
+\documentclass{beamer}
+\usepackage{adjustbox}
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{multicol}
+%\usepackage{amsmath}
+\usepackage{beamerthemesplit}
+%\usepackage{graphics,epsfig, subfigure}
+%\usepackage{beamerposter}
+%\usepackage{animate}
+%\usepackage{multimedia}
+%\usepackage{media9}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{url}
+%\usepackage{srcltx}
+%\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{ragged2e}
+\usepackage{url}
+
+%\definecolor{kugreen}{RGB}{50,93,61}
+%%\definecolor{kugreen}{RGB}{247,250,0}
+%\definecolor{kugreenlys}{RGB}{132,158,139}
+%\definecolor{kugreenlyslys}{RGB}{173,190,177}
+%\definecolor{kugreenlyslyslys}{RGB}{214,223,216}
+%\usecolortheme{dolphin}
+%\setbeamercovered{transparent}
+\mode<presentation>
+%\usetheme[numbers,totalnumber,compress,sidebarshades]{default}
+\usetheme{Madrid}
+%
+%\usecolortheme[named=kugreen]{structure}
+
+%\useinnertheme{circles}
+%\usefonttheme[onlymath]{serif}
+\setbeamercovered{transparent}
+%\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamertemplate{headline}{}
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+%\setbeamertemplate{footline}[frame number]
+%\setbeamertemplate{footline}[text line]{%
+%	\parbox{\linewidth}{\vspace*{-8pt}TCC 1\hfill\insertshortauthor\hfill\insertpagenumber}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{yellowUtf}{rgb}{1, 0.8, 0}
+\setbeamercolor*{palette primary}{use=structure,fg=white,bg=yellowUtf}
+\setbeamercolor*{palette secondary}{use=structure,fg=white,bg=yellowUtf}
+\setbeamercolor*{palette tertiary}{use=structure,fg=black,bg=yellowUtf}
+\setbeamercolor*{palette quaternary}{use=structure,fg=white,bg=yellowUtf}
+\setbeamercolor{normal text}{fg=black,bg=white}
+%\setbeamercolor{alerted text}{fg=black}
+%\setbeamercolor{example text}{fg=black}
+\setbeamercolor{item projected}{bg=black}
+\setbeamercolor{block title}{use=structure,fg=black,bg=yellowUtf}
+%\setbeamercolor{local structure}{fg=black}
+\setbeamercolor{structure}{fg=black}
+%\setbeamercolor{local structure}{parent=structure}
+%\setbeamertemplate{itemize item}[square]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[square]
+\setbeamercolor{footlinecolor}{fg=white, bg=black}
+\setbeamertemplate{footline}{%
+\begin{beamercolorbox}[sep=1em,wd=\paperwidth,leftskip=0.5cm,rightskip=0.5cm]{footlinecolor}
+	\parbox{\linewidth}{\vspace*{-2pt}TCC 2\hfill\insertshortauthor\hfill\insertpagenumber}
+%	\includegraphics[scale=0.07,height=10pt]{images/image1.png}
+%	\hspace{0.3cm}%
+%	\scriptsize{Seite \insertframenumber}
+%	\hfill
+%	\includegraphics[scale=0.25,height=10pt]{images/image2.png}
+\end{beamercolorbox}%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\useoutertheme{infolines} 
+\title{\uppercase{Projeto de Dispositivo Digital para Cálculo do Fator de Potência}}
+\author[Ângelo Polotto]{Ângelo Polotto\\ Orientador: Prof. Dr. Felipe W. D. Pfrimer \\{\footnotesize\ttfamily angelopolotto@gmail.com\\polotto@alunos.utfpr.edu.br}}
+\institute{Engenharia Eletrônica - COELE \\ Universidade Tecnológica Federal do Paraná - Campus Toledo}
+\date{\today}
+\titlegraphic{\includegraphics[width=3cm]{logo/logoUTFPR.eps}}
+%\logo{\includegraphics[width=1.3cm]{logoUTFPR}}
+
+\begin{document}
+\newcommand{\fasor}[2]{#1/\!\!\!\underline{\;#2}}%Criação de simbologia de fasores
+
+%\section{Capa} 
+\begin{frame}[plain]
+	\titlepage 
+	\vspace{-0.5cm}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Sumário}
+%\AtBeginSection[]
+%{
+	\begin{frame}
+		\begin{multicols}{3}
+			\frametitle{Sumário}
+			%\tableofcontents[currentsection, currentsubsection]
+			\tableofcontents[hideallsubsections]
+		\end{multicols}
+		\frametitle{Sumário}
+		%\tableofcontents[currentsection, currentsubsection]
+		%\tableofcontents[hideallsubsections]
+	\end{frame}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Objetivos}
+\begin{frame}
+	\frametitle{Objetivos}
+	\begin{figure}
+		\includegraphics[scale=0.7]{objetivos/figuras/medidor.eps}
+		\caption{Ilustração do Projeto Proposto.}
+		\label{fig:fator}
+	\end{figure}
+\justify
+O objetivo desse trabalho é a construção de dispositivo embarcado que pode ser acoplado entre a fonte de alimentação e a carga de teste (monofásica) capaz de calcular a potência ativa, potência aparente e o fator de potência, com base em valores amostrados de tensão e corrente na entrada.
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Referencial Teórico}
+\subsection{Fator de Potência}
+\begin{frame}
+	\frametitle{Fator de Potência}
+	\framesubtitle{Definição}
+	\begin{figure}
+		\includegraphics[scale=1.5]{problemas_premissas/figuras/fator.eps}
+		\caption{Ponto de Medição do Fator de Potência.}
+		\label{fig:fator}
+	\end{figure}
+	\begin{exampleblock}{Fórmula:}
+		\begin{equation} \label{eq:fp_eq}
+		FP = \frac{P}{S} = \frac{\frac{1}{T}\int_{0}^{T}v(t)i(t)dt}{V_{RMS} I_{RMS}}
+		\end{equation}
+	\end{exampleblock}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Fator de Potência}
+	\framesubtitle{Resentação para CL}
+	\begin{figure}
+		\includegraphics[scale=2]{problemas_premissas/figuras/pot_fasor.eps}
+		\caption{Representação Vetorial das Potências para CL.}
+		\label{fig:pot_fasor}
+	\end{figure}
+	\begin{exampleblock}{Fórmula:}
+		\begin{equation} \label{eq:fp_eq}
+		FP = {\cos \varphi}
+		\end{equation}
+	\end{exampleblock}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Fator de Potência}
+	\framesubtitle{Respresentação para CNL}
+	\begin{figure}
+		\includegraphics[width=0.4\textwidth,height=0.40\textheight]{problemas_premissas/figuras/pot_fasor_har.eps}
+		\caption{Representação Vetorial das Potências para CNL.}
+		\label{fig:pot_fasor}
+	\end{figure}
+	\begin{exampleblock}{Fórmula:}
+		\begin{equation} \label{eq:fp_eq}
+		FP = \frac{cos(\varphi)}{\sqrt{1+I_{THD}^2}} = cos(\varphi) cos(\lambda)
+		\end{equation}
+	\end{exampleblock}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Fator de Potência}
+	\framesubtitle{Taxa de Distorção Harmônica}
+	\begin{figure}
+		\centering
+			\includegraphics[width=0.3\textwidth,height=0.35\textheight]{problemas_premissas/figuras/thd.eps}
+			\caption{Distorção Harmônica da Corrente..}
+	\end{figure}
+	
+	\begin{exampleblock}{Definição:}
+		\begin{equation}
+			I_{RMS} = \sqrt{I_{1 RMS}^2+\sum_{n=2}^{\infty}I_{n RMS}^2}
+		\end{equation}
+	\end{exampleblock}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Fator de Potência}
+	\framesubtitle{Taxa de Distorção Harmônica}
+	\begin{alertblock}{Observação:}
+		Para a curva de tensão, a distorção não é significativa.
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Fator de Potência}
+	\framesubtitle{Componentes Harmônicas}
+	\begin{figure}
+		\centering
+			\includegraphics[width=0.4\textwidth,height=0.40\textheight]{problemas_premissas/figuras/thd_freq.eps}
+			\caption{Corrente com distorção harmônica no domínio da frequência.}
+	\end{figure}
+	\begin{exampleblock}{Definição:}
+		\begin{equation}
+			I_{THD} = \frac{\sqrt{\sum_{n=2}^{\infty}I_{n RMS}^2}}{I_{1 RMS}}
+		\end{equation}
+	\end{exampleblock}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Placa de Desenvolvimento \protect\textit{Tiva\texttrademark C Series}}
+\begin{frame}
+	\frametitle{Placa de Desenvolvimento \textit{Tiva\texttrademark C Series}}
+	\begin{figure}
+		\includegraphics[scale=0.5]{materiais_metodos/figuras/tivaC.eps}
+		\caption{Placa de Desenvolvimento \textit{Tiva\texttrademark C Series}.}
+		\label{fig:tivaC}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sensor de Corrente Baseado no Efeito \protect\textit{Hall} ACS712}
+\begin{frame}
+	\frametitle{Sensor de Corrente Baseado no Efeito \textit{Hall} ACS712}
+	\begin{figure}
+		\includegraphics[width=0.55\textwidth,height=0.75\textheight]{materiais_metodos/figuras/moduloacs712.eps}
+		\caption{Sensor de Corrente ACS712.}
+		\label{fig:hall}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Circuito Condicionador de Sinais}
+\begin{frame}
+	\frametitle{Circuito Condicionador de Sinais}
+	\framesubtitle{Diagrama Esquemático}
+	\begin{figure}[!htbp]
+		\centering
+		\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=1\textwidth, height=0.53\textwidth]{materiais_metodos/figuras/circuito.eps}
+		\caption{Diagrama do Circuito do Medidor.} 
+		%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:circuito}
+	\end{figure}
+\end{frame}
+%%
+\begin{frame}
+	\frametitle{Circuito Condicionador de Sinais}
+	\framesubtitle{Placa de Circuito Impresso}
+	\begin{figure}
+	\begin{minipage}{.49\textwidth}
+		\centering
+	%	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+			\includegraphics[width=0.95\textwidth,height=0.55\textheight]{materiais_metodos/figuras/placa1.eps}
+		\caption{Vista Inferior da Placa (Sem os Componentes).} 
+		%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+			\label{fig:placa1}
+	\end{minipage}\hfill
+	\begin{minipage}{.49\textwidth}
+		\centering
+	%	\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+			\includegraphics[width=0.95\textwidth,height=0.55\textheight]{materiais_metodos/figuras/placa2.eps}
+		\caption{Vista Superior da Placa.} 
+		%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+			\label{fig:placa2}
+	\end{minipage} 
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Construção do Medidor}
+\begin{frame}
+	\frametitle{Construção do Medidor}
+	\framesubtitle{Diagrama de Blocos}
+	\begin{figure}
+	\centering
+	%\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=0.75\textwidth,height=0.70\textheight]{materiais_metodos/figuras/diagmedidor.eps}
+	\caption{Diagrama do Medidor.} 
+	%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:diagmedidor}
+\end{figure}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Construção do Medidor}
+	\framesubtitle{Dispositivo Construído}
+	\begin{figure}
+		\centering
+		\begin{minipage}{.49\textwidth}
+					\centering
+	        \includegraphics[width=\textwidth,height=0.7\textheight]{materiais_metodos/figuras/medidor_a.eps}
+	        \caption{Vista Superior}
+		\end{minipage}\hfill
+		\begin{minipage}{.49\textwidth}
+					\centering
+	        \includegraphics[width=\textwidth,height=0.7\textheight]{materiais_metodos/figuras/medidor_b.eps}
+	        \caption{Vista Inferior}
+		\end{minipage}
+		\caption{Medidor Montado.}
+			\label{fig:medidor}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Calibração do Medidor}
+\begin{frame}
+	\frametitle{Calibração do Medidor}
+	\framesubtitle{Sinais Obtidos com Osciloscópio}
+	\begin{figure}[!htbp]
+		\centering
+		\begin{minipage}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth, height=0.65\textheight]{materiais_metodos/figuras/calibracao_a.eps}
+			\caption{Sinais de tensão(amarelo) e corrente(verde) calibradas}
+		\end{minipage}\hfill
+		\begin{minipage}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth, height=0.65\textheight]{materiais_metodos/figuras/calibracao_b.eps}
+			\caption{Sinais de tensão(amarelo) e detector de cruzamento(verde)}
+		\end{minipage}
+		\caption{Calibração do Medidor.}
+	\end{figure}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Calibração do Medidor}
+	\framesubtitle{Fundos de Escala}
+	\begin{figure}
+		\centering
+		\begin{minipage}{.49\textwidth}
+			\centering
+			%\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+			\includegraphics[width=0.8\textwidth, height=0.65\textheight]{materiais_metodos/figuras/calibracao_v.eps}
+			\caption{Fundo de Escala da Tensão.}
+			\label{fig:calibracao_v}
+		\end{minipage}\hfill
+		\begin{minipage}{.49\textwidth}
+			\centering
+			%\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+			\includegraphics[width=0.8\textwidth, height=0.65\textheight]{materiais_metodos/figuras/calibracao_i.eps}
+			\caption{Fundo de Escala da Corrente.}
+			\label{fig:calibracao_i}
+		\end{minipage}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Código Desenvolvido}
+\begin{frame}
+	\frametitle{Código Desenvolvido}
+	\begin{figure}
+		\includegraphics[width=0.35\textwidth,height=0.75\textheight]{materiais_metodos/figuras/fluxograma.eps}
+		\caption{Diagrama Lógico do Dispositivo Proposto.}
+		\label{fig:logico}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Construção do Circuito das Cargas de Teste}
+\begin{frame}
+	\frametitle{Construção do Circuito das Cargas de Teste}
+	\framesubtitle{Diagrama Esquemárico}
+	\begin{figure}[!htbp]
+		\centering
+		\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=1\textwidth]{materiais_metodos/figuras/cargas_esq.eps}
+		\caption{Diagrama do Circuito das Cargas.} 
+		%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:cargaesq}
+	\end{figure}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Construção do Circuito das Cargas de Teste}
+	\framesubtitle{Diagrama de Blocos}
+	\begin{figure}
+		\includegraphics[width=0.65\textwidth,height=0.70\textheight]{materiais_metodos/figuras/diagcarga.eps}
+		\caption{Diagrama Completo do Circuito de Cargas.}
+	\end{figure}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Construção do Circuito das Cargas de Teste}
+	\framesubtitle{Circuito Montado}
+	\begin{figure}[!htbp]
+		\centering
+		\captionsetup{justification=centering,font={footnotesize,bf}}
+		\begin{minipage}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth, height=0.55\textheight]{materiais_metodos/figuras/carga_a.eps}
+			\caption{Vista superior}
+		\end{minipage}\hfill
+		\begin{minipage}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth,height=0.55\textheight]{materiais_metodos/figuras/carga_b.eps}
+			\caption{Vista inferior}
+		\end{minipage}
+		\caption{Cargas de Teste.}
+	\end{figure}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Construção do Circuito das Cargas de Teste}
+	\framesubtitle{Componentes Robustos}
+	\begin{figure}
+	\centering
+	\begin{minipage}{.49\textwidth}
+			\centering
+			\includegraphics[width=0.55\textwidth,height=0.6\textheight]{materiais_metodos/figuras/indutor_a.eps}
+			\caption{Indutor de potência}
+	\end{minipage}\hfill
+	\begin{minipage}{.49\textwidth}
+			\centering
+			\includegraphics[width=0.55\textwidth,height=0.6\textheight]{materiais_metodos/figuras/indutor_b.eps}
+			\caption{Reostato regulado em $43,5 \Omega$}
+	\end{minipage}
+	\caption{Componentes Robustos.}
+		\vspace{0.5cm}\par
+\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Terminal de Comunicação}
+\begin{frame}
+	\frametitle{Terminal de Comunicação}
+	\begin{figure}[!htbp]
+		\centering
+		\begin{minipage}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth, height=0.6\textheight]{materiais_metodos/figuras/terminal_a.eps}
+			\caption{Medições}
+		\end{minipage}\hfill
+		\begin{minipage}{.49\textwidth}
+			\centering
+			\includegraphics[width=\textwidth,height=0.6\textheight]{materiais_metodos/figuras/terminal_b.eps}
+			\caption{Gráficos das amostras de tensão e corrente}
+		\end{minipage}
+		\caption{Terminal de Comunicação.} 
+		\label{fig:term}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sistema de Medição Proposto}
+\begin{frame}
+	\frametitle{Sistema de Medição Proposto}
+	\framesubtitle{Diagrama de Blocos}
+	\begin{figure}
+		\includegraphics[width=\textwidth,height=0.6\textheight]{materiais_metodos/figuras/diagsistmed.eps}
+		\caption{Diagrama do Dispositivo Proposto.}
+		\label{fig:dispositivo}
+	\end{figure}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Sistema de Medição Proposto}
+	\framesubtitle{Sistema Montado}
+	\begin{figure}[!htbp]
+		\centering
+		\includegraphics[width=0.95\textwidth,height=0.6\textheight]{materiais_metodos/figuras/sistemamedicao.eps}
+		\caption{Sistema de Medição Montado.} 
+		\label{fig:sist}
+	\end{figure}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Resultados}
+\begin{frame}
+	\frametitle{Resultados}
+	\framesubtitle{Curvas Obtidas com o CRI}
+	\begin{figure}[!htbp]
+		\centering
+		\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=\textwidth,height=0.6\textheight]{materiais_metodos/figuras/res_rl.eps}
+		\caption{Gráfico Obtido no Terminal com o CRI. Curva de tensão (superior); curva de corrente (inferior).} 
+		%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:term_crl} 
+	\end{figure}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Resultados}
+	\framesubtitle{Medições com o CRI}
+	\begin{table}[!htbp]
+		\captionsetup{justification=centering,font={footnotesize,bf}}
+		\caption{Valores Teóricos e Medidos com o CRI.}
+		\label{tab:CRI_comp}
+		\begin{center}
+			\resizebox{\columnwidth}{!}{%
+				%%%%%%%%%%%%%%%%%%%%%%%%%
+				\begin{tabular}{llllll}
+					\hline
+					Amostra & $FP_{3}=cos\left(arctg\left(-(\omega L)/R\right)\right)$ & $FP_{1}=P/S$ & $I_{THD2} (\%)$ & $I_{THD1} (\%)$ & $e_{\%}=(FP_{3}-FP_{1}/FP_{3}) 100 (\%)$ \\ 
+					\hline
+					1 & 0,359 & 0,334 & 0 & 0,683 & 6,964 \\ 
+					2 & 0,359 & 0,330 & 0 & 0,695 & 8,078 \\ 
+					3 & 0,359 & 0,321 & 0 & 0,890 & 10,585 \\ 
+					4 & 0,359 & 0,329 & 0 & 0,715 & 8,357 \\ 
+					5 & 0,359 & 0,322 & 0 & 0,650 & 10,306 \\ 
+					6 & 0,359 & 0,319 & 0 & 0,728 & 11,142 \\ 
+					7 & 0,359 & 0,317 & 0 & 0,645 & 11,699 \\ 
+					8 & 0,359 & 0,302 & 0 & 1,090 & 15,877 \\ 
+					9 & 0,359 & 0,295 & 0 & 0,994 & 17,827 \\ 
+					10 & 0,359 & 0,297 & 0 & 0,950 & 17,270 \\ 
+					\hline
+					Média & 0,359 & 0,317 & 0 & 0,804 & 11,811 \\ 
+					Desvio Padrão & 0 & 0,014 & 0 & 0,162 & 3,889 \\ 
+					\hline
+				\end{tabular}
+				%%%%%%%%%%%%%%%%%%%%%%%%%
+			}
+		\end{center}
+	\end{table}
+\end{frame}
+%%
+\begin{frame}
+	\frametitle{Resultados}
+	\framesubtitle{Curvas Obtidas com o CRC}
+	\begin{figure}[!htbp]
+		\centering
+		\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=\textwidth,height=0.6\textheight]{materiais_metodos/figuras/res_rc.eps}
+		\caption{Gráfico Obtido no Terminal com o CRC.} 
+		%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:term_crc}
+		\vspace{0.5cm}\par
+		\end{figure}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Resultados}
+	\framesubtitle{Medições com o CRC}
+	\begin{table}[!htbp]
+		\captionsetup{justification=centering,font={footnotesize,bf}}
+		\caption{Valores Teóricos e Medidos com o CRC.}
+		\label{tab:CRC_comp}
+		\begin{center}
+			\resizebox{\columnwidth}{!}{%
+				%%%%%%%%%%%%%%%%%%%%%%%%%
+				\begin{tabular}{llllll}
+					\hline
+					Amostra & $FP_{3}=cos\left(arctg\left(1/(\omega R C)\right)\right)$ & $FP_{1}=P/S$ & $I_{THD2} (\%)$ & $I_{THD1} (\%)$ & $e_{\%}=(FP_{3}-FP_{1}/FP_{3}) 100 (\%)$ \\ 
+					\hline
+					1 & 0,441 & 0,415 & 0 & 0,781 & 5,896 \\ 
+					2 & 0,441 & 0,423 & 0 & 0,822 & 4,082 \\ 
+					3 & 0,441 & 0,411 & 0 & 0,883 & 6,803 \\ 
+					4 & 0,441 & 0,419 & 0 & 0,673 & 4,989 \\ 
+					5 & 0,441 & 0,421 & 0 & 0,596 & 4,535 \\ 
+					6 & 0,441 & 0,425 & 0 & 1,030 & 3,628 \\ 
+					7 & 0,441 & 0,440 & 0 & 0,888 & 0,227 \\ 
+					8 & 0,441 & 0,417 & 0 & 0,931 & 5,442 \\ 
+					9 & 0,441 & 0,421 & 0 & 0,672 & 4,535 \\ 
+					10 & 0,441 & 0,420 & 0 & 0,652 & 4,762 \\ 
+					\hline
+					Média & 0,441 & 0,421 & 0 & 0,793 & 4,490 \\ 
+					Desvio Padrão & 0 & 0,008 & 0 & 0,142 & 1,753 \\ 
+					\hline
+				\end{tabular}
+				%%%%%%%%%%%%%%%%%%%%%%%%%
+			}
+		\end{center}
+	\end{table}
+\end{frame}
+%%
+\begin{frame}
+	\frametitle{Resultados}
+	\framesubtitle{Curvas Obtidas com o RMMO}
+	\begin{figure}[!htbp]
+		\centering
+		\captionsetup{justification=centering,font={footnotesize,bf}} % Tamanho da legenda da figura (70% da largura do texto).
+		\includegraphics[width=\textwidth,height=0.6\textheight]{materiais_metodos/figuras/res_rmmo.eps}
+		\caption{Gráfico Obtido no Terminal com o RMMO.} 
+		%\raggedright\hspace{69pt}\footnotesize\textbf{Fonte: Site da \textit{Allegro\texttrademark}.}
+		\label{fig:fig:term_rmmo}
+	\end{figure}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Resultados}
+	\framesubtitle{Medições com o RMMO}
+	\begin{table}[!htbp]
+		\captionsetup{justification=centering,font={footnotesize,bf}}
+		\caption{Valores Teóricos e Medidos com o RMMO.}
+		\label{tab:RMMO_comp}
+		\begin{center}
+			\resizebox{\columnwidth}{!}{%
+				%%%%%%%%%%%%%%%%%%%%%%%%%
+				\begin{tabular}{llllll}
+					\hline
+					Amostra & $FP_{3}=\sqrt{2}/2$ & $FP_{1}=P/S$ & $I_{THD2} (\%)$ & $I_{THD1} (\%)$ & $e_{\%}=(FP_{3}-FP_{1}/FP_{3}) 100 (\%)$ \\ 
+					\hline
+					1 & 0,707 & 0,689 & 9,714 & 7,808 & 2,546 \\ 
+					2 & 0,707 & 0,687 & 9,714 & 7,940 & 2,829 \\ 
+					3 & 0,707 & 0,677 & 9,714 & 7,609 & 4,543 \\ 
+					4 & 0,707 & 0,689 & 9,714 & 7,970 & 2,546 \\ 
+					5 & 0,707 & 0,683 & 9,714 & 7,773 & 3,395 \\ 
+					6 & 0,707 & 0,694 & 9,714 & 7,968 & 1,839 \\ 
+					7 & 0,707 & 0,686 & 9,714 & 7,846 & 2,970 \\ 
+					8 & 0,707 & 0,681 & 9,714 & 7,721 & 3,677 \\ 
+					9 & 0,707 & 0,684 & 9,714 & 7,717 & 3,253 \\ 
+					10 & 0,707 & 0,682 & 9,714 & 7,781 & 3,536 \\ 
+					\hline
+					Média & 0,707 & 0,685 & 9,714 & 7,813 & 3,083 \\ 
+					Desvio Padrão & 0 & 0,005 & 0 & 0,119 & 0,746 \\ 
+					\hline
+				\end{tabular}
+				%%%%%%%%%%%%%%%%%%%%%%%%%
+			}
+		\end{center}
+	\end{table}
+\end{frame}
+%
+\begin{frame}
+	\frametitle{Resultados}
+	\framesubtitle{Vídeo}
+	\centering
+	Aperte o botão:\\
+	\href{run:videos/sistema_medicao.mp4}{\includegraphics[width=.4\textwidth]{videos/play.eps}}\\
+	ou assita pelo link: \url{https://youtu.be/bc7M2BVwBcQ}
+	\justify
+	Conteúdo do vídeo: apresentação do sistema de medição, primeiros testes, medição do CRI, do CRC e do RMMO.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusões}
+\begin{frame}
+	\frametitle{Conclusões}
+	\justify
+	\begin{itemize}
+		\item O circuito das cargas de teste produziram as ondas esperadas;
+		\item Ruído prejudicial à exatidão foi encontrado na corrente amostrada;
+		\item CRI apresentou o maior erro percentual médio ($11,81\%$) devido aos ruídos;
+		\item O medidor confundiu a classificação das cargas CRI e CRC em alguns momentos (a obtenção do $\theta$ pode ser falha);
+		\item As medidas efetuadas foram todas próximas aos valores teóricos e simulados;
+		\item O dispositivo funcionou como o esperado;
+		\item Provou a eficiência do uso digital dos métodos descritos no Referencial Teórico;
+		\item Pode ser aplicado em experimentos laboratoriais.
+	\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Propostas para Trabalhos Futuros}
+\begin{frame}
+	\frametitle{Propostas para Trabalhos Futuros}
+	\begin{itemize}
+		\item Buscar novos métodos para medida de corrente que não sejam tão ruidosos;
+		\item Amostrar mais períodos de rede para se obter uma medida mais exata;
+		\item Remover o circuito detector de cruzamento por zero através de um \textit{software} mais inteligente;
+		\item Verificar a possibilidade de utilizar o sistema como medidor digital de energia;
+		\item Chaveamento automático da escala do medidor para melhorar a resolução de medida de tensão e corrente;
+		\item Utilizar o dispositivo como um controlador de banco de capacitores.
+	\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Agradecimentos}
+\begin{frame}
+	\frametitle{Agradecimentos}
+	\begin{itemize}
+		\item Professor Felipe W. Pfrimer;
+		\item Universidade Tecnológica Federal do Paraná.
+	\end{itemize}
+\end{frame}
+\end{document}

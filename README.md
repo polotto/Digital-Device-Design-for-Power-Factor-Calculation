@@ -20,7 +20,8 @@ To my thesis text, I used Latex code. All the thesis text was written in portugu
   * Simulations
     * Functions Test: Test of the algorithms written in C.
     * Matlab: Algorithm tests.
-* Thesis Latex: All my thesis latex content.
+* Thesis Latex: All my thesis Latex content.
+* Slides: All my slides apresentation in Latex.
 
 ## Thesis Abstract in English
 
